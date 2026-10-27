@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zijinhua-part-drawing"
+version = "0.1.0"
+description = "Tekla 2017 native part drawings"
+requires-python = ">=3.10"
+dependencies = [
+    "ezdxf",
+    "matplotlib",
+    "reportlab",
+    "shapely",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"zijinhua_tekla.part_drawing" = ["conventions/*.json"]

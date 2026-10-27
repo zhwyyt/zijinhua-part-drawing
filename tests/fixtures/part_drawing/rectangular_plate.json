@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "partDrawingSnapshot.v1",
+  "exporterVersion": "test-fixture.v1",
+  "modelIdentifier": "fixture-model",
+  "exportedAt": "2026-07-13T00:00:00Z",
+  "part": {
+    "partId": "1001",
+    "partPosition": "P-1001",
+    "assemblyId": "A-1",
+    "name": "PLATE",
+    "profile": "PL10",
+    "material": "Q355B",
+    "quantity": 1,
+    "thickness": 10.0,
+    "localFrame": {
+      "origin": [10.0, 20.0, 30.0],
+      "xAxis": [1.0, 0.0, 0.0],
+      "yAxis": [0.0, 1.0, 0.0],
+      "normal": [0.0, 0.0, 1.0]
+    },
+    "outerLoop": [
+      {"kind": "LINE", "start": [10.0, 20.0, 30.0], "end": [210.0, 20.0, 30.0]},
+      {"kind": "LINE", "start": [210.0, 20.0, 30.0], "end": [210.0, 120.0, 30.0]},
+      {"kind": "LINE", "start": [210.0, 120.0, 30.0], "end": [10.0, 120.0, 30.0]},
+      {"kind": "LINE", "start": [10.0, 120.0, 30.0], "end": [10.0, 20.0, 30.0]}
+    ],
+    "innerLoops": [],
+    "holes": [],
+    "cuts": [],
+    "sourceEvidence": ["TEKLA_SOLID", "TEKLA_PART_POSITION"]
+  }
+}

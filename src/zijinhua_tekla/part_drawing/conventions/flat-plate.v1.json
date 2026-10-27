@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "planningConvention.v1",
+  "id": "flat-plate",
+  "version": "v1",
+  "basis": "User-confirmed shop part drawing conventions, 2026-10-21; see docs/design/2026-10-21-native-planning-architecture.md section 10.",
+  "datum": {
+    "primary": "ENVELOPE_LOW_EXTREME",
+    "localDatums": ["OPPOSITE_EXTREME"],
+    "holeCenterDatum": false
+  },
+  "referenceCategories": ["OVERALL", "BODY", "SYMMETRIC"],
+  "closedChains": true,
+  "chains": {"mergeSameSideChains": true},
+  "pitch": {"minIntervals": 3},
+  "directReadLengths": {"tangentFlats": false},
+  "display": {"decimals": 0},
+  "holes": {"representation": "BOLT_SYMBOL", "chainBothEnds": true, "gridUniqueCoordinates": true,
+            "symbol": {"representation": "Symbol2", "color": "Green", "containsHole": true, "containsAxis": true}},
+  "radius": {"representation": "NATIVE_RADIUS_DIMENSION"},
+  "combine": {"format": "NumberOfItemsTimesLength"},
+  "gate": {"mode": "BLOCKING"}
+}

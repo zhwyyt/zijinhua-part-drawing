@@ -1,0 +1,2787 @@
+{
+  "schemaVersion": "nativeTemplateEvidence.v1",
+  "modelPath": "fixture-model",
+  "partId": 1,
+  "sheetNumber": 1,
+  "mark": "FIXTURE",
+  "attributeFile": null,
+  "capturedUtc": "2026-10-23T07:24:45.1130912Z",
+  "sheetSize": [
+    2980,
+    2110
+  ],
+  "paper": {
+    "type": "Tekla.Structures.DrawingPresentationModel.View",
+    "Position": {
+      "type": "Tekla.Common.Geometry.Vector2",
+      "Length": 0,
+      "SquaredLength": 0,
+      "X": 0,
+      "Y": 0
+    },
+    "Primitives": [
+      {
+        "type": "Tekla.Structures.DrawingPresentationModel.Segment",
+        "Brush": null,
+        "GroupType": 0,
+        "Id": 1331,
+        "Layer": 32013,
+        "ObjectType": 266,
+        "Pen": {
+          "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+          "LineColor": 162,
+          "LineType": 1,
+          "LineWidth": 1
+        },
+        "Primitives": [
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 2975.004201677705,
+              "SquaredLength": 8850650,
+              "X": 2975,
+              "Y": 5
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 7.0710678118654755,
+              "SquaredLength": 50,
+              "X": 5,
+              "Y": 5
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 3644.399813412354,
+              "SquaredLength": 13281650,
+              "X": 2975,
+              "Y": 2105
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 2975.004201677705,
+              "SquaredLength": 8850650,
+              "X": 2975,
+              "Y": 5
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 2105.0059382339045,
+              "SquaredLength": 4431050,
+              "X": 5,
+              "Y": 2105
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 3644.399813412354,
+              "SquaredLength": 13281650,
+              "X": 2975,
+              "Y": 2105
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 7.0710678118654755,
+              "SquaredLength": 50,
+              "X": 5,
+              "Y": 5
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 2105.0059382339045,
+              "SquaredLength": 4431050,
+              "X": 5,
+              "Y": 2105
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 156,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 1.5707963267948966,
+                "Font": "Arial",
+                "Height": 2,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 7.106335201775948,
+                  "SquaredLength": 50.5,
+                  "X": 4.5,
+                  "Y": 5.5
+                },
+                "Proportion": 2,
+                "Text": "Tekla structures"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Tekla.Structures.DrawingPresentationModel.Segment",
+        "Brush": null,
+        "GroupType": 0,
+        "Id": 60200,
+        "Layer": 32013,
+        "ObjectType": 263,
+        "Pen": {
+          "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+          "LineColor": 153,
+          "LineType": 0,
+          "LineWidth": 0
+        },
+        "Primitives": [
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+            "Angle": 0,
+            "Font": "仿宋_GB2312",
+            "Height": 35,
+            "Position": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 2633.3628690326746,
+              "SquaredLength": 6934600,
+              "X": 2610,
+              "Y": 350
+            },
+            "Proportion": 26.25,
+            "Text": "TEKLA OY"
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+            "Angle": 0,
+            "Font": "Arial Narrow",
+            "Height": 35,
+            "Position": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 2461.22936761286,
+              "SquaredLength": 6057650,
+              "X": 2455,
+              "Y": 175
+            },
+            "Proportion": 27.0011,
+            "Text": "[T2-11P-.132]"
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+            "Angle": 0,
+            "Font": "仿宋_GB2312",
+            "Height": 35,
+            "Position": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 2693.0297220145912,
+              "SquaredLength": 7252409.083653986,
+              "X": 2679.959716796875,
+              "Y": 265
+            },
+            "Proportion": 22.75,
+            "Text": "1"
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+            "Angle": 0,
+            "Font": "Arial Narrow",
+            "Height": 25,
+            "Position": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 2161.6718067273764,
+              "SquaredLength": 4672825,
+              "X": 2160,
+              "Y": 85
+            },
+            "Proportion": 19.2865,
+            "Text": "2026/10/23"
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+            "Angle": 0,
+            "Font": "Arial Narrow",
+            "Height": 25,
+            "Position": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 2167.0775251476352,
+              "SquaredLength": 4696225,
+              "X": 2160,
+              "Y": 175
+            },
+            "Proportion": 19.2865,
+            "Text": "1:1"
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 164,
+              "LineType": 0,
+              "LineWidth": 0
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 6.283010774254387,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1809.3684446237035,
+                  "SquaredLength": 3273814.1684,
+                  "X": 1781.72,
+                  "Y": 315.1
+                },
+                "Proportion": 28,
+                "Text": "浙江大东吴建筑科技有限公司"
+              }
+            ]
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 153,
+              "LineType": 0,
+              "LineWidth": 0
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2660.6777416665855,
+                  "SquaredLength": 7079206.045000002,
+                  "X": 2659.3900000000003,
+                  "Y": 82.77
+                },
+                "Proportion": 28,
+                "Text": "版 次"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2716.377997738901,
+                  "SquaredLength": 7378709.426599999,
+                  "X": 2710.85,
+                  "Y": 173.21
+                },
+                "Proportion": 28,
+                "Text": "零件下料图"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2353.055150586148,
+                  "SquaredLength": 5536868.541700001,
+                  "X": 2326.44,
+                  "Y": 352.90999999999997
+                },
+                "Proportion": 28,
+                "Text": "工 程"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2339.829262253979,
+                  "SquaredLength": 5474800.9765,
+                  "X": 2324.98,
+                  "Y": 263.19
+                },
+                "Proportion": 28,
+                "Text": "项 目"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2331.387495312609,
+                  "SquaredLength": 5435367.6533,
+                  "X": 2324.98,
+                  "Y": 172.73
+                },
+                "Proportion": 28,
+                "Text": "图 名"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2032.9327076910345,
+                  "SquaredLength": 4132815.394000001,
+                  "X": 2025.5600000000002,
+                  "Y": 172.98
+                },
+                "Proportion": 28,
+                "Text": "比  例"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2027.256939438117,
+                  "SquaredLength": 4109770.698500001,
+                  "X": 2025.5600000000002,
+                  "Y": 82.93
+                },
+                "Proportion": 28,
+                "Text": "日  期"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1746.9300368932927,
+                  "SquaredLength": 3051764.5538000013,
+                  "X": 1744.9700000000003,
+                  "Y": 82.72999999999999
+                },
+                "Proportion": 28,
+                "Text": "校 对"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1753.5317293393925,
+                  "SquaredLength": 3074873.525800001,
+                  "X": 1744.9700000000003,
+                  "Y": 173.07
+                },
+                "Proportion": 28,
+                "Text": "设 计"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2326.4528371321007,
+                  "SquaredLength": 5412382.8034000015,
+                  "X": 2324.9700000000003,
+                  "Y": 83.05
+                },
+                "Proportion": 28,
+                "Text": "图 号"
+              }
+            ]
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 155,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2105.0059382339045,
+                  "SquaredLength": 4431050,
+                  "X": 5,
+                  "Y": 2105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 3644.399813412354,
+                  "SquaredLength": 13281650,
+                  "X": 2975,
+                  "Y": 2105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2765.548554337819,
+                  "SquaredLength": 7648258.8064,
+                  "X": 2765,
+                  "Y": 55.08
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2768.814056306418,
+                  "SquaredLength": 7666331.2784,
+                  "X": 2765,
+                  "Y": 145.28
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2635.5760300169677,
+                  "SquaredLength": 6946261.01,
+                  "X": 2635,
+                  "Y": 55.099999999999994
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2639.001947403601,
+                  "SquaredLength": 6964331.2784,
+                  "X": 2635,
+                  "Y": 145.28
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2943.0222629127356,
+                  "SquaredLength": 8661380.04,
+                  "X": 2925,
+                  "Y": 325.20000000000005
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2327.8315129965913,
+                  "SquaredLength": 5418799.5529,
+                  "X": 2305,
+                  "Y": 325.23
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2305.658476444419,
+                  "SquaredLength": 5316061.01,
+                  "X": 2305,
+                  "Y": 55.099999999999994
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2342.1355162329955,
+                  "SquaredLength": 5485598.7764,
+                  "X": 2305,
+                  "Y": 415.42
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2145.703731296565,
+                  "SquaredLength": 4604044.5025,
+                  "X": 2145,
+                  "Y": 54.95
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2157.8618033831544,
+                  "SquaredLength": 4656367.5625,
+                  "X": 2145,
+                  "Y": 235.25
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2015.7532115812194,
+                  "SquaredLength": 4063261.01,
+                  "X": 2015,
+                  "Y": 55.099999999999994
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2028.6873262284653,
+                  "SquaredLength": 4115572.2676,
+                  "X": 2015,
+                  "Y": 235.26
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1855.8137036082044,
+                  "SquaredLength": 3444044.5025,
+                  "X": 1855,
+                  "Y": 54.95
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1869.8601479522472,
+                  "SquaredLength": 3496376.9729,
+                  "X": 1855,
+                  "Y": 235.27
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2435.6228785261483,
+                  "SquaredLength": 5932258.8064,
+                  "X": 2435,
+                  "Y": 55.08
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2470.181931842268,
+                  "SquaredLength": 6101798.7764,
+                  "X": 2435,
+                  "Y": 415.42
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2928.6056884462955,
+                  "SquaredLength": 8576731.2784,
+                  "X": 2925,
+                  "Y": 145.28
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1731.1069517508154,
+                  "SquaredLength": 2996731.2784,
+                  "X": 1725,
+                  "Y": 145.28
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2934.442612899424,
+                  "SquaredLength": 8610953.4484,
+                  "X": 2925,
+                  "Y": 235.21999999999997
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1740.9701240687618,
+                  "SquaredLength": 3030976.9729,
+                  "X": 1725,
+                  "Y": 235.27
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1725.8765888672342,
+                  "SquaredLength": 2978650,
+                  "X": 1725,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1774.3164251057362,
+                  "SquaredLength": 3148198.7764,
+                  "X": 1725,
+                  "Y": 415.42
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2954.352513902158,
+                  "SquaredLength": 8728198.7764,
+                  "X": 2925,
+                  "Y": 415.42
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1774.3067030533362,
+                  "SquaredLength": 3148164.2764999997,
+                  "X": 1724.99,
+                  "Y": 415.42
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2975.004201677705,
+                  "SquaredLength": 8850650,
+                  "X": 2975,
+                  "Y": 5
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 3644.399813412354,
+                  "SquaredLength": 13281650,
+                  "X": 2975,
+                  "Y": 2105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2975.004201677705,
+                  "SquaredLength": 8850650,
+                  "X": 2975,
+                  "Y": 5
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 7.0710678118654755,
+                  "SquaredLength": 50,
+                  "X": 5,
+                  "Y": 5
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 77.78174593052023,
+                  "SquaredLength": 6050,
+                  "X": 55,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2055.735877976546,
+                  "SquaredLength": 4226050,
+                  "X": 55,
+                  "Y": 2055
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2925.517048318126,
+                  "SquaredLength": 8558650,
+                  "X": 2925,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 77.78174593052023,
+                  "SquaredLength": 6050,
+                  "X": 55,
+                  "Y": 55
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 3574.7237655516824,
+                  "SquaredLength": 12778650,
+                  "X": 2925,
+                  "Y": 2055
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2925.517048318126,
+                  "SquaredLength": 8558650,
+                  "X": 2925,
+                  "Y": 55
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2055.735877976546,
+                  "SquaredLength": 4226050,
+                  "X": 55,
+                  "Y": 2055
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 3574.7237655516824,
+                  "SquaredLength": 12778650,
+                  "X": 2925,
+                  "Y": 2055
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 7.0710678118654755,
+                  "SquaredLength": 50,
+                  "X": 5,
+                  "Y": 5
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2105.0059382339045,
+                  "SquaredLength": 4431050,
+                  "X": 5,
+                  "Y": 2105
+                }
+              }
+            ]
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 153,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 35,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 2481.4562256868444,
+                  "SquaredLength": 6157625,
+                  "X": 2480,
+                  "Y": 85
+                },
+                "Proportion": 28,
+                "Text": "零件图"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 30,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1887.2482613583195,
+                  "SquaredLength": 3561706,
+                  "X": 1791,
+                  "Y": 595
+                },
+                "Proportion": 24,
+                "Text": "A:27度坡口，去间隙7mm。"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 30,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1873.5477042231937,
+                  "SquaredLength": 3510181,
+                  "X": 1791,
+                  "Y": 550
+                },
+                "Proportion": 24,
+                "Text": "B:27°坡口。"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 30,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1862.1978949617574,
+                  "SquaredLength": 3467781,
+                  "X": 1791,
+                  "Y": 510
+                },
+                "Proportion": 24,
+                "Text": "C:先正30°坡口，深2t/3；再反45度坡口，深t/3，中留2mm。"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 30,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1849.7083553901139,
+                  "SquaredLength": 3421421,
+                  "X": 1789,
+                  "Y": 470
+                },
+                "Proportion": 24,
+                "Text": "D:40°坡口，深2t/3。"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 30,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1839.9513580527068,
+                  "SquaredLength": 3385421,
+                  "X": 1789,
+                  "Y": 430
+                },
+                "Proportion": 24,
+                "Text": "E:先正30度坡口，深t/3；再反30°坡口，中留t/3。"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "仿宋_GB2312",
+                "Height": 30,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1839.6969859191486,
+                  "SquaredLength": 3384485,
+                  "X": 1727,
+                  "Y": 634
+                },
+                "Proportion": 24,
+                "Text": "说明："
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Tekla.Structures.DrawingPresentationModel.Segment",
+        "Brush": null,
+        "GroupType": 0,
+        "Id": 60201,
+        "Layer": 32013,
+        "ObjectType": 263,
+        "Pen": {
+          "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+          "LineColor": 155,
+          "LineType": 1,
+          "LineWidth": 1
+        },
+        "Primitives": [
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 359.23529893372114,
+              "SquaredLength": 129050,
+              "X": 55,
+              "Y": 355
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 309.9193443462347,
+              "SquaredLength": 96050,
+              "X": 55,
+              "Y": 305
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 398.325796302474,
+              "SquaredLength": 158663.44,
+              "X": 256.20000000000005,
+              "Y": 305
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 437.7938327569268,
+              "SquaredLength": 191663.44,
+              "X": 256.20000000000005,
+              "Y": 355
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 583.6358111014093,
+              "SquaredLength": 340630.76,
+              "X": 497.59999999999997,
+              "Y": 305
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 611.2534335281889,
+              "SquaredLength": 373630.76,
+              "X": 497.59999999999997,
+              "Y": 355
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 818.1745779477629,
+              "SquaredLength": 669409.64,
+              "X": 759.2,
+              "Y": 305
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 838.0988247217628,
+              "SquaredLength": 702409.64,
+              "X": 759.2,
+              "Y": 355
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 921.7250349209357,
+              "SquaredLength": 849577.0400000002,
+              "X": 869.8000000000001,
+              "Y": 305
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 939.4557147625428,
+              "SquaredLength": 882577.0400000002,
+              "X": 869.8000000000001,
+              "Y": 355
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 1026.746882147689,
+              "SquaredLength": 1054209.1600000001,
+              "X": 980.4000000000001,
+              "Y": 305
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 1042.693224299458,
+              "SquaredLength": 1087209.1600000001,
+              "X": 980.4000000000001,
+              "Y": 355
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 1132.8309670908543,
+              "SquaredLength": 1283306,
+              "X": 1091,
+              "Y": 305
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 1147.3037958622817,
+              "SquaredLength": 1316306,
+              "X": 1091,
+              "Y": 355
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 1239.7046261105909,
+              "SquaredLength": 1536867.5599999998,
+              "X": 1201.6,
+              "Y": 305
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 1252.943558186082,
+              "SquaredLength": 1569867.5599999998,
+              "X": 1201.6,
+              "Y": 355
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 1396.3179294129257,
+              "SquaredLength": 1949703.7599999998,
+              "X": 1362.6,
+              "Y": 305
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 1408.0851394713318,
+              "SquaredLength": 1982703.7599999998,
+              "X": 1362.6,
+              "Y": 355
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 1564.4110585137144,
+              "SquaredLength": 2447381.9600000004,
+              "X": 1523.6000000000001,
+              "Y": 355
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 359.23529893372114,
+              "SquaredLength": 129050,
+              "X": 55,
+              "Y": 355
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+            "EndPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 1553.828162957539,
+              "SquaredLength": 2414381.9600000004,
+              "X": 1523.6000000000001,
+              "Y": 305
+            },
+            "StartPoint": {
+              "type": "Tekla.Common.Geometry.Vector2",
+              "Length": 1564.4110585137144,
+              "SquaredLength": 2447381.9600000004,
+              "X": 1523.6000000000001,
+              "Y": 355
+            }
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 153,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1553.828162957539,
+                  "SquaredLength": 2414381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 305
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 309.9193443462347,
+                  "SquaredLength": 96050,
+                  "X": 55,
+                  "Y": 305
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 341.8795006506328,
+                  "SquaredLength": 116881.59296512604,
+                  "X": 122.9658203125,
+                  "Y": 319
+                },
+                "Proportion": 16.25,
+                "Text": "T2-11GKZ-1"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 472.2386119695874,
+                  "SquaredLength": 223009.30663496256,
+                  "X": 348.207275390625,
+                  "Y": 319
+                },
+                "Proportion": 16.25,
+                "Text": "T2-11P-132"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 691.2806250363866,
+                  "SquaredLength": 477868.9025506973,
+                  "X": 613.2763671875,
+                  "Y": 319
+                },
+                "Proportion": 16.25,
+                "Text": "PL20*237"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 868.389116190102,
+                  "SquaredLength": 754099.6571174264,
+                  "X": 808.069091796875,
+                  "Y": 318
+                },
+                "Proportion": 16.25,
+                "Text": "567"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1079.5538908324136,
+                  "SquaredLength": 1165436.603211403,
+                  "X": 1031.6552734375,
+                  "Y": 318
+                },
+                "Proportion": 16.25,
+                "Text": "1"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1307.0000253285764,
+                  "SquaredLength": 1708249.066208899,
+                  "X": 1267.724365234375,
+                  "Y": 318
+                },
+                "Proportion": 16.25,
+                "Text": "Q355B"
+              }
+            ]
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 155,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 309.9193443462347,
+                  "SquaredLength": 96050,
+                  "X": 55,
+                  "Y": 305
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 260.86394921491166,
+                  "SquaredLength": 68050,
+                  "X": 55,
+                  "Y": 255
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 361.47398246623504,
+                  "SquaredLength": 130663.44000000002,
+                  "X": 256.20000000000005,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 398.325796302474,
+                  "SquaredLength": 158663.44,
+                  "X": 256.20000000000005,
+                  "Y": 305
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 559.1339374425415,
+                  "SquaredLength": 312630.76,
+                  "X": 497.59999999999997,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 583.6358111014093,
+                  "SquaredLength": 340630.76,
+                  "X": 497.59999999999997,
+                  "Y": 305
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 800.8805404053716,
+                  "SquaredLength": 641409.64,
+                  "X": 759.2,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 818.1745779477629,
+                  "SquaredLength": 669409.64,
+                  "X": 759.2,
+                  "Y": 305
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 906.4088702125549,
+                  "SquaredLength": 821577.0400000002,
+                  "X": 869.8000000000001,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 921.7250349209357,
+                  "SquaredLength": 849577.0400000002,
+                  "X": 869.8000000000001,
+                  "Y": 305
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1013.0198221160335,
+                  "SquaredLength": 1026209.1600000001,
+                  "X": 980.4000000000001,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1026.746882147689,
+                  "SquaredLength": 1054209.1600000001,
+                  "X": 980.4000000000001,
+                  "Y": 305
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1120.40439128022,
+                  "SquaredLength": 1255306,
+                  "X": 1091,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1132.8309670908543,
+                  "SquaredLength": 1283306,
+                  "X": 1091,
+                  "Y": 305
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1228.3597030186231,
+                  "SquaredLength": 1508867.5599999998,
+                  "X": 1201.6,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1239.7046261105909,
+                  "SquaredLength": 1536867.5599999998,
+                  "X": 1201.6,
+                  "Y": 305
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1386.255301162091,
+                  "SquaredLength": 1921703.7599999998,
+                  "X": 1362.6,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1396.3179294129257,
+                  "SquaredLength": 1949703.7599999998,
+                  "X": 1362.6,
+                  "Y": 305
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1553.828162957539,
+                  "SquaredLength": 2414381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 305
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 309.9193443462347,
+                  "SquaredLength": 96050,
+                  "X": 55,
+                  "Y": 305
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1544.7918824230014,
+                  "SquaredLength": 2386381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1553.828162957539,
+                  "SquaredLength": 2414381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 305
+                }
+              }
+            ]
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 153,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1544.7918824230014,
+                  "SquaredLength": 2386381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 260.86394921491166,
+                  "SquaredLength": 68050,
+                  "X": 55,
+                  "Y": 255
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 295.77287395081726,
+                  "SquaredLength": 87481.59296512604,
+                  "X": 122.9658203125,
+                  "Y": 269
+                },
+                "Proportion": 16.25,
+                "Text": "T2-11GKZ-2"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 440.0105755944538,
+                  "SquaredLength": 193609.30663496256,
+                  "X": 348.207275390625,
+                  "Y": 269
+                },
+                "Proportion": 16.25,
+                "Text": "T2-11P-132"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 669.6782082095082,
+                  "SquaredLength": 448468.9025506973,
+                  "X": 613.2763671875,
+                  "Y": 269
+                },
+                "Proportion": 16.25,
+                "Text": "PL20*237"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 851.3516647763287,
+                  "SquaredLength": 724799.6571174264,
+                  "X": 808.069091796875,
+                  "Y": 268
+                },
+                "Proportion": 16.25,
+                "Text": "567"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1065.8970884712103,
+                  "SquaredLength": 1136136.603211403,
+                  "X": 1031.6552734375,
+                  "Y": 268
+                },
+                "Proportion": 16.25,
+                "Text": "1"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1295.7426697492442,
+                  "SquaredLength": 1678949.066208899,
+                  "X": 1267.724365234375,
+                  "Y": 268
+                },
+                "Proportion": 16.25,
+                "Text": "Q355B"
+              }
+            ]
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 155,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 260.86394921491166,
+                  "SquaredLength": 68050,
+                  "X": 55,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 212.24985276791125,
+                  "SquaredLength": 45050,
+                  "X": 55,
+                  "Y": 205
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 328.1210752146226,
+                  "SquaredLength": 107663.44000000002,
+                  "X": 256.20000000000005,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 361.47398246623504,
+                  "SquaredLength": 130663.44000000002,
+                  "X": 256.20000000000005,
+                  "Y": 255
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 538.1735407840114,
+                  "SquaredLength": 289630.76,
+                  "X": 497.59999999999997,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 559.1339374425415,
+                  "SquaredLength": 312630.76,
+                  "X": 497.59999999999997,
+                  "Y": 255
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 786.3902593496438,
+                  "SquaredLength": 618409.64,
+                  "X": 759.2,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 800.8805404053716,
+                  "SquaredLength": 641409.64,
+                  "X": 759.2,
+                  "Y": 255
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 893.6313781420167,
+                  "SquaredLength": 798577.0400000002,
+                  "X": 869.8000000000001,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 906.4088702125549,
+                  "SquaredLength": 821577.0400000002,
+                  "X": 869.8000000000001,
+                  "Y": 255
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1001.6032947230157,
+                  "SquaredLength": 1003209.1600000001,
+                  "X": 980.4000000000001,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1013.0198221160335,
+                  "SquaredLength": 1026209.1600000001,
+                  "X": 980.4000000000001,
+                  "Y": 255
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1110.0927889145123,
+                  "SquaredLength": 1232306,
+                  "X": 1091,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1120.40439128022,
+                  "SquaredLength": 1255306,
+                  "X": 1091,
+                  "Y": 255
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1218.9616729003417,
+                  "SquaredLength": 1485867.5599999998,
+                  "X": 1201.6,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1228.3597030186231,
+                  "SquaredLength": 1508867.5599999998,
+                  "X": 1201.6,
+                  "Y": 255
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1377.9345993188501,
+                  "SquaredLength": 1898703.7599999998,
+                  "X": 1362.6,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1386.255301162091,
+                  "SquaredLength": 1921703.7599999998,
+                  "X": 1362.6,
+                  "Y": 255
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1544.7918824230014,
+                  "SquaredLength": 2386381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 255
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 260.86394921491166,
+                  "SquaredLength": 68050,
+                  "X": 55,
+                  "Y": 255
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1537.3294897321134,
+                  "SquaredLength": 2363381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1544.7918824230014,
+                  "SquaredLength": 2386381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 255
+                }
+              }
+            ]
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 153,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1537.3294897321134,
+                  "SquaredLength": 2363381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 212.24985276791125,
+                  "SquaredLength": 45050,
+                  "X": 55,
+                  "Y": 205
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 251.1604924448231,
+                  "SquaredLength": 63081.59296512604,
+                  "X": 122.9658203125,
+                  "Y": 219
+                },
+                "Proportion": 16.25,
+                "Text": "T2-11GKZ-3"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 411.3505884704221,
+                  "SquaredLength": 169209.30663496256,
+                  "X": 348.207275390625,
+                  "Y": 219
+                },
+                "Proportion": 16.25,
+                "Text": "T2-11P-132"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 651.2057298202292,
+                  "SquaredLength": 424068.9025506973,
+                  "X": 613.2763671875,
+                  "Y": 219
+                },
+                "Proportion": 16.25,
+                "Text": "PL20*237"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 836.9585755086248,
+                  "SquaredLength": 700499.6571174264,
+                  "X": 808.069091796875,
+                  "Y": 218
+                },
+                "Proportion": 16.25,
+                "Text": "567"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1054.436628352507,
+                  "SquaredLength": 1111836.603211403,
+                  "X": 1031.6552734375,
+                  "Y": 218
+                },
+                "Proportion": 16.25,
+                "Text": "1"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1286.3316315044497,
+                  "SquaredLength": 1654649.066208899,
+                  "X": 1267.724365234375,
+                  "Y": 218
+                },
+                "Proportion": 16.25,
+                "Text": "Q355B"
+              }
+            ]
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 155,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 212.24985276791125,
+                  "SquaredLength": 45050,
+                  "X": 55,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 164.46884203398528,
+                  "SquaredLength": 27050,
+                  "X": 55,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 299.43854127349744,
+                  "SquaredLength": 89663.44000000002,
+                  "X": 256.20000000000005,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 328.1210752146226,
+                  "SquaredLength": 107663.44000000002,
+                  "X": 256.20000000000005,
+                  "Y": 205
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 521.1820795077283,
+                  "SquaredLength": 271630.76,
+                  "X": 497.59999999999997,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 538.1735407840114,
+                  "SquaredLength": 289630.76,
+                  "X": 497.59999999999997,
+                  "Y": 205
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 774.8610456075335,
+                  "SquaredLength": 600409.64,
+                  "X": 759.2,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 786.3902593496438,
+                  "SquaredLength": 618409.64,
+                  "X": 759.2,
+                  "Y": 205
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 883.5027108051227,
+                  "SquaredLength": 780577.0400000002,
+                  "X": 869.8000000000001,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 893.6313781420167,
+                  "SquaredLength": 798577.0400000002,
+                  "X": 869.8000000000001,
+                  "Y": 205
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 992.5770297563812,
+                  "SquaredLength": 985209.1600000001,
+                  "X": 980.4000000000001,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1001.6032947230157,
+                  "SquaredLength": 1003209.1600000001,
+                  "X": 980.4000000000001,
+                  "Y": 205
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1101.9555344931118,
+                  "SquaredLength": 1214306,
+                  "X": 1091,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1110.0927889145123,
+                  "SquaredLength": 1232306,
+                  "X": 1091,
+                  "Y": 205
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1211.5558427080446,
+                  "SquaredLength": 1467867.5599999998,
+                  "X": 1201.6,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1218.9616729003417,
+                  "SquaredLength": 1485867.5599999998,
+                  "X": 1201.6,
+                  "Y": 205
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1371.387530933543,
+                  "SquaredLength": 1880703.7599999998,
+                  "X": 1362.6,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1377.9345993188501,
+                  "SquaredLength": 1898703.7599999998,
+                  "X": 1362.6,
+                  "Y": 205
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1537.3294897321134,
+                  "SquaredLength": 2363381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 205
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 212.24985276791125,
+                  "SquaredLength": 45050,
+                  "X": 55,
+                  "Y": 205
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1531.463992394206,
+                  "SquaredLength": 2345381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1537.3294897321134,
+                  "SquaredLength": 2363381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 205
+                }
+              }
+            ]
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 153,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1531.463992394206,
+                  "SquaredLength": 2345381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 164.46884203398528,
+                  "SquaredLength": 27050,
+                  "X": 55,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 209.00141857204233,
+                  "SquaredLength": 43681.59296512604,
+                  "X": 122.9658203125,
+                  "Y": 169
+                },
+                "Proportion": 16.25,
+                "Text": "T2-11GKZ-7"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 387.0520722525104,
+                  "SquaredLength": 149809.30663496256,
+                  "X": 348.207275390625,
+                  "Y": 169
+                },
+                "Proportion": 16.25,
+                "Text": "T2-11P-132"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 636.1359151554778,
+                  "SquaredLength": 404668.9025506973,
+                  "X": 613.2763671875,
+                  "Y": 169
+                },
+                "Proportion": 16.25,
+                "Text": "PL20*237"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 825.348203558611,
+                  "SquaredLength": 681199.6571174264,
+                  "X": 808.069091796875,
+                  "Y": 168
+                },
+                "Proportion": 16.25,
+                "Text": "567"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1045.2447575622673,
+                  "SquaredLength": 1092536.603211403,
+                  "X": 1031.6552734375,
+                  "Y": 168
+                },
+                "Proportion": 16.25,
+                "Text": "2"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1278.8076736589044,
+                  "SquaredLength": 1635349.066208899,
+                  "X": 1267.724365234375,
+                  "Y": 168
+                },
+                "Proportion": 16.25,
+                "Text": "Q355B"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "宋体",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 129.5964771897755,
+                  "SquaredLength": 16795.2469,
+                  "X": 110.63,
+                  "Y": 67.5
+                },
+                "Proportion": 16.25,
+                "Text": "所属构件"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "宋体",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 338.7237442223382,
+                  "SquaredLength": 114733.7749,
+                  "X": 331.93,
+                  "Y": 67.5
+                },
+                "Proportion": 16.25,
+                "Text": "零件编号"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "宋体",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 576.1477261952875,
+                  "SquaredLength": 331946.20240000007,
+                  "X": 572.1800000000001,
+                  "Y": 67.5
+                },
+                "Proportion": 16.25,
+                "Text": "规      格"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "宋体",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 783.6823609728625,
+                  "SquaredLength": 614158.0429,
+                  "X": 780.77,
+                  "Y": 67.5
+                },
+                "Proportion": 16.25,
+                "Text": "长  度"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "宋体",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 893.9221033736665,
+                  "SquaredLength": 799096.7269,
+                  "X": 891.37,
+                  "Y": 67.5
+                },
+                "Proportion": 16.25,
+                "Text": "单  重"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "宋体",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1009.2298206553352,
+                  "SquaredLength": 1018544.8309000001,
+                  "X": 1006.97,
+                  "Y": 67.5
+                },
+                "Proportion": 16.25,
+                "Text": "数  量"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "宋体",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1114.6157431599468,
+                  "SquaredLength": 1242368.2549000003,
+                  "X": 1112.5700000000002,
+                  "Y": 67.5
+                },
+                "Proportion": 16.25,
+                "Text": "总  重"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "宋体",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1250.1935477757036,
+                  "SquaredLength": 1562983.9069000003,
+                  "X": 1248.3700000000001,
+                  "Y": 67.5
+                },
+                "Proportion": 16.25,
+                "Text": "材  质"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "宋体",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1410.7857168613525,
+                  "SquaredLength": 1990316.3389,
+                  "X": 1409.17,
+                  "Y": 67.5
+                },
+                "Proportion": 16.25,
+                "Text": "备  注"
+              }
+            ]
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 155,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1527.2137898801204,
+                  "SquaredLength": 2332381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 118.53269591129698,
+                  "SquaredLength": 14050,
+                  "X": 55,
+                  "Y": 105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1524.5923914279517,
+                  "SquaredLength": 2324381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1527.2137898801204,
+                  "SquaredLength": 2332381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1363.709558520435,
+                  "SquaredLength": 1859703.7599999998,
+                  "X": 1362.6,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1366.6395867235808,
+                  "SquaredLength": 1867703.7599999998,
+                  "X": 1362.6,
+                  "Y": 105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1524.5923914279517,
+                  "SquaredLength": 2324381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 77.78174593052023,
+                  "SquaredLength": 6050,
+                  "X": 55,
+                  "Y": 55
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1202.8580797417458,
+                  "SquaredLength": 1446867.5599999998,
+                  "X": 1201.6,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1206.1789087859229,
+                  "SquaredLength": 1454867.5599999998,
+                  "X": 1201.6,
+                  "Y": 105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1092.3854631035695,
+                  "SquaredLength": 1193306,
+                  "X": 1091,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1096.0410576251238,
+                  "SquaredLength": 1201306,
+                  "X": 1091,
+                  "Y": 105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 981.9415257539525,
+                  "SquaredLength": 964209.1600000001,
+                  "X": 980.4000000000001,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 986.0066734054086,
+                  "SquaredLength": 972209.1600000001,
+                  "X": 980.4000000000001,
+                  "Y": 105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 871.5371707506227,
+                  "SquaredLength": 759577.0400000002,
+                  "X": 869.8000000000001,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 876.1147413438495,
+                  "SquaredLength": 767577.0400000002,
+                  "X": 869.8000000000001,
+                  "Y": 105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 761.1896215792751,
+                  "SquaredLength": 579409.64,
+                  "X": 759.2,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 766.4265392064657,
+                  "SquaredLength": 587409.64,
+                  "X": 759.2,
+                  "Y": 105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 500.6303626429384,
+                  "SquaredLength": 250630.75999999998,
+                  "X": 497.59999999999997,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 508.55752870250575,
+                  "SquaredLength": 258630.75999999998,
+                  "X": 497.59999999999997,
+                  "Y": 105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 262.0370966103846,
+                  "SquaredLength": 68663.44000000002,
+                  "X": 256.20000000000005,
+                  "Y": 55
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 276.8816353606718,
+                  "SquaredLength": 76663.44000000002,
+                  "X": 256.20000000000005,
+                  "Y": 105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 118.53269591129698,
+                  "SquaredLength": 14050,
+                  "X": 55,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 77.78174593052023,
+                  "SquaredLength": 6050,
+                  "X": 55,
+                  "Y": 55
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1531.463992394206,
+                  "SquaredLength": 2345381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 164.46884203398528,
+                  "SquaredLength": 27050,
+                  "X": 55,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1527.2137898801204,
+                  "SquaredLength": 2332381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1531.463992394206,
+                  "SquaredLength": 2345381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1366.6395867235808,
+                  "SquaredLength": 1867703.7599999998,
+                  "X": 1362.6,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1371.387530933543,
+                  "SquaredLength": 1880703.7599999998,
+                  "X": 1362.6,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1527.2137898801204,
+                  "SquaredLength": 2332381.9600000004,
+                  "X": 1523.6000000000001,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 118.53269591129698,
+                  "SquaredLength": 14050,
+                  "X": 55,
+                  "Y": 105
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1206.1789087859229,
+                  "SquaredLength": 1454867.5599999998,
+                  "X": 1201.6,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1211.5558427080446,
+                  "SquaredLength": 1467867.5599999998,
+                  "X": 1201.6,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1096.0410576251238,
+                  "SquaredLength": 1201306,
+                  "X": 1091,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1101.9555344931118,
+                  "SquaredLength": 1214306,
+                  "X": 1091,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 986.0066734054086,
+                  "SquaredLength": 972209.1600000001,
+                  "X": 980.4000000000001,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 992.5770297563812,
+                  "SquaredLength": 985209.1600000001,
+                  "X": 980.4000000000001,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 876.1147413438495,
+                  "SquaredLength": 767577.0400000002,
+                  "X": 869.8000000000001,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 883.5027108051227,
+                  "SquaredLength": 780577.0400000002,
+                  "X": 869.8000000000001,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 766.4265392064657,
+                  "SquaredLength": 587409.64,
+                  "X": 759.2,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 774.8610456075335,
+                  "SquaredLength": 600409.64,
+                  "X": 759.2,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 508.55752870250575,
+                  "SquaredLength": 258630.75999999998,
+                  "X": 497.59999999999997,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 521.1820795077283,
+                  "SquaredLength": 271630.76,
+                  "X": 497.59999999999997,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 276.8816353606718,
+                  "SquaredLength": 76663.44000000002,
+                  "X": 256.20000000000005,
+                  "Y": 105
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 299.43854127349744,
+                  "SquaredLength": 89663.44000000002,
+                  "X": 256.20000000000005,
+                  "Y": 155
+                }
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.LinePrimitive",
+                "EndPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 164.46884203398528,
+                  "SquaredLength": 27050,
+                  "X": 55,
+                  "Y": 155
+                },
+                "StartPoint": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 118.53269591129698,
+                  "SquaredLength": 14050,
+                  "X": 55,
+                  "Y": 105
+                }
+              }
+            ]
+          },
+          {
+            "type": "Tekla.Structures.DrawingPresentationModel.PrimitiveGroup",
+            "Brush": null,
+            "GroupType": 0,
+            "Id": 0,
+            "Pen": {
+              "type": "Tekla.Structures.DrawingPresentationModel.Pen",
+              "LineColor": 153,
+              "LineType": 1,
+              "LineWidth": 1
+            },
+            "Primitives": [
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "Arial Narrow",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 1039.3752516575896,
+                  "SquaredLength": 1080300.913758278,
+                  "X": 1032.6552734375,
+                  "Y": 118
+                },
+                "Proportion": 16.25,
+                "Text": "5"
+              },
+              {
+                "type": "Tekla.Structures.DrawingPresentationModel.TextPrimitive",
+                "Angle": 0,
+                "Font": "宋体",
+                "Height": 25,
+                "Position": {
+                  "type": "Tekla.Common.Geometry.Vector2",
+                  "Length": 900.7624548125882,
+                  "SquaredLength": 811373,
+                  "X": 893,
+                  "Y": 118
+                },
+                "Proportion": 16.25,
+                "Text": "合 计"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "signature": "e965f83a20fbc86fd37563514529458091dd5bcf66c9686a7832dc428d6f26ea"
+}

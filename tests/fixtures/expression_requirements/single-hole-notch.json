@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "partDrawingSnapshot.v1",
+  "exporterVersion": "regression-reconstruction.v1",
+  "modelIdentifier": "regression-reconstruction",
+  "exportedAt": "2026-10-17T00:00:00Z",
+  "part": {
+    "partId": "T3-KB-7",
+    "partPosition": "T3-KB-7",
+    "assemblyId": "",
+    "name": "PLATE",
+    "profile": "PL10",
+    "material": "",
+    "quantity": 1,
+    "thickness": 10,
+    "localFrame": {
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "xAxis": [
+        1,
+        0,
+        0
+      ],
+      "yAxis": [
+        0,
+        1,
+        0
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    "outerLoop": [
+      {
+        "kind": "LINE",
+        "start": [
+          0,
+          0,
+          0
+        ],
+        "end": [
+          50,
+          0,
+          0
+        ]
+      },
+      {
+        "kind": "ARC",
+        "start": [
+          50,
+          0,
+          0
+        ],
+        "end": [
+          150,
+          0,
+          0
+        ],
+        "center": [
+          100,
+          0,
+          0
+        ],
+        "clockwise": true
+      },
+      {
+        "kind": "LINE",
+        "start": [
+          150,
+          0,
+          0
+        ],
+        "end": [
+          275,
+          0,
+          0
+        ]
+      },
+      {
+        "kind": "LINE",
+        "start": [
+          275,
+          0,
+          0
+        ],
+        "end": [
+          275,
+          120,
+          0
+        ]
+      },
+      {
+        "kind": "LINE",
+        "start": [
+          275,
+          120,
+          0
+        ],
+        "end": [
+          0,
+          120,
+          0
+        ]
+      },
+      {
+        "kind": "LINE",
+        "start": [
+          0,
+          120,
+          0
+        ],
+        "end": [
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "holes": [
+      {
+        "holeId": "H1",
+        "kind": "ROUND",
+        "center": [
+          230,
+          75,
+          0
+        ],
+        "diameter": 30
+      }
+    ],
+    "sourceEvidence": [
+      "USER_REVIEWED_DIMENSIONS_RECONSTRUCTED_NOT_LIVE_EXPORT"
+    ]
+  }
+}

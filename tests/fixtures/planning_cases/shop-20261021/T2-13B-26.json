@@ -1,0 +1,587 @@
+{
+ "schemaVersion": "planningCase.v1",
+ "id": "shop-T2-13B-26",
+ "partPosition": "T2-13B-26",
+ "source": {
+  "kind": "SHOP_DRAWING",
+  "mark": "[T2-13B-.26]",
+  "drawingName": "零件图10",
+  "captured": "2026-10-21",
+  "record": "docs/verification/2026-10-21-shop-part-drawing-reference.md"
+ },
+ "status": "READY",
+ "requirements": {
+  "schemaVersion": "expressionRequirements.v1",
+  "rulesVersion": "native-flat-plate-expression.r1",
+  "status": "READY",
+  "tolerance": 1e-06,
+  "modelToleranceMm": 0.1,
+  "displayDecimals": 1,
+  "facts": {
+   "points": {
+    "vertex:0": [
+     0.0,
+     0.0
+    ],
+    "vertex:1": [
+     240.0,
+     0.0
+    ],
+    "vertex:2": [
+     240.0,
+     50.0
+    ],
+    "vertex:3": [
+     210.0,
+     400.0
+    ],
+    "vertex:4": [
+     30.0,
+     400.0
+    ],
+    "vertex:5": [
+     0.0,
+     50.0
+    ]
+   },
+   "segments": [
+    {
+     "id": "edge:0",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      0.0
+     ],
+     "end": [
+      240.0,
+      0.0
+     ],
+     "startPoint": "vertex:0",
+     "endPoint": "vertex:1"
+    },
+    {
+     "id": "edge:1",
+     "kind": "LINE",
+     "start": [
+      240.0,
+      0.0
+     ],
+     "end": [
+      240.0,
+      50.0
+     ],
+     "startPoint": "vertex:1",
+     "endPoint": "vertex:2"
+    },
+    {
+     "id": "edge:2",
+     "kind": "LINE",
+     "start": [
+      240.0,
+      50.0
+     ],
+     "end": [
+      210.0,
+      400.0
+     ],
+     "startPoint": "vertex:2",
+     "endPoint": "vertex:3"
+    },
+    {
+     "id": "edge:3",
+     "kind": "LINE",
+     "start": [
+      210.0,
+      400.0
+     ],
+     "end": [
+      30.0,
+      400.0
+     ],
+     "startPoint": "vertex:3",
+     "endPoint": "vertex:4"
+    },
+    {
+     "id": "edge:4",
+     "kind": "LINE",
+     "start": [
+      30.0,
+      400.0
+     ],
+     "end": [
+      0.0,
+      50.0
+     ],
+     "startPoint": "vertex:4",
+     "endPoint": "vertex:5"
+    },
+    {
+     "id": "edge:5",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      50.0
+     ],
+     "end": [
+      0.0,
+      0.0
+     ],
+     "startPoint": "vertex:5",
+     "endPoint": "vertex:0"
+    }
+   ],
+   "holes": [],
+   "datum": "vertex:0",
+   "bounds": [
+    0.0,
+    0.0,
+    240.0,
+    400.0
+   ],
+   "boundaryLoops": [
+    {
+     "id": "outer",
+     "segments": [
+      "edge:0",
+      "edge:1",
+      "edge:2",
+      "edge:3",
+      "edge:4",
+      "edge:5"
+     ]
+    }
+   ],
+   "sourceFeatureRefs": {
+    "edge:0": [
+     "#/parts/0/modelingContour/value/value/0",
+     "#/parts/0/modelingContour/value/value/1"
+    ],
+    "edge:1": [
+     "#/parts/0/modelingContour/value/value/1",
+     "#/parts/0/modelingContour/value/value/2"
+    ],
+    "edge:2": [
+     "#/parts/0/modelingContour/value/value/2",
+     "#/parts/0/modelingContour/value/value/3"
+    ],
+    "edge:3": [
+     "#/parts/0/modelingContour/value/value/3",
+     "#/parts/0/modelingContour/value/value/4"
+    ],
+    "edge:4": [
+     "#/parts/0/modelingContour/value/value/4",
+     "#/parts/0/modelingContour/value/value/5"
+    ],
+    "edge:5": [
+     "#/parts/0/modelingContour/value/value/5",
+     "#/parts/0/modelingContour/value/value/0"
+    ]
+   }
+  },
+  "groups": [],
+  "requirements": [
+   {
+    "id": "plate/identity",
+    "feature": "plate",
+    "aspect": "identity",
+    "expected": "T2-13B-26",
+    "rule": "PLATE-01",
+    "alternatives": [
+     "label"
+    ]
+   },
+   {
+    "id": "plate/thickness",
+    "feature": "plate",
+    "aspect": "thickness",
+    "expected": 20.0,
+    "rule": "PLATE-02",
+    "alternatives": [
+     "table",
+     "dimension"
+    ]
+   },
+   {
+    "id": "plate/overall_x",
+    "feature": "plate",
+    "aspect": "overall_x",
+    "expected": 240.0,
+    "rule": "PLATE-03",
+    "alternatives": [
+     "dimension"
+    ]
+   },
+   {
+    "id": "plate/overall_y",
+    "feature": "plate",
+    "aspect": "overall_y",
+    "expected": 400.0,
+    "rule": "PLATE-03",
+    "alternatives": [
+     "dimension"
+    ]
+   },
+   {
+    "id": "edge:0/shape",
+    "feature": "edge:0",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:0",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      0.0
+     ],
+     "end": [
+      240.0,
+      0.0
+     ],
+     "startPoint": "vertex:0",
+     "endPoint": "vertex:1"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:1/shape",
+    "feature": "edge:1",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:1",
+     "kind": "LINE",
+     "start": [
+      240.0,
+      0.0
+     ],
+     "end": [
+      240.0,
+      50.0
+     ],
+     "startPoint": "vertex:1",
+     "endPoint": "vertex:2"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:2/shape",
+    "feature": "edge:2",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:2",
+     "kind": "LINE",
+     "start": [
+      240.0,
+      50.0
+     ],
+     "end": [
+      210.0,
+      400.0
+     ],
+     "startPoint": "vertex:2",
+     "endPoint": "vertex:3"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:3/shape",
+    "feature": "edge:3",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:3",
+     "kind": "LINE",
+     "start": [
+      210.0,
+      400.0
+     ],
+     "end": [
+      30.0,
+      400.0
+     ],
+     "startPoint": "vertex:3",
+     "endPoint": "vertex:4"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:4/shape",
+    "feature": "edge:4",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:4",
+     "kind": "LINE",
+     "start": [
+      30.0,
+      400.0
+     ],
+     "end": [
+      0.0,
+      50.0
+     ],
+     "startPoint": "vertex:4",
+     "endPoint": "vertex:5"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:5/shape",
+    "feature": "edge:5",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:5",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      50.0
+     ],
+     "end": [
+      0.0,
+      0.0
+     ],
+     "startPoint": "vertex:5",
+     "endPoint": "vertex:0"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "vertex:0/location_x",
+    "feature": "vertex:0",
+    "aspect": "location_x",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:0/location_y",
+    "feature": "vertex:0",
+    "aspect": "location_y",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:1/location_x",
+    "feature": "vertex:1",
+    "aspect": "location_x",
+    "expected": 240.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:1/location_y",
+    "feature": "vertex:1",
+    "aspect": "location_y",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:2/location_x",
+    "feature": "vertex:2",
+    "aspect": "location_x",
+    "expected": 240.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:2/location_y",
+    "feature": "vertex:2",
+    "aspect": "location_y",
+    "expected": 50.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:3/location_x",
+    "feature": "vertex:3",
+    "aspect": "location_x",
+    "expected": 210.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:3/location_y",
+    "feature": "vertex:3",
+    "aspect": "location_y",
+    "expected": 400.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:4/location_x",
+    "feature": "vertex:4",
+    "aspect": "location_x",
+    "expected": 30.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:4/location_y",
+    "feature": "vertex:4",
+    "aspect": "location_y",
+    "expected": 400.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:5/location_x",
+    "feature": "vertex:5",
+    "aspect": "location_x",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:5/location_y",
+    "feature": "vertex:5",
+    "aspect": "location_y",
+    "expected": 50.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   }
+  ],
+  "pitchCandidates": [],
+  "specifications": {},
+  "unspecified": [
+   {
+    "aspect": "cutting_method",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "hole_method",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "tolerance",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "edge_finish",
+    "status": "NOT_SPECIFIED"
+   }
+  ],
+  "source": {
+   "partPosition": "T2-13B-26"
+  }
+ },
+ "shopSets": [
+  {
+   "axis": "x",
+   "side": 1,
+   "positions": [
+    210.0,
+    240.0
+   ],
+   "texts": [
+    "30"
+   ]
+  },
+  {
+   "axis": "x",
+   "side": 1,
+   "positions": [
+    0.0,
+    30.0
+   ],
+   "texts": [
+    "30"
+   ]
+  },
+  {
+   "axis": "x",
+   "side": -1,
+   "positions": [
+    0.0,
+    240.0
+   ],
+   "texts": [
+    "240"
+   ]
+  },
+  {
+   "axis": "y",
+   "side": 1,
+   "positions": [
+    0.0,
+    50.0
+   ],
+   "texts": [
+    "50"
+   ]
+  },
+  {
+   "axis": "y",
+   "side": -1,
+   "positions": [
+    0.0,
+    50.0
+   ],
+   "texts": [
+    "50"
+   ]
+  },
+  {
+   "axis": "y",
+   "side": -1,
+   "positions": [
+    0.0,
+    400.0
+   ],
+   "texts": [
+    "400"
+   ]
+  }
+ ]
+}

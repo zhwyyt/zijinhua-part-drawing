@@ -1,0 +1,1430 @@
+{
+ "schemaVersion": "planningCase.v1",
+ "id": "shop-T2-11P-226",
+ "partPosition": "T2-11P-226",
+ "source": {
+  "kind": "SHOP_DRAWING",
+  "mark": "[T2-11P-.226]",
+  "drawingName": "零件图10",
+  "captured": "2026-10-21",
+  "record": "docs/verification/2026-10-21-shop-part-drawing-reference.md"
+ },
+ "status": "READY",
+ "requirements": {
+  "schemaVersion": "expressionRequirements.v1",
+  "rulesVersion": "native-flat-plate-expression.r1",
+  "status": "READY",
+  "tolerance": 1e-06,
+  "modelToleranceMm": 0.1,
+  "displayDecimals": 1,
+  "facts": {
+   "points": {
+    "vertex:0": [
+     460.0,
+     0.0
+    ],
+    "vertex:1": [
+     480.0,
+     20.0
+    ],
+    "vertex:2": [
+     480.0,
+     96.5
+    ],
+    "vertex:3": [
+     475.0,
+     96.5
+    ],
+    "edge:3:extreme:2": [
+     465.0,
+     106.5
+    ],
+    "edge:3:extreme:3": [
+     475.0,
+     96.5
+    ],
+    "vertex:4": [
+     465.0,
+     106.5
+    ],
+    "vertex:5": [
+     465.0,
+     216.5
+    ],
+    "vertex:6": [
+     115.0,
+     216.5
+    ],
+    "vertex:7": [
+     115.0,
+     106.5
+    ],
+    "edge:7:extreme:0": [
+     115.0,
+     106.5
+    ],
+    "edge:7:extreme:3": [
+     105.0,
+     96.5
+    ],
+    "vertex:8": [
+     105.0,
+     96.5
+    ],
+    "vertex:9": [
+     0.0,
+     96.5
+    ],
+    "vertex:10": [
+     0.0,
+     20.0
+    ],
+    "vertex:11": [
+     20.0,
+     0.0
+    ],
+    "hole:material-result:0": [
+     170.0,
+     161.5
+    ],
+    "hole:material-result:1": [
+     250.0,
+     161.5
+    ],
+    "hole:material-result:2": [
+     330.0,
+     161.5
+    ],
+    "hole:material-result:3": [
+     410.0,
+     161.5
+    ]
+   },
+   "segments": [
+    {
+     "id": "edge:0",
+     "kind": "LINE",
+     "start": [
+      460.0,
+      0.0
+     ],
+     "end": [
+      480.0,
+      20.0
+     ],
+     "startPoint": "vertex:0",
+     "endPoint": "vertex:1"
+    },
+    {
+     "id": "edge:1",
+     "kind": "LINE",
+     "start": [
+      480.0,
+      20.0
+     ],
+     "end": [
+      480.0,
+      96.5
+     ],
+     "startPoint": "vertex:1",
+     "endPoint": "vertex:2"
+    },
+    {
+     "id": "edge:2",
+     "kind": "LINE",
+     "start": [
+      480.0,
+      96.5
+     ],
+     "end": [
+      475.0,
+      96.5
+     ],
+     "startPoint": "vertex:2",
+     "endPoint": "vertex:3"
+    },
+    {
+     "id": "edge:3",
+     "kind": "ARC",
+     "start": [
+      475.0,
+      96.5
+     ],
+     "end": [
+      465.0,
+      106.5
+     ],
+     "startPoint": "vertex:3",
+     "endPoint": "vertex:4",
+     "center": [
+      475.0,
+      106.5
+     ],
+     "radius": 10.0,
+     "clockwise": true
+    },
+    {
+     "id": "edge:4",
+     "kind": "LINE",
+     "start": [
+      465.0,
+      106.5
+     ],
+     "end": [
+      465.0,
+      216.5
+     ],
+     "startPoint": "vertex:4",
+     "endPoint": "vertex:5"
+    },
+    {
+     "id": "edge:5",
+     "kind": "LINE",
+     "start": [
+      465.0,
+      216.5
+     ],
+     "end": [
+      115.0,
+      216.5
+     ],
+     "startPoint": "vertex:5",
+     "endPoint": "vertex:6"
+    },
+    {
+     "id": "edge:6",
+     "kind": "LINE",
+     "start": [
+      115.0,
+      216.5
+     ],
+     "end": [
+      115.0,
+      106.5
+     ],
+     "startPoint": "vertex:6",
+     "endPoint": "vertex:7"
+    },
+    {
+     "id": "edge:7",
+     "kind": "ARC",
+     "start": [
+      115.0,
+      106.5
+     ],
+     "end": [
+      105.0,
+      96.5
+     ],
+     "startPoint": "vertex:7",
+     "endPoint": "vertex:8",
+     "center": [
+      105.0,
+      106.5
+     ],
+     "radius": 10.0,
+     "clockwise": true
+    },
+    {
+     "id": "edge:8",
+     "kind": "LINE",
+     "start": [
+      105.0,
+      96.5
+     ],
+     "end": [
+      0.0,
+      96.5
+     ],
+     "startPoint": "vertex:8",
+     "endPoint": "vertex:9"
+    },
+    {
+     "id": "edge:9",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      96.5
+     ],
+     "end": [
+      0.0,
+      20.0
+     ],
+     "startPoint": "vertex:9",
+     "endPoint": "vertex:10"
+    },
+    {
+     "id": "edge:10",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      20.0
+     ],
+     "end": [
+      20.0,
+      0.0
+     ],
+     "startPoint": "vertex:10",
+     "endPoint": "vertex:11"
+    },
+    {
+     "id": "edge:11",
+     "kind": "LINE",
+     "start": [
+      20.0,
+      0.0
+     ],
+     "end": [
+      460.0,
+      0.0
+     ],
+     "startPoint": "vertex:11",
+     "endPoint": "vertex:0"
+    }
+   ],
+   "holes": [
+    {
+     "id": "material-result:0",
+     "pointId": "hole:material-result:0",
+     "kind": "ROUND",
+     "diameter": 26.0
+    },
+    {
+     "id": "material-result:1",
+     "pointId": "hole:material-result:1",
+     "kind": "ROUND",
+     "diameter": 26.0
+    },
+    {
+     "id": "material-result:2",
+     "pointId": "hole:material-result:2",
+     "kind": "ROUND",
+     "diameter": 26.0
+    },
+    {
+     "id": "material-result:3",
+     "pointId": "hole:material-result:3",
+     "kind": "ROUND",
+     "diameter": 26.0
+    }
+   ],
+   "datum": "vertex:10",
+   "bounds": [
+    0.0,
+    0.0,
+    480.0,
+    216.5
+   ],
+   "boundaryLoops": [
+    {
+     "id": "outer",
+     "segments": [
+      "edge:0",
+      "edge:1",
+      "edge:2",
+      "edge:3",
+      "edge:4",
+      "edge:5",
+      "edge:6",
+      "edge:7",
+      "edge:8",
+      "edge:9",
+      "edge:10",
+      "edge:11"
+     ]
+    }
+   ],
+   "sourceFeatureRefs": {
+    "edge:0": [
+     "#/parts/3/modelingContour/value/value/0"
+    ],
+    "edge:1": [
+     "#/parts/3/modelingContour/value/value/0",
+     "#/parts/3/modelingContour/value/value/1"
+    ],
+    "edge:2": [
+     "#/parts/3/modelingContour/value/value/1",
+     "#/parts/3/modelingContour/value/value/2"
+    ],
+    "edge:3": [
+     "#/parts/3/modelingContour/value/value/2"
+    ],
+    "edge:4": [
+     "#/parts/3/modelingContour/value/value/2",
+     "#/parts/3/modelingContour/value/value/3"
+    ],
+    "edge:5": [
+     "#/parts/3/modelingContour/value/value/3",
+     "#/parts/3/modelingContour/value/value/4"
+    ],
+    "edge:6": [
+     "#/parts/3/modelingContour/value/value/4",
+     "#/parts/3/modelingContour/value/value/5"
+    ],
+    "edge:7": [
+     "#/parts/3/modelingContour/value/value/5"
+    ],
+    "edge:8": [
+     "#/parts/3/modelingContour/value/value/5",
+     "#/parts/3/modelingContour/value/value/6"
+    ],
+    "edge:9": [
+     "#/parts/3/modelingContour/value/value/6",
+     "#/parts/3/modelingContour/value/value/7"
+    ],
+    "edge:10": [
+     "#/parts/3/modelingContour/value/value/7"
+    ],
+    "edge:11": [
+     "#/parts/3/modelingContour/value/value/7",
+     "#/parts/3/modelingContour/value/value/0"
+    ],
+    "hole:material-result:0": [
+     "#/parts/3/boltGroups/value/0/positions/value/0",
+     "#/parts/3/boltGroups/value/0/properties",
+     "#/parts/3/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:1": [
+     "#/parts/3/boltGroups/value/0/positions/value/1",
+     "#/parts/3/boltGroups/value/0/properties",
+     "#/parts/3/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:2": [
+     "#/parts/3/boltGroups/value/0/positions/value/2",
+     "#/parts/3/boltGroups/value/0/properties",
+     "#/parts/3/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:3": [
+     "#/parts/3/boltGroups/value/0/positions/value/3",
+     "#/parts/3/boltGroups/value/0/properties",
+     "#/parts/3/boltGroups/value/0/targets"
+    ]
+   }
+  },
+  "groups": [
+   {
+    "id": "group:0",
+    "kind": "ROUND",
+    "diameter": 26.0,
+    "members": [
+     "material-result:0",
+     "material-result:1",
+     "material-result:2",
+     "material-result:3"
+    ],
+    "count": 4
+   }
+  ],
+  "requirements": [
+   {
+    "id": "plate/identity",
+    "feature": "plate",
+    "aspect": "identity",
+    "expected": "T2-11P-226",
+    "rule": "PLATE-01",
+    "alternatives": [
+     "label"
+    ]
+   },
+   {
+    "id": "plate/thickness",
+    "feature": "plate",
+    "aspect": "thickness",
+    "expected": 14.0,
+    "rule": "PLATE-02",
+    "alternatives": [
+     "table",
+     "dimension"
+    ]
+   },
+   {
+    "id": "plate/overall_x",
+    "feature": "plate",
+    "aspect": "overall_x",
+    "expected": 480.0,
+    "rule": "PLATE-03",
+    "alternatives": [
+     "dimension"
+    ]
+   },
+   {
+    "id": "plate/overall_y",
+    "feature": "plate",
+    "aspect": "overall_y",
+    "expected": 216.5,
+    "rule": "PLATE-03",
+    "alternatives": [
+     "dimension"
+    ]
+   },
+   {
+    "id": "edge:0/shape",
+    "feature": "edge:0",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:0",
+     "kind": "LINE",
+     "start": [
+      460.0,
+      0.0
+     ],
+     "end": [
+      480.0,
+      20.0
+     ],
+     "startPoint": "vertex:0",
+     "endPoint": "vertex:1"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:1/shape",
+    "feature": "edge:1",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:1",
+     "kind": "LINE",
+     "start": [
+      480.0,
+      20.0
+     ],
+     "end": [
+      480.0,
+      96.5
+     ],
+     "startPoint": "vertex:1",
+     "endPoint": "vertex:2"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:2/shape",
+    "feature": "edge:2",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:2",
+     "kind": "LINE",
+     "start": [
+      480.0,
+      96.5
+     ],
+     "end": [
+      475.0,
+      96.5
+     ],
+     "startPoint": "vertex:2",
+     "endPoint": "vertex:3"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:3/shape",
+    "feature": "edge:3",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:3",
+     "kind": "ARC",
+     "start": [
+      475.0,
+      96.5
+     ],
+     "end": [
+      465.0,
+      106.5
+     ],
+     "startPoint": "vertex:3",
+     "endPoint": "vertex:4",
+     "center": [
+      475.0,
+      106.5
+     ],
+     "radius": 10.0,
+     "clockwise": true
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:3/radius",
+    "feature": "edge:3",
+    "aspect": "radius",
+    "expected": 10.0,
+    "rule": "ARC-01",
+    "alternatives": [
+     "radius_callout"
+    ]
+   },
+   {
+    "id": "edge:4/shape",
+    "feature": "edge:4",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:4",
+     "kind": "LINE",
+     "start": [
+      465.0,
+      106.5
+     ],
+     "end": [
+      465.0,
+      216.5
+     ],
+     "startPoint": "vertex:4",
+     "endPoint": "vertex:5"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:5/shape",
+    "feature": "edge:5",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:5",
+     "kind": "LINE",
+     "start": [
+      465.0,
+      216.5
+     ],
+     "end": [
+      115.0,
+      216.5
+     ],
+     "startPoint": "vertex:5",
+     "endPoint": "vertex:6"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:6/shape",
+    "feature": "edge:6",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:6",
+     "kind": "LINE",
+     "start": [
+      115.0,
+      216.5
+     ],
+     "end": [
+      115.0,
+      106.5
+     ],
+     "startPoint": "vertex:6",
+     "endPoint": "vertex:7"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:7/shape",
+    "feature": "edge:7",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:7",
+     "kind": "ARC",
+     "start": [
+      115.0,
+      106.5
+     ],
+     "end": [
+      105.0,
+      96.5
+     ],
+     "startPoint": "vertex:7",
+     "endPoint": "vertex:8",
+     "center": [
+      105.0,
+      106.5
+     ],
+     "radius": 10.0,
+     "clockwise": true
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:7/radius",
+    "feature": "edge:7",
+    "aspect": "radius",
+    "expected": 10.0,
+    "rule": "ARC-01",
+    "alternatives": [
+     "radius_callout"
+    ]
+   },
+   {
+    "id": "edge:8/shape",
+    "feature": "edge:8",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:8",
+     "kind": "LINE",
+     "start": [
+      105.0,
+      96.5
+     ],
+     "end": [
+      0.0,
+      96.5
+     ],
+     "startPoint": "vertex:8",
+     "endPoint": "vertex:9"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:9/shape",
+    "feature": "edge:9",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:9",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      96.5
+     ],
+     "end": [
+      0.0,
+      20.0
+     ],
+     "startPoint": "vertex:9",
+     "endPoint": "vertex:10"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:10/shape",
+    "feature": "edge:10",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:10",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      20.0
+     ],
+     "end": [
+      20.0,
+      0.0
+     ],
+     "startPoint": "vertex:10",
+     "endPoint": "vertex:11"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:11/shape",
+    "feature": "edge:11",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:11",
+     "kind": "LINE",
+     "start": [
+      20.0,
+      0.0
+     ],
+     "end": [
+      460.0,
+      0.0
+     ],
+     "startPoint": "vertex:11",
+     "endPoint": "vertex:0"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/location_x",
+    "feature": "hole:material-result:0",
+    "aspect": "location_x",
+    "expected": 170.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/location_y",
+    "feature": "hole:material-result:0",
+    "aspect": "location_y",
+    "expected": 141.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/location_x",
+    "feature": "hole:material-result:1",
+    "aspect": "location_x",
+    "expected": 250.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/location_y",
+    "feature": "hole:material-result:1",
+    "aspect": "location_y",
+    "expected": 141.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/location_x",
+    "feature": "hole:material-result:2",
+    "aspect": "location_x",
+    "expected": 330.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/location_y",
+    "feature": "hole:material-result:2",
+    "aspect": "location_y",
+    "expected": 141.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:3/location_x",
+    "feature": "hole:material-result:3",
+    "aspect": "location_x",
+    "expected": 410.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:3/location_y",
+    "feature": "hole:material-result:3",
+    "aspect": "location_y",
+    "expected": 141.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:0/location_x",
+    "feature": "vertex:0",
+    "aspect": "location_x",
+    "expected": 460.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:0/location_y",
+    "feature": "vertex:0",
+    "aspect": "location_y",
+    "expected": -20.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:1/location_x",
+    "feature": "vertex:1",
+    "aspect": "location_x",
+    "expected": 480.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:1/location_y",
+    "feature": "vertex:1",
+    "aspect": "location_y",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:10/location_x",
+    "feature": "vertex:10",
+    "aspect": "location_x",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:10/location_y",
+    "feature": "vertex:10",
+    "aspect": "location_y",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:11/location_x",
+    "feature": "vertex:11",
+    "aspect": "location_x",
+    "expected": 20.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:11/location_y",
+    "feature": "vertex:11",
+    "aspect": "location_y",
+    "expected": -20.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:2/location_x",
+    "feature": "vertex:2",
+    "aspect": "location_x",
+    "expected": 480.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:2/location_y",
+    "feature": "vertex:2",
+    "aspect": "location_y",
+    "expected": 76.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:3/location_x",
+    "feature": "vertex:3",
+    "aspect": "location_x",
+    "expected": 475.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:3/location_y",
+    "feature": "vertex:3",
+    "aspect": "location_y",
+    "expected": 76.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:4/location_x",
+    "feature": "vertex:4",
+    "aspect": "location_x",
+    "expected": 465.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:4/location_y",
+    "feature": "vertex:4",
+    "aspect": "location_y",
+    "expected": 86.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:5/location_x",
+    "feature": "vertex:5",
+    "aspect": "location_x",
+    "expected": 465.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:5/location_y",
+    "feature": "vertex:5",
+    "aspect": "location_y",
+    "expected": 196.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:6/location_x",
+    "feature": "vertex:6",
+    "aspect": "location_x",
+    "expected": 115.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:6/location_y",
+    "feature": "vertex:6",
+    "aspect": "location_y",
+    "expected": 196.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:7/location_x",
+    "feature": "vertex:7",
+    "aspect": "location_x",
+    "expected": 115.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:7/location_y",
+    "feature": "vertex:7",
+    "aspect": "location_y",
+    "expected": 86.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:8/location_x",
+    "feature": "vertex:8",
+    "aspect": "location_x",
+    "expected": 105.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:8/location_y",
+    "feature": "vertex:8",
+    "aspect": "location_y",
+    "expected": 76.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:9/location_x",
+    "feature": "vertex:9",
+    "aspect": "location_x",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:9/location_y",
+    "feature": "vertex:9",
+    "aspect": "location_y",
+    "expected": 76.5,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "group:0/size_count",
+    "feature": "group:0",
+    "aspect": "size_count",
+    "expected": {
+     "id": "group:0",
+     "kind": "ROUND",
+     "diameter": 26.0,
+     "members": [
+      "material-result:0",
+      "material-result:1",
+      "material-result:2",
+      "material-result:3"
+     ],
+     "count": 4
+    },
+    "rule": "HOLE-01",
+    "alternatives": [
+     "hole_callout"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/shape",
+    "feature": "hole:material-result:0",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:0",
+     "pointId": "hole:material-result:0",
+     "kind": "ROUND",
+     "diameter": 26.0,
+     "center": [
+      170.0,
+      161.5
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/center_cross",
+    "feature": "hole:material-result:0",
+    "aspect": "center_cross",
+    "expected": [
+     170.0,
+     161.5
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/shape",
+    "feature": "hole:material-result:1",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:1",
+     "pointId": "hole:material-result:1",
+     "kind": "ROUND",
+     "diameter": 26.0,
+     "center": [
+      250.0,
+      161.5
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/center_cross",
+    "feature": "hole:material-result:1",
+    "aspect": "center_cross",
+    "expected": [
+     250.0,
+     161.5
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/shape",
+    "feature": "hole:material-result:2",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:2",
+     "pointId": "hole:material-result:2",
+     "kind": "ROUND",
+     "diameter": 26.0,
+     "center": [
+      330.0,
+      161.5
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/center_cross",
+    "feature": "hole:material-result:2",
+    "aspect": "center_cross",
+    "expected": [
+     330.0,
+     161.5
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:3/shape",
+    "feature": "hole:material-result:3",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:3",
+     "pointId": "hole:material-result:3",
+     "kind": "ROUND",
+     "diameter": 26.0,
+     "center": [
+      410.0,
+      161.5
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:3/center_cross",
+    "feature": "hole:material-result:3",
+    "aspect": "center_cross",
+    "expected": [
+     410.0,
+     161.5
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   }
+  ],
+  "pitchCandidates": [
+   {
+    "members": [
+     "material-result:0",
+     "material-result:1",
+     "material-result:2",
+     "material-result:3"
+    ],
+    "axis": "x",
+    "holeCount": 4,
+    "intervalCount": 3,
+    "pitch": 80.0
+   }
+  ],
+  "specifications": {},
+  "unspecified": [
+   {
+    "aspect": "cutting_method",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "hole_method",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "tolerance",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "edge_finish",
+    "status": "NOT_SPECIFIED"
+   }
+  ],
+  "source": {
+   "partPosition": "T2-11P-226"
+  }
+ },
+ "shopSets": [
+  {
+   "axis": "x",
+   "side": -1,
+   "positions": [
+    0.0,
+    20.0,
+    460.0,
+    480.0
+   ],
+   "texts": [
+    "20",
+    "440",
+    "20"
+   ]
+  },
+  {
+   "axis": "x",
+   "side": 1,
+   "positions": [
+    0.0,
+    170.0,
+    250.0,
+    330.0,
+    410.0,
+    480.0
+   ],
+   "texts": [
+    "70",
+    "3@80",
+    "80",
+    "3@80",
+    "170"
+   ]
+  },
+  {
+   "axis": "y",
+   "side": 1,
+   "positions": [
+    0.0,
+    161.5,
+    216.5
+   ],
+   "texts": [
+    "55",
+    "162"
+   ]
+  },
+  {
+   "axis": "y",
+   "side": -1,
+   "positions": [
+    0.0,
+    20.0,
+    96.5,
+    216.5
+   ],
+   "texts": [
+    "120",
+    "77",
+    "20"
+   ]
+  },
+  {
+   "axis": "y",
+   "side": 1,
+   "positions": [
+    0.0,
+    20.0,
+    96.5,
+    216.5
+   ],
+   "texts": [
+    "120",
+    "77",
+    "20"
+   ]
+  },
+  {
+   "axis": "y",
+   "side": 1,
+   "positions": [
+    0.0,
+    216.5
+   ],
+   "texts": [
+    "217"
+   ]
+  },
+  {
+   "axis": "x",
+   "side": 1,
+   "positions": [
+    465.0,
+    480.0
+   ],
+   "texts": [
+    "15"
+   ]
+  },
+  {
+   "axis": "x",
+   "side": 1,
+   "positions": [
+    0.0,
+    115.0
+   ],
+   "texts": [
+    "115"
+   ]
+  },
+  {
+   "axis": "x",
+   "side": -1,
+   "positions": [
+    0.0,
+    480.0
+   ],
+   "texts": [
+    "480"
+   ]
+  }
+ ]
+}

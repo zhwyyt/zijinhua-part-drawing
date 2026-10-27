@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "manufacturingContext.v1",
+  "source": {
+    "modelIdentifier": "fixture-model",
+    "partId": "1001",
+    "partPosition": "P-1001",
+    "snapshotDigest": "d22ca32eced29a2f04183dffa7522632138765ab14f578ff37e60c79f9762ced"
+  },
+  "checks": {
+    "final_contour": {
+      "status": "VERIFIED",
+      "evidence": [
+        "regression fixture; not live Tekla evidence"
+      ]
+    },
+    "all_holes": {
+      "status": "VERIFIED",
+      "evidence": [
+        "regression fixture; not live Tekla evidence"
+      ]
+    },
+    "uniform_thickness": {
+      "status": "VERIFIED",
+      "evidence": [
+        "regression fixture; not live Tekla evidence"
+      ]
+    },
+    "all_operations": {
+      "status": "VERIFIED",
+      "evidence": [
+        "regression fixture; not live Tekla evidence"
+      ]
+    }
+  }
+}

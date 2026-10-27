@@ -1,0 +1,2817 @@
+{
+ "schemaVersion": "planningCase.v1",
+ "id": "shop-T2-13B-572",
+ "partPosition": "T2-13B-572",
+ "source": {
+  "kind": "SHOP_DRAWING",
+  "mark": "[T2-13B-.572]",
+  "drawingName": "零件图10",
+  "captured": "2026-10-21",
+  "record": "docs/verification/2026-10-21-shop-part-drawing-reference.md"
+ },
+ "status": "READY",
+ "requirements": {
+  "schemaVersion": "expressionRequirements.v1",
+  "rulesVersion": "native-flat-plate-expression.r1",
+  "status": "READY",
+  "tolerance": 1e-06,
+  "modelToleranceMm": 0.1,
+  "displayDecimals": 1,
+  "facts": {
+   "points": {
+    "vertex:0": [
+     830.0,
+     1.6567192062666436e-11
+    ],
+    "vertex:1": [
+     830.0,
+     468.9999999963262
+    ],
+    "vertex:2": [
+     0.0,
+     468.9999999963262
+    ],
+    "vertex:3": [
+     0.0,
+     1.6567192062666436e-11
+    ],
+    "hole:material-result:0": [
+     65.0,
+     65.00000000041842
+    ],
+    "hole:material-result:1": [
+     65.0,
+     165.0000000001566
+    ],
+    "hole:material-result:2": [
+     565.0,
+     65.00000000041842
+    ],
+    "hole:material-result:3": [
+     565.0,
+     165.0000000001566
+    ],
+    "hole:material-result:4": [
+     665.0,
+     65.00000000041842
+    ],
+    "hole:material-result:5": [
+     665.0,
+     165.0000000001566
+    ],
+    "hole:material-result:6": [
+     765.0,
+     65.00000000041842
+    ],
+    "hole:material-result:7": [
+     765.0,
+     165.0000000001566
+    ],
+    "hole:material-result:8": [
+     165.0,
+     65.00000000041842
+    ],
+    "hole:material-result:9": [
+     165.0,
+     165.0000000001566
+    ],
+    "hole:material-result:10": [
+     265.0,
+     65.00000000041842
+    ],
+    "hole:material-result:11": [
+     265.0,
+     165.0000000001566
+    ],
+    "hole:material-result:12": [
+     365.0,
+     65.00000000041842
+    ],
+    "hole:material-result:13": [
+     365.0,
+     165.0000000001566
+    ],
+    "hole:material-result:14": [
+     465.0,
+     65.00000000041842
+    ],
+    "hole:material-result:15": [
+     465.0,
+     165.0000000001566
+    ],
+    "hole:material-result:16": [
+     65.0,
+     303.999999997291
+    ],
+    "hole:material-result:17": [
+     65.0,
+     403.99999999702914
+    ],
+    "hole:material-result:18": [
+     565.0,
+     303.999999997291
+    ],
+    "hole:material-result:19": [
+     565.0,
+     403.99999999702914
+    ],
+    "hole:material-result:20": [
+     665.0,
+     303.999999997291
+    ],
+    "hole:material-result:21": [
+     665.0,
+     403.99999999702914
+    ],
+    "hole:material-result:22": [
+     765.0,
+     303.999999997291
+    ],
+    "hole:material-result:23": [
+     765.0,
+     403.99999999702914
+    ],
+    "hole:material-result:24": [
+     165.0,
+     303.999999997291
+    ],
+    "hole:material-result:25": [
+     165.0,
+     403.99999999702914
+    ],
+    "hole:material-result:26": [
+     265.0,
+     303.999999997291
+    ],
+    "hole:material-result:27": [
+     265.0,
+     403.99999999702914
+    ],
+    "hole:material-result:28": [
+     365.0,
+     303.999999997291
+    ],
+    "hole:material-result:29": [
+     365.0,
+     403.99999999702914
+    ],
+    "hole:material-result:30": [
+     465.0,
+     303.999999997291
+    ],
+    "hole:material-result:31": [
+     465.0,
+     403.99999999702914
+    ]
+   },
+   "segments": [
+    {
+     "id": "edge:0",
+     "kind": "LINE",
+     "start": [
+      830.0,
+      1.6567192062666436e-11
+     ],
+     "end": [
+      830.0,
+      468.9999999963262
+     ],
+     "startPoint": "vertex:0",
+     "endPoint": "vertex:1"
+    },
+    {
+     "id": "edge:1",
+     "kind": "LINE",
+     "start": [
+      830.0,
+      468.9999999963262
+     ],
+     "end": [
+      0.0,
+      468.9999999963262
+     ],
+     "startPoint": "vertex:1",
+     "endPoint": "vertex:2"
+    },
+    {
+     "id": "edge:2",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      468.9999999963262
+     ],
+     "end": [
+      0.0,
+      1.6541434888495132e-11
+     ],
+     "startPoint": "vertex:2",
+     "endPoint": "vertex:3"
+    },
+    {
+     "id": "edge:3",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      1.6567192062666436e-11
+     ],
+     "end": [
+      830.0,
+      1.6567192062666436e-11
+     ],
+     "startPoint": "vertex:3",
+     "endPoint": "vertex:0"
+    }
+   ],
+   "holes": [
+    {
+     "id": "material-result:0",
+     "pointId": "hole:material-result:0",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:1",
+     "pointId": "hole:material-result:1",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:2",
+     "pointId": "hole:material-result:2",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:3",
+     "pointId": "hole:material-result:3",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:4",
+     "pointId": "hole:material-result:4",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:5",
+     "pointId": "hole:material-result:5",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:6",
+     "pointId": "hole:material-result:6",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:7",
+     "pointId": "hole:material-result:7",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:8",
+     "pointId": "hole:material-result:8",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:9",
+     "pointId": "hole:material-result:9",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:10",
+     "pointId": "hole:material-result:10",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:11",
+     "pointId": "hole:material-result:11",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:12",
+     "pointId": "hole:material-result:12",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:13",
+     "pointId": "hole:material-result:13",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:14",
+     "pointId": "hole:material-result:14",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:15",
+     "pointId": "hole:material-result:15",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:16",
+     "pointId": "hole:material-result:16",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:17",
+     "pointId": "hole:material-result:17",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:18",
+     "pointId": "hole:material-result:18",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:19",
+     "pointId": "hole:material-result:19",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:20",
+     "pointId": "hole:material-result:20",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:21",
+     "pointId": "hole:material-result:21",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:22",
+     "pointId": "hole:material-result:22",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:23",
+     "pointId": "hole:material-result:23",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:24",
+     "pointId": "hole:material-result:24",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:25",
+     "pointId": "hole:material-result:25",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:26",
+     "pointId": "hole:material-result:26",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:27",
+     "pointId": "hole:material-result:27",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:28",
+     "pointId": "hole:material-result:28",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:29",
+     "pointId": "hole:material-result:29",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:30",
+     "pointId": "hole:material-result:30",
+     "kind": "ROUND",
+     "diameter": 32.0
+    },
+    {
+     "id": "material-result:31",
+     "pointId": "hole:material-result:31",
+     "kind": "ROUND",
+     "diameter": 32.0
+    }
+   ],
+   "datum": "vertex:3",
+   "bounds": [
+    0.0,
+    1.6567192062666436e-11,
+    830.0,
+    468.9999999963262
+   ],
+   "boundaryLoops": [
+    {
+     "id": "outer",
+     "segments": [
+      "edge:0",
+      "edge:1",
+      "edge:2",
+      "edge:3"
+     ]
+    }
+   ],
+   "sourceFeatureRefs": {
+    "edge:0": [
+     "#/parts/9/modelingContour/value/value/0",
+     "#/parts/9/modelingContour/value/value/1"
+    ],
+    "edge:1": [
+     "#/parts/9/modelingContour/value/value/1",
+     "#/parts/9/modelingContour/value/value/2"
+    ],
+    "edge:2": [
+     "#/parts/9/modelingContour/value/value/2",
+     "#/parts/9/modelingContour/value/value/3"
+    ],
+    "edge:3": [
+     "#/parts/9/modelingContour/value/value/3",
+     "#/parts/9/modelingContour/value/value/0"
+    ],
+    "hole:material-result:0": [
+     "#/parts/9/boltGroups/value/0/positions/value/0",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:1": [
+     "#/parts/9/boltGroups/value/0/positions/value/1",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:2": [
+     "#/parts/9/boltGroups/value/0/positions/value/10",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:3": [
+     "#/parts/9/boltGroups/value/0/positions/value/11",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:4": [
+     "#/parts/9/boltGroups/value/0/positions/value/12",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:5": [
+     "#/parts/9/boltGroups/value/0/positions/value/13",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:6": [
+     "#/parts/9/boltGroups/value/0/positions/value/14",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:7": [
+     "#/parts/9/boltGroups/value/0/positions/value/15",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:8": [
+     "#/parts/9/boltGroups/value/0/positions/value/2",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:9": [
+     "#/parts/9/boltGroups/value/0/positions/value/3",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:10": [
+     "#/parts/9/boltGroups/value/0/positions/value/4",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:11": [
+     "#/parts/9/boltGroups/value/0/positions/value/5",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:12": [
+     "#/parts/9/boltGroups/value/0/positions/value/6",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:13": [
+     "#/parts/9/boltGroups/value/0/positions/value/7",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:14": [
+     "#/parts/9/boltGroups/value/0/positions/value/8",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:15": [
+     "#/parts/9/boltGroups/value/0/positions/value/9",
+     "#/parts/9/boltGroups/value/0/properties",
+     "#/parts/9/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:16": [
+     "#/parts/9/boltGroups/value/1/positions/value/0",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:17": [
+     "#/parts/9/boltGroups/value/1/positions/value/1",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:18": [
+     "#/parts/9/boltGroups/value/1/positions/value/10",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:19": [
+     "#/parts/9/boltGroups/value/1/positions/value/11",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:20": [
+     "#/parts/9/boltGroups/value/1/positions/value/12",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:21": [
+     "#/parts/9/boltGroups/value/1/positions/value/13",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:22": [
+     "#/parts/9/boltGroups/value/1/positions/value/14",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:23": [
+     "#/parts/9/boltGroups/value/1/positions/value/15",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:24": [
+     "#/parts/9/boltGroups/value/1/positions/value/2",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:25": [
+     "#/parts/9/boltGroups/value/1/positions/value/3",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:26": [
+     "#/parts/9/boltGroups/value/1/positions/value/4",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:27": [
+     "#/parts/9/boltGroups/value/1/positions/value/5",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:28": [
+     "#/parts/9/boltGroups/value/1/positions/value/6",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:29": [
+     "#/parts/9/boltGroups/value/1/positions/value/7",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:30": [
+     "#/parts/9/boltGroups/value/1/positions/value/8",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:31": [
+     "#/parts/9/boltGroups/value/1/positions/value/9",
+     "#/parts/9/boltGroups/value/1/properties",
+     "#/parts/9/boltGroups/value/1/targets"
+    ]
+   }
+  },
+  "groups": [
+   {
+    "id": "group:0",
+    "kind": "ROUND",
+    "diameter": 32.0,
+    "members": [
+     "material-result:0",
+     "material-result:1",
+     "material-result:2",
+     "material-result:3",
+     "material-result:4",
+     "material-result:5",
+     "material-result:6",
+     "material-result:7",
+     "material-result:8",
+     "material-result:9",
+     "material-result:10",
+     "material-result:11",
+     "material-result:12",
+     "material-result:13",
+     "material-result:14",
+     "material-result:15",
+     "material-result:16",
+     "material-result:17",
+     "material-result:18",
+     "material-result:19",
+     "material-result:20",
+     "material-result:21",
+     "material-result:22",
+     "material-result:23",
+     "material-result:24",
+     "material-result:25",
+     "material-result:26",
+     "material-result:27",
+     "material-result:28",
+     "material-result:29",
+     "material-result:30",
+     "material-result:31"
+    ],
+    "count": 32
+   }
+  ],
+  "requirements": [
+   {
+    "id": "plate/identity",
+    "feature": "plate",
+    "aspect": "identity",
+    "expected": "T2-13B-572",
+    "rule": "PLATE-01",
+    "alternatives": [
+     "label"
+    ]
+   },
+   {
+    "id": "plate/thickness",
+    "feature": "plate",
+    "aspect": "thickness",
+    "expected": 18.000000000688264,
+    "rule": "PLATE-02",
+    "alternatives": [
+     "table",
+     "dimension"
+    ]
+   },
+   {
+    "id": "plate/overall_x",
+    "feature": "plate",
+    "aspect": "overall_x",
+    "expected": 830.0,
+    "rule": "PLATE-03",
+    "alternatives": [
+     "dimension"
+    ]
+   },
+   {
+    "id": "plate/overall_y",
+    "feature": "plate",
+    "aspect": "overall_y",
+    "expected": 468.99999999630967,
+    "rule": "PLATE-03",
+    "alternatives": [
+     "dimension"
+    ]
+   },
+   {
+    "id": "edge:0/shape",
+    "feature": "edge:0",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:0",
+     "kind": "LINE",
+     "start": [
+      830.0,
+      1.6567192062666436e-11
+     ],
+     "end": [
+      830.0,
+      468.9999999963262
+     ],
+     "startPoint": "vertex:0",
+     "endPoint": "vertex:1"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:1/shape",
+    "feature": "edge:1",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:1",
+     "kind": "LINE",
+     "start": [
+      830.0,
+      468.9999999963262
+     ],
+     "end": [
+      0.0,
+      468.9999999963262
+     ],
+     "startPoint": "vertex:1",
+     "endPoint": "vertex:2"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:2/shape",
+    "feature": "edge:2",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:2",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      468.9999999963262
+     ],
+     "end": [
+      0.0,
+      1.6541434888495132e-11
+     ],
+     "startPoint": "vertex:2",
+     "endPoint": "vertex:3"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:3/shape",
+    "feature": "edge:3",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:3",
+     "kind": "LINE",
+     "start": [
+      0.0,
+      1.6567192062666436e-11
+     ],
+     "end": [
+      830.0,
+      1.6567192062666436e-11
+     ],
+     "startPoint": "vertex:3",
+     "endPoint": "vertex:0"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/location_x",
+    "feature": "hole:material-result:0",
+    "aspect": "location_x",
+    "expected": 65.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/location_y",
+    "feature": "hole:material-result:0",
+    "aspect": "location_y",
+    "expected": 65.00000000040185,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/location_x",
+    "feature": "hole:material-result:1",
+    "aspect": "location_x",
+    "expected": 65.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/location_y",
+    "feature": "hole:material-result:1",
+    "aspect": "location_y",
+    "expected": 165.00000000014003,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:10/location_x",
+    "feature": "hole:material-result:10",
+    "aspect": "location_x",
+    "expected": 265.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:10/location_y",
+    "feature": "hole:material-result:10",
+    "aspect": "location_y",
+    "expected": 65.00000000040185,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:11/location_x",
+    "feature": "hole:material-result:11",
+    "aspect": "location_x",
+    "expected": 265.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:11/location_y",
+    "feature": "hole:material-result:11",
+    "aspect": "location_y",
+    "expected": 165.00000000014003,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:12/location_x",
+    "feature": "hole:material-result:12",
+    "aspect": "location_x",
+    "expected": 365.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:12/location_y",
+    "feature": "hole:material-result:12",
+    "aspect": "location_y",
+    "expected": 65.00000000040185,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:13/location_x",
+    "feature": "hole:material-result:13",
+    "aspect": "location_x",
+    "expected": 365.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:13/location_y",
+    "feature": "hole:material-result:13",
+    "aspect": "location_y",
+    "expected": 165.00000000014003,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:14/location_x",
+    "feature": "hole:material-result:14",
+    "aspect": "location_x",
+    "expected": 465.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:14/location_y",
+    "feature": "hole:material-result:14",
+    "aspect": "location_y",
+    "expected": 65.00000000040185,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:15/location_x",
+    "feature": "hole:material-result:15",
+    "aspect": "location_x",
+    "expected": 465.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:15/location_y",
+    "feature": "hole:material-result:15",
+    "aspect": "location_y",
+    "expected": 165.00000000014003,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:16/location_x",
+    "feature": "hole:material-result:16",
+    "aspect": "location_x",
+    "expected": 65.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:16/location_y",
+    "feature": "hole:material-result:16",
+    "aspect": "location_y",
+    "expected": 303.9999999972745,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:17/location_x",
+    "feature": "hole:material-result:17",
+    "aspect": "location_x",
+    "expected": 65.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:17/location_y",
+    "feature": "hole:material-result:17",
+    "aspect": "location_y",
+    "expected": 403.9999999970126,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:18/location_x",
+    "feature": "hole:material-result:18",
+    "aspect": "location_x",
+    "expected": 565.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:18/location_y",
+    "feature": "hole:material-result:18",
+    "aspect": "location_y",
+    "expected": 303.9999999972745,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:19/location_x",
+    "feature": "hole:material-result:19",
+    "aspect": "location_x",
+    "expected": 565.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:19/location_y",
+    "feature": "hole:material-result:19",
+    "aspect": "location_y",
+    "expected": 403.9999999970126,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/location_x",
+    "feature": "hole:material-result:2",
+    "aspect": "location_x",
+    "expected": 565.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/location_y",
+    "feature": "hole:material-result:2",
+    "aspect": "location_y",
+    "expected": 65.00000000040185,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:20/location_x",
+    "feature": "hole:material-result:20",
+    "aspect": "location_x",
+    "expected": 665.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:20/location_y",
+    "feature": "hole:material-result:20",
+    "aspect": "location_y",
+    "expected": 303.9999999972745,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:21/location_x",
+    "feature": "hole:material-result:21",
+    "aspect": "location_x",
+    "expected": 665.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:21/location_y",
+    "feature": "hole:material-result:21",
+    "aspect": "location_y",
+    "expected": 403.9999999970126,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:22/location_x",
+    "feature": "hole:material-result:22",
+    "aspect": "location_x",
+    "expected": 765.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:22/location_y",
+    "feature": "hole:material-result:22",
+    "aspect": "location_y",
+    "expected": 303.9999999972745,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:23/location_x",
+    "feature": "hole:material-result:23",
+    "aspect": "location_x",
+    "expected": 765.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:23/location_y",
+    "feature": "hole:material-result:23",
+    "aspect": "location_y",
+    "expected": 403.9999999970126,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:24/location_x",
+    "feature": "hole:material-result:24",
+    "aspect": "location_x",
+    "expected": 165.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:24/location_y",
+    "feature": "hole:material-result:24",
+    "aspect": "location_y",
+    "expected": 303.9999999972745,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:25/location_x",
+    "feature": "hole:material-result:25",
+    "aspect": "location_x",
+    "expected": 165.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:25/location_y",
+    "feature": "hole:material-result:25",
+    "aspect": "location_y",
+    "expected": 403.9999999970126,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:26/location_x",
+    "feature": "hole:material-result:26",
+    "aspect": "location_x",
+    "expected": 265.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:26/location_y",
+    "feature": "hole:material-result:26",
+    "aspect": "location_y",
+    "expected": 303.9999999972745,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:27/location_x",
+    "feature": "hole:material-result:27",
+    "aspect": "location_x",
+    "expected": 265.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:27/location_y",
+    "feature": "hole:material-result:27",
+    "aspect": "location_y",
+    "expected": 403.9999999970126,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:28/location_x",
+    "feature": "hole:material-result:28",
+    "aspect": "location_x",
+    "expected": 365.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:28/location_y",
+    "feature": "hole:material-result:28",
+    "aspect": "location_y",
+    "expected": 303.9999999972745,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:29/location_x",
+    "feature": "hole:material-result:29",
+    "aspect": "location_x",
+    "expected": 365.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:29/location_y",
+    "feature": "hole:material-result:29",
+    "aspect": "location_y",
+    "expected": 403.9999999970126,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:3/location_x",
+    "feature": "hole:material-result:3",
+    "aspect": "location_x",
+    "expected": 565.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:3/location_y",
+    "feature": "hole:material-result:3",
+    "aspect": "location_y",
+    "expected": 165.00000000014003,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:30/location_x",
+    "feature": "hole:material-result:30",
+    "aspect": "location_x",
+    "expected": 465.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:30/location_y",
+    "feature": "hole:material-result:30",
+    "aspect": "location_y",
+    "expected": 303.9999999972745,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:31/location_x",
+    "feature": "hole:material-result:31",
+    "aspect": "location_x",
+    "expected": 465.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:31/location_y",
+    "feature": "hole:material-result:31",
+    "aspect": "location_y",
+    "expected": 403.9999999970126,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:4/location_x",
+    "feature": "hole:material-result:4",
+    "aspect": "location_x",
+    "expected": 665.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:4/location_y",
+    "feature": "hole:material-result:4",
+    "aspect": "location_y",
+    "expected": 65.00000000040185,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:5/location_x",
+    "feature": "hole:material-result:5",
+    "aspect": "location_x",
+    "expected": 665.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:5/location_y",
+    "feature": "hole:material-result:5",
+    "aspect": "location_y",
+    "expected": 165.00000000014003,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:6/location_x",
+    "feature": "hole:material-result:6",
+    "aspect": "location_x",
+    "expected": 765.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:6/location_y",
+    "feature": "hole:material-result:6",
+    "aspect": "location_y",
+    "expected": 65.00000000040185,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:7/location_x",
+    "feature": "hole:material-result:7",
+    "aspect": "location_x",
+    "expected": 765.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:7/location_y",
+    "feature": "hole:material-result:7",
+    "aspect": "location_y",
+    "expected": 165.00000000014003,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:8/location_x",
+    "feature": "hole:material-result:8",
+    "aspect": "location_x",
+    "expected": 165.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:8/location_y",
+    "feature": "hole:material-result:8",
+    "aspect": "location_y",
+    "expected": 65.00000000040185,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:9/location_x",
+    "feature": "hole:material-result:9",
+    "aspect": "location_x",
+    "expected": 165.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:9/location_y",
+    "feature": "hole:material-result:9",
+    "aspect": "location_y",
+    "expected": 165.00000000014003,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:0/location_x",
+    "feature": "vertex:0",
+    "aspect": "location_x",
+    "expected": 830.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:0/location_y",
+    "feature": "vertex:0",
+    "aspect": "location_y",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:1/location_x",
+    "feature": "vertex:1",
+    "aspect": "location_x",
+    "expected": 830.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:1/location_y",
+    "feature": "vertex:1",
+    "aspect": "location_y",
+    "expected": 468.99999999630967,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:2/location_x",
+    "feature": "vertex:2",
+    "aspect": "location_x",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:2/location_y",
+    "feature": "vertex:2",
+    "aspect": "location_y",
+    "expected": 468.99999999630967,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:3/location_x",
+    "feature": "vertex:3",
+    "aspect": "location_x",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:3/location_y",
+    "feature": "vertex:3",
+    "aspect": "location_y",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "group:0/size_count",
+    "feature": "group:0",
+    "aspect": "size_count",
+    "expected": {
+     "id": "group:0",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "members": [
+      "material-result:0",
+      "material-result:1",
+      "material-result:2",
+      "material-result:3",
+      "material-result:4",
+      "material-result:5",
+      "material-result:6",
+      "material-result:7",
+      "material-result:8",
+      "material-result:9",
+      "material-result:10",
+      "material-result:11",
+      "material-result:12",
+      "material-result:13",
+      "material-result:14",
+      "material-result:15",
+      "material-result:16",
+      "material-result:17",
+      "material-result:18",
+      "material-result:19",
+      "material-result:20",
+      "material-result:21",
+      "material-result:22",
+      "material-result:23",
+      "material-result:24",
+      "material-result:25",
+      "material-result:26",
+      "material-result:27",
+      "material-result:28",
+      "material-result:29",
+      "material-result:30",
+      "material-result:31"
+     ],
+     "count": 32
+    },
+    "rule": "HOLE-01",
+    "alternatives": [
+     "hole_callout"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/shape",
+    "feature": "hole:material-result:0",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:0",
+     "pointId": "hole:material-result:0",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      65.0,
+      65.00000000041842
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/center_cross",
+    "feature": "hole:material-result:0",
+    "aspect": "center_cross",
+    "expected": [
+     65.0,
+     65.00000000041842
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/shape",
+    "feature": "hole:material-result:1",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:1",
+     "pointId": "hole:material-result:1",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      65.0,
+      165.0000000001566
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/center_cross",
+    "feature": "hole:material-result:1",
+    "aspect": "center_cross",
+    "expected": [
+     65.0,
+     165.0000000001566
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/shape",
+    "feature": "hole:material-result:2",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:2",
+     "pointId": "hole:material-result:2",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      565.0,
+      65.00000000041842
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/center_cross",
+    "feature": "hole:material-result:2",
+    "aspect": "center_cross",
+    "expected": [
+     565.0,
+     65.00000000041842
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:3/shape",
+    "feature": "hole:material-result:3",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:3",
+     "pointId": "hole:material-result:3",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      565.0,
+      165.0000000001566
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:3/center_cross",
+    "feature": "hole:material-result:3",
+    "aspect": "center_cross",
+    "expected": [
+     565.0,
+     165.0000000001566
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:4/shape",
+    "feature": "hole:material-result:4",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:4",
+     "pointId": "hole:material-result:4",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      665.0,
+      65.00000000041842
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:4/center_cross",
+    "feature": "hole:material-result:4",
+    "aspect": "center_cross",
+    "expected": [
+     665.0,
+     65.00000000041842
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:5/shape",
+    "feature": "hole:material-result:5",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:5",
+     "pointId": "hole:material-result:5",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      665.0,
+      165.0000000001566
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:5/center_cross",
+    "feature": "hole:material-result:5",
+    "aspect": "center_cross",
+    "expected": [
+     665.0,
+     165.0000000001566
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:6/shape",
+    "feature": "hole:material-result:6",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:6",
+     "pointId": "hole:material-result:6",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      765.0,
+      65.00000000041842
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:6/center_cross",
+    "feature": "hole:material-result:6",
+    "aspect": "center_cross",
+    "expected": [
+     765.0,
+     65.00000000041842
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:7/shape",
+    "feature": "hole:material-result:7",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:7",
+     "pointId": "hole:material-result:7",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      765.0,
+      165.0000000001566
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:7/center_cross",
+    "feature": "hole:material-result:7",
+    "aspect": "center_cross",
+    "expected": [
+     765.0,
+     165.0000000001566
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:8/shape",
+    "feature": "hole:material-result:8",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:8",
+     "pointId": "hole:material-result:8",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      165.0,
+      65.00000000041842
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:8/center_cross",
+    "feature": "hole:material-result:8",
+    "aspect": "center_cross",
+    "expected": [
+     165.0,
+     65.00000000041842
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:9/shape",
+    "feature": "hole:material-result:9",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:9",
+     "pointId": "hole:material-result:9",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      165.0,
+      165.0000000001566
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:9/center_cross",
+    "feature": "hole:material-result:9",
+    "aspect": "center_cross",
+    "expected": [
+     165.0,
+     165.0000000001566
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:10/shape",
+    "feature": "hole:material-result:10",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:10",
+     "pointId": "hole:material-result:10",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      265.0,
+      65.00000000041842
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:10/center_cross",
+    "feature": "hole:material-result:10",
+    "aspect": "center_cross",
+    "expected": [
+     265.0,
+     65.00000000041842
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:11/shape",
+    "feature": "hole:material-result:11",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:11",
+     "pointId": "hole:material-result:11",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      265.0,
+      165.0000000001566
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:11/center_cross",
+    "feature": "hole:material-result:11",
+    "aspect": "center_cross",
+    "expected": [
+     265.0,
+     165.0000000001566
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:12/shape",
+    "feature": "hole:material-result:12",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:12",
+     "pointId": "hole:material-result:12",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      365.0,
+      65.00000000041842
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:12/center_cross",
+    "feature": "hole:material-result:12",
+    "aspect": "center_cross",
+    "expected": [
+     365.0,
+     65.00000000041842
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:13/shape",
+    "feature": "hole:material-result:13",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:13",
+     "pointId": "hole:material-result:13",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      365.0,
+      165.0000000001566
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:13/center_cross",
+    "feature": "hole:material-result:13",
+    "aspect": "center_cross",
+    "expected": [
+     365.0,
+     165.0000000001566
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:14/shape",
+    "feature": "hole:material-result:14",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:14",
+     "pointId": "hole:material-result:14",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      465.0,
+      65.00000000041842
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:14/center_cross",
+    "feature": "hole:material-result:14",
+    "aspect": "center_cross",
+    "expected": [
+     465.0,
+     65.00000000041842
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:15/shape",
+    "feature": "hole:material-result:15",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:15",
+     "pointId": "hole:material-result:15",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      465.0,
+      165.0000000001566
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:15/center_cross",
+    "feature": "hole:material-result:15",
+    "aspect": "center_cross",
+    "expected": [
+     465.0,
+     165.0000000001566
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:16/shape",
+    "feature": "hole:material-result:16",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:16",
+     "pointId": "hole:material-result:16",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      65.0,
+      303.999999997291
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:16/center_cross",
+    "feature": "hole:material-result:16",
+    "aspect": "center_cross",
+    "expected": [
+     65.0,
+     303.999999997291
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:17/shape",
+    "feature": "hole:material-result:17",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:17",
+     "pointId": "hole:material-result:17",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      65.0,
+      403.99999999702914
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:17/center_cross",
+    "feature": "hole:material-result:17",
+    "aspect": "center_cross",
+    "expected": [
+     65.0,
+     403.99999999702914
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:18/shape",
+    "feature": "hole:material-result:18",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:18",
+     "pointId": "hole:material-result:18",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      565.0,
+      303.999999997291
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:18/center_cross",
+    "feature": "hole:material-result:18",
+    "aspect": "center_cross",
+    "expected": [
+     565.0,
+     303.999999997291
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:19/shape",
+    "feature": "hole:material-result:19",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:19",
+     "pointId": "hole:material-result:19",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      565.0,
+      403.99999999702914
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:19/center_cross",
+    "feature": "hole:material-result:19",
+    "aspect": "center_cross",
+    "expected": [
+     565.0,
+     403.99999999702914
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:20/shape",
+    "feature": "hole:material-result:20",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:20",
+     "pointId": "hole:material-result:20",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      665.0,
+      303.999999997291
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:20/center_cross",
+    "feature": "hole:material-result:20",
+    "aspect": "center_cross",
+    "expected": [
+     665.0,
+     303.999999997291
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:21/shape",
+    "feature": "hole:material-result:21",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:21",
+     "pointId": "hole:material-result:21",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      665.0,
+      403.99999999702914
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:21/center_cross",
+    "feature": "hole:material-result:21",
+    "aspect": "center_cross",
+    "expected": [
+     665.0,
+     403.99999999702914
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:22/shape",
+    "feature": "hole:material-result:22",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:22",
+     "pointId": "hole:material-result:22",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      765.0,
+      303.999999997291
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:22/center_cross",
+    "feature": "hole:material-result:22",
+    "aspect": "center_cross",
+    "expected": [
+     765.0,
+     303.999999997291
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:23/shape",
+    "feature": "hole:material-result:23",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:23",
+     "pointId": "hole:material-result:23",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      765.0,
+      403.99999999702914
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:23/center_cross",
+    "feature": "hole:material-result:23",
+    "aspect": "center_cross",
+    "expected": [
+     765.0,
+     403.99999999702914
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:24/shape",
+    "feature": "hole:material-result:24",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:24",
+     "pointId": "hole:material-result:24",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      165.0,
+      303.999999997291
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:24/center_cross",
+    "feature": "hole:material-result:24",
+    "aspect": "center_cross",
+    "expected": [
+     165.0,
+     303.999999997291
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:25/shape",
+    "feature": "hole:material-result:25",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:25",
+     "pointId": "hole:material-result:25",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      165.0,
+      403.99999999702914
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:25/center_cross",
+    "feature": "hole:material-result:25",
+    "aspect": "center_cross",
+    "expected": [
+     165.0,
+     403.99999999702914
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:26/shape",
+    "feature": "hole:material-result:26",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:26",
+     "pointId": "hole:material-result:26",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      265.0,
+      303.999999997291
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:26/center_cross",
+    "feature": "hole:material-result:26",
+    "aspect": "center_cross",
+    "expected": [
+     265.0,
+     303.999999997291
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:27/shape",
+    "feature": "hole:material-result:27",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:27",
+     "pointId": "hole:material-result:27",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      265.0,
+      403.99999999702914
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:27/center_cross",
+    "feature": "hole:material-result:27",
+    "aspect": "center_cross",
+    "expected": [
+     265.0,
+     403.99999999702914
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:28/shape",
+    "feature": "hole:material-result:28",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:28",
+     "pointId": "hole:material-result:28",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      365.0,
+      303.999999997291
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:28/center_cross",
+    "feature": "hole:material-result:28",
+    "aspect": "center_cross",
+    "expected": [
+     365.0,
+     303.999999997291
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:29/shape",
+    "feature": "hole:material-result:29",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:29",
+     "pointId": "hole:material-result:29",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      365.0,
+      403.99999999702914
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:29/center_cross",
+    "feature": "hole:material-result:29",
+    "aspect": "center_cross",
+    "expected": [
+     365.0,
+     403.99999999702914
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:30/shape",
+    "feature": "hole:material-result:30",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:30",
+     "pointId": "hole:material-result:30",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      465.0,
+      303.999999997291
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:30/center_cross",
+    "feature": "hole:material-result:30",
+    "aspect": "center_cross",
+    "expected": [
+     465.0,
+     303.999999997291
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:31/shape",
+    "feature": "hole:material-result:31",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:31",
+     "pointId": "hole:material-result:31",
+     "kind": "ROUND",
+     "diameter": 32.0,
+     "center": [
+      465.0,
+      403.99999999702914
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:31/center_cross",
+    "feature": "hole:material-result:31",
+    "aspect": "center_cross",
+    "expected": [
+     465.0,
+     403.99999999702914
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   }
+  ],
+  "pitchCandidates": [
+   {
+    "members": [
+     "material-result:0",
+     "material-result:8",
+     "material-result:10",
+     "material-result:12",
+     "material-result:14",
+     "material-result:2",
+     "material-result:4",
+     "material-result:6"
+    ],
+    "axis": "x",
+    "holeCount": 8,
+    "intervalCount": 7,
+    "pitch": 100.0
+   },
+   {
+    "members": [
+     "material-result:1",
+     "material-result:9",
+     "material-result:11",
+     "material-result:13",
+     "material-result:15",
+     "material-result:3",
+     "material-result:5",
+     "material-result:7"
+    ],
+    "axis": "x",
+    "holeCount": 8,
+    "intervalCount": 7,
+    "pitch": 100.0
+   },
+   {
+    "members": [
+     "material-result:16",
+     "material-result:24",
+     "material-result:26",
+     "material-result:28",
+     "material-result:30",
+     "material-result:18",
+     "material-result:20",
+     "material-result:22"
+    ],
+    "axis": "x",
+    "holeCount": 8,
+    "intervalCount": 7,
+    "pitch": 100.0
+   },
+   {
+    "members": [
+     "material-result:17",
+     "material-result:25",
+     "material-result:27",
+     "material-result:29",
+     "material-result:31",
+     "material-result:19",
+     "material-result:21",
+     "material-result:23"
+    ],
+    "axis": "x",
+    "holeCount": 8,
+    "intervalCount": 7,
+    "pitch": 100.0
+   }
+  ],
+  "specifications": {},
+  "unspecified": [
+   {
+    "aspect": "cutting_method",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "hole_method",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "tolerance",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "edge_finish",
+    "status": "NOT_SPECIFIED"
+   }
+  ],
+  "source": {
+   "partPosition": "T2-13B-572"
+  }
+ },
+ "shopSets": [
+  {
+   "axis": "x",
+   "side": 1,
+   "positions": [
+    0.0,
+    830.0
+   ],
+   "texts": [
+    "830"
+   ]
+  },
+  {
+   "axis": "y",
+   "side": 1,
+   "positions": [
+    0.0,
+    65.0,
+    165.0,
+    304.0,
+    404.0,
+    469.0
+   ],
+   "texts": [
+    "65",
+    "100",
+    "139",
+    "100",
+    "65"
+   ]
+  },
+  {
+   "axis": "y",
+   "side": 1,
+   "positions": [
+    0.0,
+    469.0
+   ],
+   "texts": [
+    "469"
+   ]
+  },
+  {
+   "axis": "x",
+   "side": 1,
+   "positions": [
+    0.0,
+    65.0,
+    165.0,
+    265.0,
+    365.0,
+    465.0,
+    565.0,
+    665.0,
+    765.0,
+    830.0
+   ],
+   "texts": [
+    "65",
+    "7@100",
+    "100",
+    "100",
+    "100",
+    "100",
+    "100",
+    "7@100",
+    "65"
+   ]
+  }
+ ]
+}

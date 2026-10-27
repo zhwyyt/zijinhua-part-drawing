@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "partDrawingSnapshot.v2",
+  "exporterVersion": "test-fixture.v2",
+  "modelIdentifier": "fixture-model",
+  "exportedAt": "2026-07-14T00:00:00Z",
+  "part": {
+    "partId": "2001",
+    "partPosition": "P-2001",
+    "assemblyId": "A-2",
+    "name": "PLATE",
+    "profile": "PL10",
+    "material": "Q355B",
+    "quantity": 1,
+    "thickness": 10.0,
+    "partForm": "FLAT_PLATE",
+    "localFrame": {
+      "origin": [0.0, 0.0, 0.0],
+      "xAxis": [1.0, 0.0, 0.0],
+      "yAxis": [0.0, 1.0, 0.0],
+      "normal": [0.0, 0.0, 1.0]
+    },
+    "outerLoop": [
+      {"kind": "LINE", "start": [0.0, 0.0, 0.0], "end": [200.0, 0.0, 0.0]},
+      {"kind": "LINE", "start": [200.0, 0.0, 0.0], "end": [200.0, 100.0, 0.0]},
+      {"kind": "LINE", "start": [200.0, 100.0, 0.0], "end": [0.0, 100.0, 0.0]},
+      {"kind": "LINE", "start": [0.0, 100.0, 0.0], "end": [0.0, 0.0, 0.0]}
+    ],
+    "innerLoops": [],
+    "holes": [],
+    "cuts": [],
+    "finalGeometry": {
+      "vertices": [
+        {"vertexId": "V1", "point": [0.0, 0.0, 0.0]},
+        {"vertexId": "V2", "point": [200.0, 0.0, 0.0]},
+        {"vertexId": "V3", "point": [200.0, 100.0, 0.0]},
+        {"vertexId": "V4", "point": [0.0, 100.0, 0.0]},
+        {"vertexId": "V5", "point": [0.0, 0.0, -10.0]},
+        {"vertexId": "V6", "point": [200.0, 0.0, -10.0]},
+        {"vertexId": "V7", "point": [200.0, 100.0, -10.0]},
+        {"vertexId": "V8", "point": [0.0, 100.0, -10.0]}
+      ],
+      "edges": [
+        {"edgeId": "E1", "curveType": "LINE", "start": [0.0, 0.0, 0.0], "end": [200.0, 0.0, 0.0], "adjacentFaceIds": ["F1"], "curveEvidenceStatus": "PROVEN"},
+        {"edgeId": "E2", "curveType": "LINE", "start": [200.0, 0.0, 0.0], "end": [200.0, 100.0, 0.0], "adjacentFaceIds": ["F1"], "curveEvidenceStatus": "PROVEN"},
+        {"edgeId": "E3", "curveType": "LINE", "start": [200.0, 100.0, 0.0], "end": [0.0, 100.0, 0.0], "adjacentFaceIds": ["F1"], "curveEvidenceStatus": "PROVEN"},
+        {"edgeId": "E4", "curveType": "UNKNOWN", "start": [0.0, 100.0, 0.0], "end": [0.0, 0.0, 0.0], "adjacentFaceIds": ["F1"], "curveEvidenceStatus": "UNRESOLVED"},
+        {"edgeId": "E5", "curveType": "LINE", "start": [0.0, 0.0, -10.0], "end": [200.0, 0.0, -10.0], "adjacentFaceIds": ["F2"], "curveEvidenceStatus": "PROVEN"},
+        {"edgeId": "E6", "curveType": "LINE", "start": [200.0, 0.0, -10.0], "end": [200.0, 100.0, -10.0], "adjacentFaceIds": ["F2"], "curveEvidenceStatus": "PROVEN"},
+        {"edgeId": "E7", "curveType": "LINE", "start": [200.0, 100.0, -10.0], "end": [0.0, 100.0, -10.0], "adjacentFaceIds": ["F2"], "curveEvidenceStatus": "PROVEN"},
+        {"edgeId": "E8", "curveType": "LINE", "start": [0.0, 100.0, -10.0], "end": [0.0, 0.0, -10.0], "adjacentFaceIds": ["F2"], "curveEvidenceStatus": "PROVEN"}
+      ],
+      "faces": [
+        {"faceId": "F1", "surfaceType": "PLANE", "normal": [0.0, 0.0, 1.0], "relationToPartFrame": "NORMAL_POSITIVE", "loops": [{"loopId": "L1", "orderedEdgeIds": ["E1", "E2", "E3", "E4"], "orderedVertices": [[0.0, 0.0, 0.0], [200.0, 0.0, 0.0], [200.0, 100.0, 0.0], [0.0, 100.0, 0.0]]}]},
+        {"faceId": "F2", "surfaceType": "PLANE", "normal": [0.0, 0.0, -1.0], "relationToPartFrame": "NORMAL_NEGATIVE", "loops": [{"loopId": "L2", "orderedEdgeIds": ["E5", "E6", "E7", "E8"], "orderedVertices": [[0.0, 0.0, -10.0], [200.0, 0.0, -10.0], [200.0, 100.0, -10.0], [0.0, 100.0, -10.0]]}]}
+      ],
+      "principalFaceIds": ["F1", "F2"]
+    },
+    "operations": [
+      {
+        "operationId": "C1",
+        "operationType": "BOOLEAN_CUT",
+        "operativeGeometry": {
+          "vertices": [{"vertexId": "OV1", "point": [-5.0, 0.0, 0.0]}],
+          "edges": [],
+          "faces": [],
+          "principalFaceIds": []
+        },
+        "sourceEvidence": ["TEKLA_BOOLEAN_OPERATIVE_SOLID"]
+      }
+    ],
+    "sourceEvidence": ["TEKLA_FINAL_SOLID_FACE", "TEKLA_FINAL_SOLID_EDGE"],
+    "qualityIssues": [{"code": "CURVE_PARAMETERS_UNRESOLVED", "message": "E4 lacks native curve parameters", "blocking": false, "evidence": ["E4"]}]
+  }
+}

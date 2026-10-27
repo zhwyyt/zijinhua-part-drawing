@@ -1,0 +1,16 @@
+{
+ "schemaVersion": "planningCase.v1",
+ "id": "shop-T2-13MQ-1",
+ "partPosition": "T2-13MQ-1",
+ "source": {
+  "kind": "SHOP_DRAWING",
+  "mark": "[T2-13MQ-.1]",
+  "drawingName": "零件图10",
+  "captured": "2026-10-21",
+  "record": "docs/verification/2026-10-21-shop-part-drawing-reference.md"
+ },
+ "status": "BLOCKED",
+ "blockedBy": [
+  "NATIVE_MATERIAL_INSUFFICIENT"
+ ]
+}

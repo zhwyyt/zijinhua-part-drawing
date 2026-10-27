@@ -1,0 +1,736 @@
+{
+ "schemaVersion": "planningCase.v1",
+ "id": "shop-T2-12P-111",
+ "partPosition": "T2-12P-111",
+ "source": {
+  "kind": "SHOP_DRAWING",
+  "mark": "[T2-12P-.111]",
+  "drawingName": "零件图10",
+  "captured": "2026-10-21",
+  "record": "docs/verification/2026-10-21-shop-part-drawing-reference.md"
+ },
+ "status": "READY",
+ "requirements": {
+  "schemaVersion": "expressionRequirements.v1",
+  "rulesVersion": "native-flat-plate-expression.r1",
+  "status": "READY",
+  "tolerance": 1e-06,
+  "modelToleranceMm": 0.1,
+  "displayDecimals": 1,
+  "facts": {
+   "points": {
+    "vertex:0": [
+     270.0000000000291,
+     3.970466940254533e-22
+    ],
+    "vertex:1": [
+     270.00006007322554,
+     135.00000000002547
+    ],
+    "vertex:2": [
+     6.007312367757512e-05,
+     134.999998078074
+    ],
+    "vertex:3": [
+     -8.003553375906171e-11,
+     3.3469405025185526e-10
+    ],
+    "hole:material-result:0": [
+     65.0000360444883,
+     81.00009115866851
+    ],
+    "hole:material-result:1": [
+     224.98004004947506,
+     90.00002003355425
+    ],
+    "hole:material-result:2": [
+     144.98004004947506,
+     90.00005563292311
+    ]
+   },
+   "segments": [
+    {
+     "id": "edge:0",
+     "kind": "LINE",
+     "start": [
+      270.0000000000291,
+      3.970466940254533e-22
+     ],
+     "end": [
+      270.00006007322554,
+      135.00000000002547
+     ],
+     "startPoint": "vertex:0",
+     "endPoint": "vertex:1"
+    },
+    {
+     "id": "edge:1",
+     "kind": "LINE",
+     "start": [
+      270.00006007322554,
+      135.00000000002547
+     ],
+     "end": [
+      6.007312367728446e-05,
+      134.999998078074
+     ],
+     "startPoint": "vertex:1",
+     "endPoint": "vertex:2"
+    },
+    {
+     "id": "edge:2",
+     "kind": "LINE",
+     "start": [
+      6.007312367757512e-05,
+      134.999998078074
+     ],
+     "end": [
+      -8.003553375601768e-11,
+      3.346940502524376e-10
+     ],
+     "startPoint": "vertex:2",
+     "endPoint": "vertex:3"
+    },
+    {
+     "id": "edge:3",
+     "kind": "LINE",
+     "start": [
+      -8.003553375906171e-11,
+      3.3469405025185526e-10
+     ],
+     "end": [
+      270.0000000000291,
+      3.970466940254533e-22
+     ],
+     "startPoint": "vertex:3",
+     "endPoint": "vertex:0"
+    }
+   ],
+   "holes": [
+    {
+     "id": "material-result:0",
+     "pointId": "hole:material-result:0",
+     "kind": "ROUND",
+     "diameter": 40.0
+    },
+    {
+     "id": "material-result:1",
+     "pointId": "hole:material-result:1",
+     "kind": "SLOT",
+     "width": 21.99999999999999,
+     "length": 34.99999999999997,
+     "angle": 179.9999745037952
+    },
+    {
+     "id": "material-result:2",
+     "pointId": "hole:material-result:2",
+     "kind": "SLOT",
+     "width": 21.99999999999999,
+     "length": 34.99999999999997,
+     "angle": 179.9999745037952
+    }
+   ],
+   "datum": "vertex:3",
+   "bounds": [
+    -8.003553375906171e-11,
+    3.970466940254533e-22,
+    270.00006007322554,
+    135.00000000002547
+   ],
+   "boundaryLoops": [
+    {
+     "id": "outer",
+     "segments": [
+      "edge:0",
+      "edge:1",
+      "edge:2",
+      "edge:3"
+     ]
+    }
+   ],
+   "sourceFeatureRefs": {
+    "edge:0": [
+     "#/parts/2/modelingContour/value/value/0",
+     "#/parts/2/modelingContour/value/value/1"
+    ],
+    "edge:1": [
+     "#/parts/2/modelingContour/value/value/1",
+     "#/parts/2/modelingContour/value/value/2"
+    ],
+    "edge:2": [
+     "#/parts/2/modelingContour/value/value/2",
+     "#/parts/2/modelingContour/value/value/3"
+    ],
+    "edge:3": [
+     "#/parts/2/modelingContour/value/value/3",
+     "#/parts/2/modelingContour/value/value/0"
+    ],
+    "hole:material-result:0": [
+     "#/parts/2/boltGroups/value/0/positions/value/0",
+     "#/parts/2/boltGroups/value/0/properties",
+     "#/parts/2/boltGroups/value/0/targets"
+    ],
+    "hole:material-result:1": [
+     "#/parts/2/boltGroups/value/1/positions/value/0",
+     "#/parts/2/boltGroups/value/1/properties",
+     "#/parts/2/boltGroups/value/1/targets"
+    ],
+    "hole:material-result:2": [
+     "#/parts/2/boltGroups/value/1/positions/value/1",
+     "#/parts/2/boltGroups/value/1/properties",
+     "#/parts/2/boltGroups/value/1/targets"
+    ]
+   }
+  },
+  "groups": [
+   {
+    "id": "group:0",
+    "kind": "ROUND",
+    "diameter": 40.0,
+    "members": [
+     "material-result:0"
+    ],
+    "count": 1
+   },
+   {
+    "id": "group:1",
+    "kind": "SLOT",
+    "width": 21.99999999999999,
+    "length": 34.99999999999997,
+    "angle": 179.9999745037952,
+    "members": [
+     "material-result:1",
+     "material-result:2"
+    ],
+    "count": 2
+   }
+  ],
+  "requirements": [
+   {
+    "id": "plate/identity",
+    "feature": "plate",
+    "aspect": "identity",
+    "expected": "T2-12P-111",
+    "rule": "PLATE-01",
+    "alternatives": [
+     "label"
+    ]
+   },
+   {
+    "id": "plate/thickness",
+    "feature": "plate",
+    "aspect": "thickness",
+    "expected": 16.0,
+    "rule": "PLATE-02",
+    "alternatives": [
+     "table",
+     "dimension"
+    ]
+   },
+   {
+    "id": "plate/overall_x",
+    "feature": "plate",
+    "aspect": "overall_x",
+    "expected": 270.0000600733056,
+    "rule": "PLATE-03",
+    "alternatives": [
+     "dimension"
+    ]
+   },
+   {
+    "id": "plate/overall_y",
+    "feature": "plate",
+    "aspect": "overall_y",
+    "expected": 135.00000000002547,
+    "rule": "PLATE-03",
+    "alternatives": [
+     "dimension"
+    ]
+   },
+   {
+    "id": "edge:0/shape",
+    "feature": "edge:0",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:0",
+     "kind": "LINE",
+     "start": [
+      270.0000000000291,
+      3.970466940254533e-22
+     ],
+     "end": [
+      270.00006007322554,
+      135.00000000002547
+     ],
+     "startPoint": "vertex:0",
+     "endPoint": "vertex:1"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:1/shape",
+    "feature": "edge:1",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:1",
+     "kind": "LINE",
+     "start": [
+      270.00006007322554,
+      135.00000000002547
+     ],
+     "end": [
+      6.007312367728446e-05,
+      134.999998078074
+     ],
+     "startPoint": "vertex:1",
+     "endPoint": "vertex:2"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:2/shape",
+    "feature": "edge:2",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:2",
+     "kind": "LINE",
+     "start": [
+      6.007312367757512e-05,
+      134.999998078074
+     ],
+     "end": [
+      -8.003553375601768e-11,
+      3.346940502524376e-10
+     ],
+     "startPoint": "vertex:2",
+     "endPoint": "vertex:3"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "edge:3/shape",
+    "feature": "edge:3",
+    "aspect": "shape",
+    "expected": {
+     "id": "edge:3",
+     "kind": "LINE",
+     "start": [
+      -8.003553375906171e-11,
+      3.3469405025185526e-10
+     ],
+     "end": [
+      270.0000000000291,
+      3.970466940254533e-22
+     ],
+     "startPoint": "vertex:3",
+     "endPoint": "vertex:0"
+    },
+    "rule": "OUTLINE-01",
+    "alternatives": [
+     "visible_segment"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/location_x",
+    "feature": "hole:material-result:0",
+    "aspect": "location_x",
+    "expected": 65.00003604456833,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/location_y",
+    "feature": "hole:material-result:0",
+    "aspect": "location_y",
+    "expected": 81.00009115833382,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/location_x",
+    "feature": "hole:material-result:1",
+    "aspect": "location_x",
+    "expected": 224.9800400495551,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/location_y",
+    "feature": "hole:material-result:1",
+    "aspect": "location_y",
+    "expected": 90.00002003321956,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/location_x",
+    "feature": "hole:material-result:2",
+    "aspect": "location_x",
+    "expected": 144.9800400495551,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/location_y",
+    "feature": "hole:material-result:2",
+    "aspect": "location_y",
+    "expected": 90.00005563258841,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:0/location_x",
+    "feature": "vertex:0",
+    "aspect": "location_x",
+    "expected": 270.00000000010914,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:0/location_y",
+    "feature": "vertex:0",
+    "aspect": "location_y",
+    "expected": -3.346940502514582e-10,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:1/location_x",
+    "feature": "vertex:1",
+    "aspect": "location_x",
+    "expected": 270.0000600733056,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:1/location_y",
+    "feature": "vertex:1",
+    "aspect": "location_y",
+    "expected": 134.99999999969077,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:2/location_x",
+    "feature": "vertex:2",
+    "aspect": "location_x",
+    "expected": 6.0073203713108874e-05,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:2/location_y",
+    "feature": "vertex:2",
+    "aspect": "location_y",
+    "expected": 134.9999980777393,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:3/location_x",
+    "feature": "vertex:3",
+    "aspect": "location_x",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "vertex:3/location_y",
+    "feature": "vertex:3",
+    "aspect": "location_y",
+    "expected": 0.0,
+    "rule": "LOCATION-01",
+    "alternatives": [
+     "dimension_chain",
+     "shared_coordinate"
+    ]
+   },
+   {
+    "id": "group:0/size_count",
+    "feature": "group:0",
+    "aspect": "size_count",
+    "expected": {
+     "id": "group:0",
+     "kind": "ROUND",
+     "diameter": 40.0,
+     "members": [
+      "material-result:0"
+     ],
+     "count": 1
+    },
+    "rule": "HOLE-01",
+    "alternatives": [
+     "hole_callout"
+    ]
+   },
+   {
+    "id": "group:1/size_count",
+    "feature": "group:1",
+    "aspect": "size_count",
+    "expected": {
+     "id": "group:1",
+     "kind": "SLOT",
+     "width": 21.99999999999999,
+     "length": 34.99999999999997,
+     "angle": 179.9999745037952,
+     "members": [
+      "material-result:1",
+      "material-result:2"
+     ],
+     "count": 2
+    },
+    "rule": "HOLE-01",
+    "alternatives": [
+     "hole_callout"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/shape",
+    "feature": "hole:material-result:0",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:0",
+     "pointId": "hole:material-result:0",
+     "kind": "ROUND",
+     "diameter": 40.0,
+     "center": [
+      65.0000360444883,
+      81.00009115866851
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:0/center_cross",
+    "feature": "hole:material-result:0",
+    "aspect": "center_cross",
+    "expected": [
+     65.0000360444883,
+     81.00009115866851
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/shape",
+    "feature": "hole:material-result:1",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:1",
+     "pointId": "hole:material-result:1",
+     "kind": "SLOT",
+     "width": 21.99999999999999,
+     "length": 34.99999999999997,
+     "angle": 179.9999745037952,
+     "center": [
+      224.98004004947506,
+      90.00002003355425
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/center_cross",
+    "feature": "hole:material-result:1",
+    "aspect": "center_cross",
+    "expected": [
+     224.98004004947506,
+     90.00002003355425
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:1/orientation",
+    "feature": "hole:material-result:1",
+    "aspect": "orientation",
+    "expected": 179.9999745037952,
+    "rule": "SLOT-01",
+    "alternatives": [
+     "oriented_center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/shape",
+    "feature": "hole:material-result:2",
+    "aspect": "shape",
+    "expected": {
+     "id": "material-result:2",
+     "pointId": "hole:material-result:2",
+     "kind": "SLOT",
+     "width": 21.99999999999999,
+     "length": 34.99999999999997,
+     "angle": 179.9999745037952,
+     "center": [
+      144.98004004947506,
+      90.00005563292311
+     ]
+    },
+    "rule": "HOLE-00",
+    "alternatives": [
+     "visible_hole"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/center_cross",
+    "feature": "hole:material-result:2",
+    "aspect": "center_cross",
+    "expected": [
+     144.98004004947506,
+     90.00005563292311
+    ],
+    "rule": "HOLE-02",
+    "alternatives": [
+     "center_lines"
+    ]
+   },
+   {
+    "id": "hole:material-result:2/orientation",
+    "feature": "hole:material-result:2",
+    "aspect": "orientation",
+    "expected": 179.9999745037952,
+    "rule": "SLOT-01",
+    "alternatives": [
+     "oriented_center_lines"
+    ]
+   }
+  ],
+  "pitchCandidates": [],
+  "specifications": {},
+  "unspecified": [
+   {
+    "aspect": "cutting_method",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "hole_method",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "tolerance",
+    "status": "NOT_SPECIFIED"
+   },
+   {
+    "aspect": "edge_finish",
+    "status": "NOT_SPECIFIED"
+   }
+  ],
+  "source": {
+   "partPosition": "T2-12P-111"
+  }
+ },
+ "shopSets": [
+  {
+   "axis": "y",
+   "side": -1,
+   "positions": [
+    0.0,
+    81.0,
+    90.0,
+    135.0
+   ],
+   "texts": [
+    "45",
+    "9",
+    "81"
+   ]
+  },
+  {
+   "axis": "y",
+   "side": -1,
+   "positions": [
+    0.0,
+    135.0
+   ],
+   "texts": [
+    "135"
+   ]
+  },
+  {
+   "axis": "x",
+   "side": 1,
+   "positions": [
+    0.0,
+    65.0,
+    145.0,
+    225.0,
+    270.0
+   ],
+   "texts": [
+    "45",
+    "80",
+    "80",
+    "65"
+   ]
+  },
+  {
+   "axis": "x",
+   "side": 1,
+   "positions": [
+    0.0,
+    270.0
+   ],
+   "texts": [
+    "270"
+   ]
+  }
+ ]
+}

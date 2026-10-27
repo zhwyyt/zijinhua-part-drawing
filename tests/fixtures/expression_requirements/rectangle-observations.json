@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "expressionObservations.v1",
+  "sourceDigest": "ff8e4d9cdd2b9e080f8ab511a9d4b87286c43a7f736113e6ba5e15bacec8255b",
+  "stage": "PLAN",
+  "objects": [
+    {
+      "objectId": "label",
+      "kind": "label",
+      "text": "P-1001",
+      "leader": false
+    },
+    {
+      "objectId": "thickness",
+      "kind": "thickness",
+      "value": 10,
+      "displayValue": 10,
+      "placement": "table"
+    },
+    {
+      "objectId": "outline:0",
+      "kind": "segment",
+      "feature": "edge:0",
+      "visible": true,
+      "geometry": {
+        "kind": "LINE",
+        "start": [
+          0,
+          0
+        ],
+        "end": [
+          200,
+          0
+        ]
+      }
+    },
+    {
+      "objectId": "outline:1",
+      "kind": "segment",
+      "feature": "edge:1",
+      "visible": true,
+      "geometry": {
+        "kind": "LINE",
+        "start": [
+          200,
+          0
+        ],
+        "end": [
+          200,
+          100
+        ]
+      }
+    },
+    {
+      "objectId": "outline:2",
+      "kind": "segment",
+      "feature": "edge:2",
+      "visible": true,
+      "geometry": {
+        "kind": "LINE",
+        "start": [
+          200,
+          100
+        ],
+        "end": [
+          0,
+          100
+        ]
+      }
+    },
+    {
+      "objectId": "outline:3",
+      "kind": "segment",
+      "feature": "edge:3",
+      "visible": true,
+      "geometry": {
+        "kind": "LINE",
+        "start": [
+          0,
+          100
+        ],
+        "end": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "objectId": "overall-x",
+      "kind": "dimension",
+      "axis": "x",
+      "points": [
+        "vertex:0",
+        "vertex:1"
+      ],
+      "coordinates": [
+        [
+          0,
+          0
+        ],
+        [
+          200,
+          0
+        ]
+      ],
+      "values": [
+        200
+      ],
+      "displayValues": [
+        200
+      ],
+      "role": "overall"
+    },
+    {
+      "objectId": "overall-y",
+      "kind": "dimension",
+      "axis": "y",
+      "points": [
+        "vertex:0",
+        "vertex:3"
+      ],
+      "coordinates": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          100
+        ]
+      ],
+      "values": [
+        100
+      ],
+      "displayValues": [
+        100
+      ],
+      "role": "overall"
+    }
+  ]
+}

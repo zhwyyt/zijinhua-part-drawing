@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "partDrawingSnapshot.v1",
+  "exporterVersion": "regression-reconstruction.v1",
+  "modelIdentifier": "regression-reconstruction",
+  "exportedAt": "2026-10-17T00:00:00Z",
+  "part": {
+    "partId": "T3-P-4327",
+    "partPosition": "T3-P-4327",
+    "assemblyId": "",
+    "name": "PLATE",
+    "profile": "PL10",
+    "material": "",
+    "quantity": 1,
+    "thickness": 10,
+    "localFrame": {
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "xAxis": [
+        1,
+        0,
+        0
+      ],
+      "yAxis": [
+        0,
+        1,
+        0
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ]
+    },
+    "outerLoop": [
+      {
+        "kind": "LINE",
+        "start": [
+          0,
+          0,
+          0
+        ],
+        "end": [
+          180,
+          0,
+          0
+        ]
+      },
+      {
+        "kind": "LINE",
+        "start": [
+          180,
+          0,
+          0
+        ],
+        "end": [
+          180,
+          61,
+          0
+        ]
+      },
+      {
+        "kind": "ARC",
+        "start": [
+          180,
+          61,
+          0
+        ],
+        "end": [
+          145,
+          96,
+          0
+        ],
+        "center": [
+          180,
+          96,
+          0
+        ],
+        "clockwise": true
+      },
+      {
+        "kind": "LINE",
+        "start": [
+          145,
+          96,
+          0
+        ],
+        "end": [
+          35,
+          96,
+          0
+        ]
+      },
+      {
+        "kind": "ARC",
+        "start": [
+          35,
+          96,
+          0
+        ],
+        "end": [
+          0,
+          61,
+          0
+        ],
+        "center": [
+          0,
+          96,
+          0
+        ],
+        "clockwise": true
+      },
+      {
+        "kind": "LINE",
+        "start": [
+          0,
+          61,
+          0
+        ],
+        "end": [
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "holes": [],
+    "sourceEvidence": [
+      "USER_REVIEWED_DIMENSIONS_RECONSTRUCTED_NOT_LIVE_EXPORT"
+    ]
+  }
+}

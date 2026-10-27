@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tekla 平板零件图"
+  short_description: "按真实实体规划平板尺寸、孔组、圆弧及引线，逐项核查原生图纸"
+  default_prompt: "使用 $tekla-flat-plate-drawing 按已确认的平板规则处理所选零件，生成 Tekla 原生零件图并逐件报告验收结果。"
