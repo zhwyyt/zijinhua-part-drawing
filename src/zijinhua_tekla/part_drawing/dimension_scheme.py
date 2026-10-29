@@ -6,7 +6,7 @@ intervals are a paper-placement matter for the layout, not a selection rule.
 from .readability import load_profile
 
 
-VERSION = 'dimension-scheme.m5'
+VERSION = 'dimension-scheme.m5b'
 
 
 def number(x):
@@ -29,21 +29,26 @@ def assign_closed_coordinates(groups, facts, tol, profile):
 
     Hole chains retain their complete coordinates. Subsequent contour chains
     retain only new stations and both envelope extremes, avoiding extra cycles.
+    A separate hole band keeps its own stations even where another band has
+    the same coordinate; that repeat is its declared HOLE_BAND reference.
     """
     decisions = []
     if not profile.get('closedChains'):
         return decisions
+    banded = {g['key'] for g in groups if 'band' in g}
     for axis in (0, 1):
         low, high = facts['bounds'][axis], facts['bounds'][axis+2]
         point = lambda key: facts['points'][key][axis]
-        closed = [g for g in groups if g['axis'] == axis and not g.get('reference') and
+        closed = [g for g in groups if g['axis'] == axis and
+                  (g.get('reference') or {}).get('category') in (None, 'HOLE_BAND') and
                   abs(point(g['points'][0])-low) <= tol and abs(point(g['points'][-1])-high) <= tol]
         # Stable sort preserves the existing contour choice/order after hole groups.
         assigned = []
         for group in sorted(closed, key=lambda g: not any(k.startswith('hole:') for k in g['points'])):
             kept = [group['points'][0]]
             for key in group['points'][1:-1]:
-                owner = next(((g, k) for g, k in assigned if abs(point(k)-point(key)) <= tol), None)
+                owner = next(((g, k) for g, k in assigned if abs(point(k)-point(key)) <= tol
+                              and not (group['key'] in banded and g in banded)), None)
                 if owner:
                     decisions.append(dict(rule='SHARED_CLOSED_CHAIN_COORDINATE', axis=axis,
                                           removedGroup=group['key'], removedPoint=key,
@@ -168,6 +173,10 @@ def build_scheme(requirements, features, profile=None):
                 # that against the outside lanes (2026-10-28 proximity layout).
                 holes['localAllowed']=True
                 holes['band']=sorted(band)
+                if band_index:
+                    # The first (largest) band defines shared stations. Later bands
+                    # repeat them on purpose, each beside its own holes.
+                    holes['reference']=dict(category='HOLE_BAND',reason='separate hole feature, own closed chain')
             # User-confirmed (2026-10-21): on one side, an edge-to-edge contour chain and
             # the hole chain read as one chain, e.g. 115|55|3@80|55|15.
             same=[g for g in groups if g['axis']==axis and g['key'].startswith('boundary') and g['side']==side]

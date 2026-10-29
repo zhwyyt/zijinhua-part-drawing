@@ -4,8 +4,12 @@ import math
 from .template_snapshot import validate_snapshot, overlaps, contains
 
 
-def build_view_plan(snapshot, envelope, scale=None):
-    """Place a model envelope. scale is the view denominator; paper size is model size / scale."""
+def build_view_plan(snapshot, envelope, scale=None, allow_overflow=False):
+    """Place a model envelope. scale is the view denominator; paper size is model size / scale.
+
+    allow_overflow is a preview placement: if no free rectangle holds the view,
+    center it on the sheet and mark previewOverflow. The sheet size stays unchanged.
+    """
     validate_snapshot(snapshot)
     view_scale = snapshot['scale'] if scale is None else scale
     if isinstance(view_scale, bool) or not isinstance(view_scale, (int, float)) or not math.isfinite(view_scale) or view_scale <= 0:
@@ -27,14 +31,23 @@ def build_view_plan(snapshot, envelope, scale=None):
                 if low-bottom >= height:
                     candidates.append([left, bottom, right, low])
                 bottom = max(bottom, high)
+    preview = False
     if not candidates:
-        raise ValueError('LAYOUT_OVERFLOW: view does not fit the live template')
-    available = min(candidates, key=lambda b: (-(b[2]-b[0])*(b[3]-b[1]), b))
-    assert contains(safe, available) and not any(overlaps(available, b) for b in obstacles)
-    return dict(schemaVersion='nativeViewPlan.v1', availableArea=available, plannedEnvelope=envelope,
+        if not allow_overflow:
+            raise ValueError('LAYOUT_OVERFLOW: view does not fit the live template')
+        sheet = snapshot['sheetSize']
+        available = [sheet[0]/2-width/2, sheet[1]/2-height/2, sheet[0]/2+width/2, sheet[1]/2+height/2]
+        preview = True
+    else:
+        available = min(candidates, key=lambda b: (-(b[2]-b[0])*(b[3]-b[1]), b))
+        assert contains(safe, available) and not any(overlaps(available, b) for b in obstacles)
+    plan = dict(schemaVersion='nativeViewPlan.v1', availableArea=available, plannedEnvelope=envelope,
                 templateSignature=snapshot['source']['signature'], snapshotDigest=snapshot['snapshotDigest'],
                 templatePartId=snapshot['source']['partId'], templateSheet=snapshot['source']['sheetNumber'],
                 fontHeight=snapshot['style']['fontHeight'], scale=view_scale, sheetSize=snapshot['sheetSize'])
+    if preview:
+        plan['previewOverflow'] = True
+    return plan
 
 
 def audit_view_plan(plan, raw):

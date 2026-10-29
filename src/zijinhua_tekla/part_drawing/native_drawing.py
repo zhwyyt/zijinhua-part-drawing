@@ -47,7 +47,7 @@ def _owned_identity(source, entry):
 
 
 def run_native_drawing_batch(output,ids=None,reader=None,writer=None,repo=None,ownership=None,drawing_attributes=None,
-                             nc_settings_file=None):
+                             nc_settings_file=None,preview_overflow=False):
     root=Path(repo) if repo else Path(__file__).resolve().parents[3]
     out=Path(output).resolve()
     if out.exists():raise ValueError('Choose a new batch output directory; old evidence is preserved')
@@ -129,7 +129,7 @@ def run_native_drawing_batch(output,ids=None,reader=None,writer=None,repo=None,o
             template_raw=_read(out/'prepare'/f"{part['id']}.template.json")
             template=build_template_snapshot(template_raw,raw['model']['value']['path'],part['id'])
             _save(out/f"template-{part['id']}.json",template)
-            plan=build_layout(requirements,geometry,part,template=template)
+            plan=build_layout(requirements,geometry,part,template=template,preview_overflow=preview_overflow)
             if 'layout' in plan:
                 _save(out/f"layout-{part['id']}.json",plan['layout'])
             if plan['status']!='READY':
@@ -162,6 +162,8 @@ def run_native_drawing_batch(output,ids=None,reader=None,writer=None,repo=None,o
                 reports.append(dict(partId=plan['id'],status='FAIL',reason=result.get('error','Native write incomplete')));continue
             readback=_read(out/'native'/f"{plan['id']}.json")
             report=audit_native_drawing(wanted[plan['id']],plan,readback,out/'native'/f"{plan['id']}.dxf")
+            if plan.get('viewPlan',{}).get('previewOverflow'):
+                report['previewOverflow']=True
             report['drawing']=result
             render_png(out/'native'/f"{plan['id']}.dxf",out/'native'/f"{plan['id']}.png")
             _save(out/f"audit-{plan['id']}.json",report)

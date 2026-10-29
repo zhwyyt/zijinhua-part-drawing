@@ -84,7 +84,7 @@ DimensionScheme
              OVERALL 组与同列组 locked=true；孔定位、局部肩宽可声明两侧
     tier:    FEATURE < BODY < OVERALL（语义层级，决定由内到外）
     column:  同列分组 ID（例如被圆角断开的同一轮廓链）
-    reference: null | {category: OVERALL|BODY|SYMMETRIC, reason}（有意保留的冗余；口径 v1 允许这三类，SYMMETRIC 为对称两侧重复）
+    reference: null | {category: OVERALL|BODY|SYMMETRIC|HOLE_BAND, reason}（有意保留的冗余；SYMMETRIC 为对称两侧重复；HOLE_BAND 为分开的孔组各自闭合时重复的站点，2026-10-29 加入，见孔组设计）
     covers[]: 覆盖的需求 ID
     alternatives[]: 有序备选表达（如 CHAIN→ORDINATE）；口径 v1 不启用，恒为空
 - callouts[]: {id, kind: HOLE_GROUP|RADIUS|DIAMETER|CHAMFER, targets[], text, anchorRule}
@@ -201,7 +201,7 @@ P2 禁止使用 `scale`、纸面毫米、文字尺寸。"短"只能按模型尺�
 | M2 | 去掉 P2 中的纸面单位，短尺寸处理移入 P5 | 差异逐件列出并说明；`RD_SCALE_DEPENDENT` 不变量测试通过。拥挤件允许转为 `LAYOUT_OVERFLOW`（已确认），溢出件不出图，只报告溢出对象，待 M5 改进 |
 | M3 | P3 可读性门 + 车间图 8 件案例 + 口径配置 v1（按车间图口径修订） | 8 件案例的方案与车间图尺寸组一致；P-116 按新口径重新评估 |
 | M4 | 先做只读 API 探测，确定模板快照采集方式；再实现批次内实时采集、P4 读快照，写图器预留由计划传入 | 探测记录写入 verification；现场一张自有图保存重开、读回通过 |
-| M5 | P5 有界回溯布局（2026-10-23完成约定范围，见[M5设计](2026-10-23-m5-bounded-layout.md)及验收） | 拥挤样例可放或明确溢出；七件回放；当前自有图保存重开PASS |
+| M5 | P5 有界回溯布局（2026-10-23完成约定范围，见[M5设计](2026-10-23-m5-bounded-layout.md)及验收；2026-10-29 改为[分层构造](2026-10-29-layered-construction-layout.md)） | 拥挤样例可放或明确溢出；七件回放；当前自有图保存重开PASS |
 
 M1 只重构不改行为；如果 M1 无法做到与基线一致，说明现有逻辑有隐藏耦合，先记录再处理，不边拆边改口径。
 

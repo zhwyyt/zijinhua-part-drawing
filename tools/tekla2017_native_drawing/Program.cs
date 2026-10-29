@@ -18,7 +18,7 @@ public class Curve { public string key, kind, role, feature; public double[] sta
 public class RadiusPlan { public string key, feature; public double[][] points; public double distance; }
 public class BoltPlan { public int modelId; public string display; public string[] holes; }
 public class DisplayPlan { public int decimals; public string combineFormat,shortDimension; public int combineMinimum; }
-public class ViewPlan { public string templateSignature,snapshotDigest; public int templatePartId,templateSheet; public double fontHeight,scale; public double[] availableArea,sheetSize; }
+public class ViewPlan { public string templateSignature,snapshotDigest; public int templatePartId,templateSheet; public double fontHeight,scale; public double[] availableArea,sheetSize; public bool previewOverflow; }
 public class SectionCut { public double[] start,end; public double depthUp,depthDown; }
 public class Plan {
     public int id; public string position, status, guid, modification, sourceDigest, planDigest, geometryMode;
@@ -324,7 +324,7 @@ internal static class NativeDrawing {
     static void PlaceView(D.View view,ViewPlan plan) {
         Need(view.Select(),"Refresh placed view failed");var area=plan.availableArea;
         Need(area!=null&&area.Length==4&&area.All(v=>!Double.IsNaN(v)&&!Double.IsInfinity(v)),"Invalid template free area");
-        Need(view.Width<=area[2]-area[0]&&view.Height<=area[3]-area[1],"Actual view exceeds template free area");
+        if(!plan.previewOverflow)Need(view.Width<=area[2]-area[0]&&view.Height<=area[3]-area[1],"Actual view exceeds template free area");
         view.Origin=new Point((area[0]+area[2]-view.Width)/2-view.FrameOrigin.X,(area[1]+area[3]-view.Height)/2-view.FrameOrigin.Y,0);
         Need(view.Modify(),"View placement failed");
     }

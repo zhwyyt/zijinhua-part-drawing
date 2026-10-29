@@ -225,13 +225,15 @@ def place_dimension_side(group, points, bounds, tol):
     return dict(key=group['key'], preferred=preferred, selected=selected, candidates=costs)
 
 
-def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, template=None, _view_scale=None):
+def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, template=None, _view_scale=None,
+                 preview_overflow=False):
     if template is not None and scale is None and _view_scale is None:
         overflow = None
         for candidate in VIEW_SCALES:
             try:
                 return build_layout(requirements, geometry, raw_part, spacing=spacing,
-                                    template=template, _view_scale=candidate)
+                                    template=template, _view_scale=candidate,
+                                    preview_overflow=preview_overflow)
             except ValueError as error:
                 if 'LAYOUT_OVERFLOW' not in str(error):
                     raise
@@ -396,6 +398,25 @@ def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, temp
                     tip=near_hole_anchor(member,center,at)
                     if polygon.contains(area) and polygon.buffer(tol).covers(LineString([tip,at])):
                         placements.append((at,tip))
+        else:
+            # 2026-10-28 proximity layout: text beside its own bolt group,
+            # shortest leader first; the outside band is the last resort.
+            # The Tekla symbol also draws axes, so text keeps clear of them.
+            reach=[(max(h.get('length',0),h.get('width',0),h.get('diameter',0))/2+2*view_scale) for h in members]
+            symbols_area=[box(p[0]-r,p[1]-r,p[0]+r,p[1]+r) for h,r in zip(members,reach)
+                          for p in [facts['points'][h['pointId']]]]
+            half=(note_bounds(text,[0,0],2.5*scale,leader=True)[2])
+            shell=Polygon(polygon.exterior).buffer(tol)
+            near=[]
+            for dx in (0,1,-1,2,-2):
+                for dy in (8,-8,16,-16,24,-24):
+                    at=[bolt_tip[0]+dx*(half+4*scale),bolt_tip[1]+dy*scale]
+                    area=box(*note_bounds(text,at,2.5*scale,leader=True))
+                    # The leader starts in its own hole; note_candidates rejects other holes.
+                    if (polygon.contains(area) and shell.covers(LineString([bolt_tip,at]))
+                            and not any(area.intersects(s) for s in symbols_area)):
+                        near.append((math.dist(bolt_tip,at),dx,dy,at))
+            placements.extend((at,bolt_tip) for *_,at in sorted(near))
         for member in members:
             center=bolt_tip or facts['points'][member['pointId']]
             gap=(35+index*10)*scale*spacing
@@ -461,6 +482,8 @@ def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, temp
 
     @lru_cache(maxsize=4096)
     def fits_extent(extent):
+        if preview_overflow:
+            return True
         if template is not None:
             try:
                 build_view_plan(template, extent, view_scale)
@@ -485,9 +508,9 @@ def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, temp
             extent = [0, 0, width*view_scale, height*view_scale]
         return fits_extent(tuple(extent))
 
-    if template is not None and not fits_extent((x0-padding, y0-padding, x1+padding, y1+padding)):
+    if template is not None and not preview_overflow and not fits_extent((x0-padding, y0-padding, x1+padding, y1+padding)):
         raise LayoutOverflow(dict(status='LAYOUT_OVERFLOW', reason='TEMPLATE_ENVELOPE_OVERFLOW',
-                                  blockedObject='part', conflicts=[], budget=0, visited=0, backtracks=0))
+                                  blockedObject='part', conflicts=[], budget=0, visited=0, repairs=[]))
 
     dimensions,notes,radii,layout_report=solve_native_layout(dimensions,notes,radii,scheme,polygon,
         dict(bounds=bounds,unit=scale,viewScale=view_scale,decimals=decimals,padding=padding,fits=fits,
@@ -509,7 +532,7 @@ def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, temp
     extent=layout_report['envelope']
     view_plan = None
     if template is not None:
-        view_plan=build_view_plan(template,extent,view_scale)
+        view_plan=build_view_plan(template,extent,view_scale,allow_overflow=preview_overflow)
         sheet=template['sheetSize']
     else:
         width=(extent[2]-extent[0])/view_scale+100

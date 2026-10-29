@@ -1,4 +1,4 @@
-"""M5 finite candidate search. Expression commands are immutable inputs."""
+"""M5 layout: layered construction with bounded local repair. Expression commands are immutable inputs."""
 import copy
 from functools import lru_cache
 
@@ -11,6 +11,9 @@ from .expression_coverage import display_round
 MAX_VISITS = 4096
 LANES = 8
 MAX_NOTE_CANDIDATES = 48
+# Paper units added to an in-material chain, so a band near an edge stays
+# outside unless its outside witnesses are longer by about this much.
+LOCAL_PENALTY = 60
 
 
 class LayoutOverflow(ValueError):
@@ -41,43 +44,81 @@ def note_bounds(text, at, height, leader=False):
     return [at[0]-width/2-pad, at[1]-half_height, at[0]+width/2+pad, at[1]+half_height]
 
 
-def search_candidates(units, conflicts, fits, budget=MAX_VISITS):
-    """Deterministic DFS; every attempted candidate consumes the shared budget."""
-    report = dict(status='SEARCHING', budget=budget, visited=0, backtracks=0,
-                  blockedObject='', conflicts=[], reason='NO_FEASIBLE_CANDIDATE')
-    chosen = []
+class _BudgetExhausted(Exception):
+    pass
 
-    def search(depth):
-        if depth == len(units):
-            return True
-        key, generate = units[depth]
-        report['blockedObject'] = key
-        for candidate in generate(chosen):
-            if report['visited'] >= budget:
-                report['reason'] = 'SEARCH_BUDGET_EXHAUSTED'
-                return False
-            report['visited'] += 1
-            found = conflicts(candidate, chosen)
-            if not found and not fits(chosen+[candidate]):
-                found = [dict(code='TEMPLATE_ENVELOPE_OVERFLOW', objects=[key])]
-            if found:
-                report['conflicts'] = (report['conflicts']+found)[-32:]
+
+def construct_layout(units, conflicts, fits, budget=MAX_VISITS):
+    """Layered construction (2026-10-29): each unit takes its first feasible
+    candidate, in unit order. Dimension candidates already run near side,
+    outward lanes, then the other side. A note with no free position may
+    move one blocking dimension outward on its own side, once. There is no
+    other backtracking. Every check consumes the shared budget.
+
+    ``units`` are dicts ``key``, ``kind`` (radius/dimension/note) and
+    ``generate(placed)``.
+    """
+    report = dict(status='CONSTRUCTING', budget=budget, visited=0, repairs=[],
+                  blockedObject='', conflicts=[], reason='NO_FEASIBLE_CANDIDATE')
+    chosen = []; kinds = {}
+
+    def check(candidate, placed):
+        if report['visited'] >= budget:
+            raise _BudgetExhausted
+        report['visited'] += 1
+        found = conflicts(candidate, placed)
+        if not found and not fits(placed+[candidate]):
+            found = [dict(code='TEMPLATE_ENVELOPE_OVERFLOW', objects=[candidate['key']])]
+        if found:
+            report['conflicts'] = (report['conflicts']+found)[-32:]
+        return found
+
+    def repair(unit, candidates):
+        # The note gives way first; only one placed dimension may move for it.
+        for candidate in candidates:
+            if check(candidate, []):
                 continue
-            chosen.append(candidate)
-            if search(depth+1):
+            blockers = [i for i, old in enumerate(chosen) if check(candidate, [old])]
+            if len(blockers) != 1 or kinds[chosen[blockers[0]]['key']] != 'dimension':
+                continue
+            index = blockers[0]; old = chosen[index]
+            others = chosen[:index]+chosen[index+1:]
+            for moved in _outward(units, old, others):
+                if check(moved, others) or check(candidate, others+[moved]):
+                    continue
+                chosen[index] = moved
+                chosen.append(candidate)
+                report['repairs'].append(dict(note=unit['key'], moved=old['key'],
+                                              before=old.get('choice'), after=moved.get('choice')))
                 return True
-            chosen.pop()
-            report['backtracks'] += 1
-            if report['reason'] == 'SEARCH_BUDGET_EXHAUSTED':
-                return False
         return False
 
-    if not search(0):
-        report['status'] = 'LAYOUT_OVERFLOW'
-        raise LayoutOverflow(report)
+    try:
+        for unit in units:
+            kinds[unit['key']] = unit['kind']
+            report['blockedObject'] = unit['key']
+            candidates = list(unit['generate'](chosen))
+            placed = next((c for c in candidates if not check(c, chosen)), None)
+            if placed is not None:
+                chosen.append(placed)
+            elif not (unit['kind'] == 'note' and repair(unit, candidates)):
+                raise LayoutOverflow(dict(report, status='LAYOUT_OVERFLOW'))
+    except _BudgetExhausted:
+        raise LayoutOverflow(dict(report, status='LAYOUT_OVERFLOW', reason='SEARCH_BUDGET_EXHAUSTED')) from None
     report.update(status='SOLVED', reason=None, blockedObject=None,
                   selections=[dict(key=c['key'], choice=c.get('choice', 0)) for c in chosen])
     return chosen, report
+
+
+def _outward(units, old, others):
+    """Later outward lanes of the same dimension unit, on its own side."""
+    unit = next(u for u in units if u['key'] == old['key'])
+    choice = old['choice']
+    for candidate in unit['generate'](others):
+        c = candidate['choice']
+        if (c['side'] == choice['side'] and bool(c.get('local')) == bool(choice.get('local'))
+                and choice['lane'] < c['lane'] < LANES):
+            yield candidate
 
 
 def _box_conflicts(a, b):
@@ -110,7 +151,8 @@ def scene_conflicts(candidate, chosen):
                     errors.append(dict(code='LEADER_CROSSING', objects=[first['key'], second['key']]))
         for a in candidate['spans']:
             for b in old['spans']:
-                if a['axis'] != b['axis'] or a['side'] != b['side']:
+                # A chain inside the plate is not one of the outside layers.
+                if a['axis'] != b['axis'] or a['side'] != b['side'] or a.get('local') or b.get('local'):
                     continue
                 overlap = min(a['high'], b['high'])-max(a['low'], b['low']) > 1e-6
                 if overlap and a['side']*(a['line']-b['line']) < a['clearance']-1e-6:
@@ -201,13 +243,62 @@ def dimension_scene(dimensions, bounds, unit, decimals, polygon=None):
         scene['boxes'].extend(dimension_boxes(dim, height, decimals))
         scene['spans'].append(dict(key=dim['key'], axis=axis, side=side, low=ends[0][axis],
                                    high=ends[1][axis], line=line, clearance=8*unit,
-                                   overall=dim['role'] == 'overall'))
+                                   overall=dim['role'] == 'overall', local=bool(dim.get('local'))))
     for curve in witness_curves(dimensions, bounds, unit, polygon):
         scene['lines'].append(dict(key=curve['key'], role='witness', points=[curve['start'], curve['end']]))
     return scene
 
 
+def witness_cost(scene, unit):
+    """Paper length of all witnesses; local chains add LOCAL_PENALTY."""
+    length = sum(LineString(l['points']).length for l in scene['lines'] if l['role'] == 'witness')/unit
+    return round(length+(LOCAL_PENALTY if any(d.get('local') for d in scene['dimensions']) else 0), 6)
+
+
+def local_candidates(dim, group, bounds, unit, decimals, polygon):
+    """Lines beside a band's own holes, inside the plate, nearest first."""
+    axis = 'xy'.index(dim['axis']); cross = 1-axis
+    holes = [p[cross] for p, k in zip(dim['coordinates'], dim['points']) if k.startswith('hole:')]
+    for side in sorted(group.get('allowedSides', [dim['up'][cross]])):
+        edge = bounds[cross+(2 if side > 0 else 0)]
+        start = (max if side > 0 else min)(holes)
+        for lane in range(1, LANES+1):
+            line = start+side*lane*10*unit
+            if side*(edge-line) < 10*unit:
+                break
+            command = copy.deepcopy(dim)
+            command['up'] = [0, side] if axis == 0 else [side, 0]
+            command['distance'] = side*(line-command['coordinates'][0][cross])
+            command['local'] = True
+            try:
+                scene = dimension_scene([command], bounds, unit, decimals, polygon)
+            except ValueError as error:
+                if 'Insufficient clearance' not in str(error):
+                    raise
+                continue
+            # The line itself stays in material, so the chain reads beside its holes.
+            # Same 0.05 mm allowance as witness_curves; envelope anchors sit on the edge.
+            if polygon is not None and not polygon.buffer(0.05).covers(LineString(scene['lines'][0]['points'])):
+                continue
+            scene['choice'] = dict(side=side, lane=lane, local=True)
+            yield scene
+
+
 def dimension_candidates(members, groups, bounds, unit, decimals, chosen, polygon=None):
+    first = members[0]
+    if len(members) == 1 and groups[first['key']].get('localAllowed'):
+        # Separate hole bands (2026-10-28): outside lanes and lines beside the
+        # band compete on witness cost; ties keep the original order.
+        scenes = list(_outside_candidates(members, groups, bounds, unit, decimals, chosen, polygon))
+        scenes += list(local_candidates(first, groups[first['key']], bounds, unit, decimals, polygon))
+        for scene in scenes:
+            scene['choice']['cost'] = witness_cost(scene, unit)
+        yield from sorted(scenes, key=lambda s: s['choice']['cost'])
+        return
+    yield from _outside_candidates(members, groups, bounds, unit, decimals, chosen, polygon)
+
+
+def _outside_candidates(members, groups, bounds, unit, decimals, chosen, polygon=None):
     first = members[0]; axis = 'xy'.index(first['axis']); cross = 1-axis
     preferred = first['up'][cross]
     allowed = set.intersection(*(set(groups[d['key']].get('allowedSides', [d['up'][cross]])) for d in members))
@@ -321,7 +412,8 @@ def solve_native_layout(dimensions, notes, radii, scheme, polygon, context):
     # Native radius placement has less freedom than linear dimensions. Reserve
     # it first so a nearby dimension can move without exhausting outer lanes.
     for radius in radii:
-        units.append((radius['key'], lambda _, radius=radius: radius_candidates(radius, unit)))
+        units.append(dict(key=radius['key'], kind='radius',
+                          generate=lambda _, radius=radius: radius_candidates(radius, unit)))
     ordered = sorted(dimensions, key=lambda d: (d['role'] == 'overall',
                      0 if d['key'].startswith(('holes', 'straight')) else 1, sum(d['values'])))
     for dim in ordered:
@@ -329,15 +421,17 @@ def solve_native_layout(dimensions, notes, radii, scheme, polygon, context):
             continue
         members = [d for d in dimensions if d.get('columnGroup') == dim['columnGroup']] if dim.get('columnGroup') else [dim]
         assigned.update(d['key'] for d in members)
-        units.append((dim.get('columnGroup', dim['key']), lambda chosen, members=members, polygon=polygon:
-                      dimension_candidates(members, groups, bounds, unit, context['decimals'], chosen, polygon)))
-    for note in notes:
+        units.append(dict(key=dim.get('columnGroup', dim['key']), kind='dimension',
+                          generate=lambda chosen, members=members, polygon=polygon:
+                          dimension_candidates(members, groups, bounds, unit, context['decimals'], chosen, polygon)))
+    # Bolt-hole callouts first, then other hole callouts; the rest keep their order.
+    for note in sorted(notes, key=lambda n: 0 if n.get('leaderStartsInOwnHole') else 1 if n['kind'] == 'hole_callout' else 2):
         candidates = list(note_candidates(note, polygon, context['viewScale']))
         if not candidates:
             raise LayoutOverflow(dict(status='LAYOUT_OVERFLOW',reason='NO_GEOMETRIC_NOTE_CANDIDATE',
-                blockedObject=note['key'],visited=0,budget=context.get('budget',MAX_VISITS),backtracks=0,
+                blockedObject=note['key'],visited=0,budget=context.get('budget',MAX_VISITS),repairs=[],
                 conflicts=[dict(code='NOTE_OUTSIDE_MATERIAL_OR_CROSSES_HOLE',objects=[note['key']])]))
-        units.append((note['key'], lambda _, candidates=candidates: candidates))
+        units.append(dict(key=note['key'], kind='note', generate=lambda _, candidates=candidates: candidates))
 
     def conflicts(candidate, chosen):
         # Internal chain labels must also fit. Disjoint members of one column
@@ -353,7 +447,7 @@ def solve_native_layout(dimensions, notes, radii, scheme, polygon, context):
         static = dict(boxes=[],lines=context.get('staticLines',[]))
         return internal+_box_conflicts(candidate,static)+scene_conflicts(candidate, chosen)
 
-    chosen, report = search_candidates(units, conflicts, context['fits'], context.get('budget', MAX_VISITS))
+    chosen, report = construct_layout(units, conflicts, context['fits'], context.get('budget', MAX_VISITS))
     by_key = {d['key']: d for c in chosen for d in c['dimensions']}
     placed_notes = {n['key']: n for c in chosen for n in c['notes']}
     placed_radii = {r['key']: r for c in chosen for r in c['radii']}

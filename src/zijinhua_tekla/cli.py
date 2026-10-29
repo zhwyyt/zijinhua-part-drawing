@@ -53,6 +53,8 @@ def build_parser():
     native_drawing_parser.add_argument('--drawing-attributes', help='Tekla attribute file for new owned drawings; existing drawings retain their template.')
     native_drawing_parser.add_argument('--nc-settings-file', help='Explicit existing NC settings file for fresh target-specific special-hole evidence.')
     native_drawing_parser.add_argument('--out', required=True)
+    native_drawing_parser.add_argument('--preview-overflow', action='store_true',
+                                       help='Write even when the view does not fit the template frame. Not a production pass.')
     return parser
 
 
@@ -201,7 +203,7 @@ def main(argv=None):
         try:
             ids=[int(i) for i in args.ids.split(',')] if args.ids else None
             if ids is not None and (not ids or any(i<=0 for i in ids)):raise ValueError('IDs must be positive integers')
-            report=run_native_drawing_batch(args.out,ids,args.reader_exe,args.writer_exe,ownership=args.ownership,drawing_attributes=args.drawing_attributes,nc_settings_file=args.nc_settings_file)
+            report=run_native_drawing_batch(args.out,ids,args.reader_exe,args.writer_exe,ownership=args.ownership,drawing_attributes=args.drawing_attributes,nc_settings_file=args.nc_settings_file,preview_overflow=args.preview_overflow)
             print(f"Native drawings: PASS={report['passed']} FAIL/BLOCKED={report['failed']}")
             return 1 if report['failed'] else 0
         except (OSError,ValueError,RuntimeError) as error:

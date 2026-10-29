@@ -8,7 +8,7 @@
     "localDatums": ["OPPOSITE_EXTREME"],
     "holeCenterDatum": false
   },
-  "referenceCategories": ["OVERALL", "BODY", "SYMMETRIC"],
+  "referenceCategories": ["OVERALL", "BODY", "SYMMETRIC", "HOLE_BAND"],
   "closedChains": true,
   "chains": {"mergeSameSideChains": true},
   "pitch": {"minIntervals": 3},

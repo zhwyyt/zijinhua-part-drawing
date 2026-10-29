@@ -108,6 +108,16 @@ class NativeTemplateLayoutTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'LAYOUT_OVERFLOW'):
             build_layout(req, geo, part, template=_open_sheet(snapshot, 1, 1))
 
+    def test_preview_overflow_places_the_view_without_changing_the_sheet(self):
+        req, geo, part, snapshot = self.data()
+        tight = _open_sheet(snapshot, 1, 1)
+        plan = build_layout(req, geo, part, template=tight, preview_overflow=True)
+        self.assertEqual('READY', plan['status'])
+        self.assertEqual(1, plan['scale'])
+        self.assertEqual(tight['sheetSize'], plan['sheet'])
+        self.assertTrue(plan['viewPlan']['previewOverflow'])
+        self.assertEqual(plan['viewPlan']['sheetSize'], tight['sheetSize'])
+
     def test_live_concave_plate_has_complete_readable_plan_at_template_style_25(self):
         raw = json.loads((Path(__file__).parent/'fixtures/part_drawing/template-source-live.json').read_text(encoding='utf-8-sig'))
         before = copy.deepcopy(raw)
