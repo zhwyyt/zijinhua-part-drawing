@@ -25,15 +25,37 @@ def evaluate(raw):
 
 
 class SectionGeometryTests(unittest.TestCase):
-    def test_current_real_part_proves_bevel_but_does_not_invent_slot_attribution(self):
-        req, geo = evaluate(capture())
+    def test_shared_bolt_slots_use_group_parameters_and_shop_callout(self):
+        raw = capture()
+        req, geo = evaluate(raw)
         proof = geo['sectionGeometry']
         self.assertEqual('MATCHED', proof['status'], proof)
         bevel, = proof['bevels']
         for key, expected in [('angle',45), ('depth',12), ('land',2), ('thickness',14)]:
             self.assertAlmostEqual(expected, bevel[key], places=5)
-        self.assertEqual('BLOCKED', req['status'])
-        self.assertIn('target-specific', geo['materialFinalState']['reason'])
+        self.assertEqual('MATCHED', geo['materialFinalState']['status'], geo['materialFinalState'])
+        self.assertEqual('BOLT_GROUP_PARAMETERS', geo['materialFinalState']['holeEvidence'][0]['shapeBasis'])
+        self.assertEqual('READY', req['status'], req['issues'])
+        group, = req['groups']
+        self.assertEqual('BOLT', group['origin'])
+        self.assertEqual('SLOT', group['kind'])
+        self.assertEqual(6, group['count'])
+        self.assertAlmostEqual(26, group['width'])
+        self.assertAlmostEqual(56, group['length'])
+        from zijinhua_tekla.part_drawing.native_layout import bolt_display, bolt_hole_tip, build_layout
+        from test_template_snapshot import evidence
+        part = raw['parts'][0]
+        self.assertEqual(['SYMBOL'], [b['display'] for b in bolt_display(req['facts'], part)])
+        template = evidence()
+        template['partId'] = part['id']
+        snapshot = build_template_snapshot(template, 'fixture-model', part['id'], 2.5)
+        plan = build_layout(req, geo, part, template=snapshot)
+        self.assertEqual('READY', plan['status'], plan.get('coverage'))
+        note = next(n for n in plan['notes'] if n['kind']=='hole_callout')
+        self.assertEqual('6*D26(56x26)', note['text'])
+        self.assertEqual(bolt_hole_tip(
+            [h for h in req['facts']['holes'] if h['id'] in note['members']], req['facts']), note['tip'])
+        self.assertFalse(any(d['combine'] for d in plan['dimensions'] if d['key'].startswith('holes')))
         self.assertEqual('MATCHED', geo['operationCheck']['status'])
         self.assertEqual(['main','section:0'], req['requiredViews'])
         self.assertEqual('expressionRequirements.v2', req['schemaVersion'])

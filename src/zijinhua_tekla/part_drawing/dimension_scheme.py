@@ -13,6 +13,17 @@ def number(x):
     return f'{x:.1f}'.rstrip('0').rstrip('.')
 
 
+def hole_callout_text(group):
+    """Bolt holes use one shop form. A round hole is that form with slot extension 0."""
+    if group.get('origin') == 'BOLT':
+        width = group['diameter'] if group['kind'] == 'ROUND' else group['width']
+        length = width if group['kind'] == 'ROUND' else group['length']
+        return f"{group['count']}*D{number(width)}({number(length)}x{number(width)})"
+    if group['kind'] == 'ROUND':
+        return f"{group['count']}Φ{number(group['diameter'])}"
+    return f"{group['count']}×D{number(group['width'])}({number(group['length'])}×{number(group['width'])})"
+
+
 def assign_closed_coordinates(groups, facts, tol, profile):
     """One defining closed chain per interior station; explicit references remain.
 
@@ -47,6 +58,44 @@ def assign_closed_coordinates(groups, facts, tol, profile):
                 group['points'] = kept
                 group['combined'] = None
     return decisions
+
+
+def hole_bands(facts, ids, axis, tol):
+    """Hole clusters that share one chain along ``axis`` (2026-10-28).
+
+    A cluster is one source feature (a bolt group, or one hole). Clusters join
+    when their extents across the chain are no further apart than the plate's
+    extent along it, or when they occupy the same coordinates along it. A
+    witness from a farther cluster would run longer than the chain itself.
+    Without source references every hole is one cluster, as before.
+    """
+    refs = facts.get('sourceFeatureRefs') or {}
+    clusters = {}
+    for k in ids:
+        parent = tuple(sorted({r.split('/positions/value/')[0] for r in refs.get(k, [])})) or ('',)
+        clusters.setdefault(parent if refs else ('',), []).append(k)
+    clusters = list(clusters.values())
+    span = facts['bounds'][axis+2]-facts['bounds'][axis]
+    cross = lambda c: (min(facts['points'][k][1-axis] for k in c), max(facts['points'][k][1-axis] for k in c))
+    along = lambda c: sorted({round(facts['points'][k][axis]/max(tol, 1e-9)) for k in c})
+    parent = list(range(len(clusters)))
+
+    def root(i):
+        while parent[i] != i:
+            i = parent[i]
+        return i
+    for i, a in enumerate(clusters):
+        for j in range(i+1, len(clusters)):
+            b = clusters[j]
+            (alo, ahi), (blo, bhi) = cross(a), cross(b)
+            gap = max(blo-ahi, alo-bhi, 0)
+            if gap <= span+tol:
+                parent[root(j)] = root(i)
+    bands = {}
+    for i, c in enumerate(clusters):
+        bands.setdefault(root(i), []).extend(c)
+    # Larger bands define shared coordinates first; ties go by position across.
+    return sorted(bands.values(), key=lambda b: (-len(b), sum(facts['points'][k][1-axis] for k in b)/len(b), sorted(b)))
 
 
 def build_scheme(requirements, features, profile=None):
@@ -97,34 +146,43 @@ def build_scheme(requirements, features, profile=None):
         ids=features['holeIds']
         if not ids:continue
         if features['axes'][axis]['holeDatums'] is None:continue
-        # Convention v1: one chain per axis, envelope extreme -> each distinct hole
-        # coordinate (rows/columns once) -> opposite extreme. No interior datums.
-        middle=sum(facts['points'][k][1-axis] for k in ids)/len(ids)
-        side=1 if middle>(bounds[1-axis]+bounds[3-axis])/2+tol else -1
-        unique=[]
-        for k in sorted(ids,key=lambda k:(facts['points'][k][axis],-side*facts['points'][k][1-axis],k)):
-            if not unique or abs(facts['points'][k][axis]-facts['points'][unique[-1]][axis])>tol:
-                unique.append(k)
-        ends=[extreme(bounds[axis],side),extreme(bounds[axis+2],side)]
-        anchors=[e for e in ends if all(abs(facts['points'][e][axis]-facts['points'][h][axis])>tol for h in unique)]+unique
-        pitch=[abs(facts['points'][b][axis]-facts['points'][a][axis]) for a,b in zip(unique,unique[1:])]
-        combine=(len(anchors)==len(unique) and len(pitch)>=profile['pitch']['minIntervals'])
-        holes=chain(f'holes-{axis}',anchors,axis,side,12,combine=combine)
-        # User-confirmed (2026-10-21): on one side, an edge-to-edge contour chain and
-        # the hole chain read as one chain, e.g. 115|55|3@80|55|15.
-        same=[g for g in groups if g['axis']==axis and g['key'].startswith('boundary') and g['side']==side]
-        if holes and same and profile['chains']['mergeSameSideChains']:
-            merged=[]
-            for k in sorted(set(holes['points']).union(*(g['points'] for g in same)),
-                            key=lambda k:(facts['points'][k][axis],not k.startswith('hole:'),k)):
-                value=facts['points'][k][axis]
-                if merged and abs(value-facts['points'][merged[-1]][axis])<=tol:
-                    # Envelope extremes keep their contour vertex; elsewhere the hole wins.
-                    if abs(value-bounds[axis])<=tol or abs(value-bounds[axis+2])<=tol:merged[-1]=k if not k.startswith('hole:') else merged[-1]
-                    continue
-                merged.append(k)
-            for g in same+[holes]:groups.remove(g)
-            chain(f'holes-{axis}',merged,axis,side,12)
+        bands=hole_bands(facts,ids,axis,tol)
+        for band_index,band in enumerate(bands):
+            # Convention v1: each band is one closed chain, envelope extreme -> each
+            # distinct hole coordinate (rows/columns once) -> opposite extreme.
+            middle=sum(facts['points'][k][1-axis] for k in band)/len(band)
+            side=1 if middle>(bounds[1-axis]+bounds[3-axis])/2+tol else -1
+            unique=[]
+            for k in sorted(band,key=lambda k:(facts['points'][k][axis],-side*facts['points'][k][1-axis],k)):
+                if not unique or abs(facts['points'][k][axis]-facts['points'][unique[-1]][axis])>tol:
+                    unique.append(k)
+            ends=[extreme(bounds[axis],side),extreme(bounds[axis+2],side)]
+            anchors=[e for e in ends if all(abs(facts['points'][e][axis]-facts['points'][h][axis])>tol for h in unique)]+unique
+            pitch=[abs(facts['points'][b][axis]-facts['points'][a][axis]) for a,b in zip(unique,unique[1:])]
+            bolt_chain=any(h.get('origin')=='BOLT' and h['pointId'] in unique for h in facts['holes'])
+            combine=(not bolt_chain and len(anchors)==len(unique) and len(pitch)>=profile['pitch']['minIntervals'])
+            key=f'holes-{axis}' if len(bands)==1 else f'holes-{axis}-{band_index}'
+            holes=chain(key,anchors,axis,side,12,combine=combine)
+            if holes and len(bands)>1:
+                # Separate bands may sit beside their own holes; the layout scores
+                # that against the outside lanes (2026-10-28 proximity layout).
+                holes['localAllowed']=True
+                holes['band']=sorted(band)
+            # User-confirmed (2026-10-21): on one side, an edge-to-edge contour chain and
+            # the hole chain read as one chain, e.g. 115|55|3@80|55|15.
+            same=[g for g in groups if g['axis']==axis and g['key'].startswith('boundary') and g['side']==side]
+            if holes and same and len(bands)==1 and profile['chains']['mergeSameSideChains']:
+                merged=[]
+                for k in sorted(set(holes['points']).union(*(g['points'] for g in same)),
+                                key=lambda k:(facts['points'][k][axis],not k.startswith('hole:'),k)):
+                    value=facts['points'][k][axis]
+                    if merged and abs(value-facts['points'][merged[-1]][axis])<=tol:
+                        # Envelope extremes keep their contour vertex; elsewhere the hole wins.
+                        if abs(value-bounds[axis])<=tol or abs(value-bounds[axis+2])<=tol:merged[-1]=k if not k.startswith('hole:') else merged[-1]
+                        continue
+                    merged.append(k)
+                for g in same+[holes]:groups.remove(g)
+                chain(f'holes-{axis}',merged,axis,side,12)
 
     decisions = assign_closed_coordinates(groups, facts, tol, profile)
     # Placement freedom is declared after expression selection. Do not let a
@@ -135,8 +193,7 @@ def build_scheme(requirements, features, profile=None):
         group['allowedSides'] = [-1, 1] if movable else [group['side']]
     callouts=[]
     for g in requirements['groups']:
-        text=(f"{g['count']}Φ{number(g['diameter'])}" if g['kind']=='ROUND' else
-              f"{g['count']}×D{number(g['width'])}({number(g['length'])}×{number(g['width'])})")
+        text=hole_callout_text(g)
         callouts.append(dict(group=g,text=text))
     arcs=[s for s in facts['segments'] if s['kind']=='ARC']
     diameter=None

@@ -3,7 +3,7 @@ import copy
 from functools import lru_cache
 
 from ezdxf.fonts import fonts
-from shapely.geometry import LineString, Polygon, box
+from shapely.geometry import LineString, Point, Polygon, box
 
 from .expression_coverage import display_round
 
@@ -229,12 +229,26 @@ def dimension_candidates(members, groups, bounds, unit, decimals, chosen, polygo
                             for d in members)]
             if overlaps:
                 seed = (max if side > 0 else min)(seed,(max if side > 0 else min)(overlaps)+side*10*unit)
-        for lane in range(LANES):
+        # Lane 0 is the preferred offset. Further lanes move out. When that
+        # offset is many font heights from an empty side, also try closer
+        # lines after the outward ones. Text still has to stay off the part.
+        lines = [seed+side*lane*10*unit for lane in range(LANES)]
+        for step in range(1, LANES):
+            line = seed-side*step*10*unit
+            if side*(line-edge) <= 5*unit:
+                break
+            lines.append(line)
+        for lane, line in enumerate(lines):
             commands = copy.deepcopy(members)
             for d in commands:
                 d['up'] = [0, side] if axis == 0 else [side, 0]
-                d['distance'] = side*(seed+side*lane*10*unit-d['coordinates'][0][cross])
-            scene = dimension_scene(commands, bounds, unit, decimals, polygon)
+                d['distance'] = side*(line-d['coordinates'][0][cross])
+            try:
+                scene = dimension_scene(commands, bounds, unit, decimals, polygon)
+            except ValueError as error:
+                if 'Insufficient clearance' not in str(error):
+                    raise
+                continue
             scene['choice'] = dict(side=side, lane=lane)
             yield scene
 
@@ -247,6 +261,23 @@ def scene_envelope(chosen, bounds, padding):
         points.extend(p for line in scene['lines'] for p in line['points'])
     return [min(p[0] for p in points)-padding, min(p[1] for p in points)-padding,
             max(p[0] for p in points)+padding, max(p[1] for p in points)+padding]
+
+
+def _leader_crosses_hole(leader, polygon, tip, allow_own_hole):
+    """A bolt-hole arrow starts at its own hole center. That start is not a crossing."""
+    start = Point(tip) if allow_own_hole else None
+    for ring in polygon.interiors:
+        hole = Polygon(ring)
+        if not hole.is_valid:
+            hole = hole.buffer(0)
+        inset = hole.buffer(-1e-6)
+        if inset.is_empty:
+            continue
+        if start is not None and inset.covers(start):
+            continue
+        if leader.intersection(inset).length > 1e-6:
+            return True
+    return False
 
 
 def note_candidates(note, polygon, view_scale):
@@ -264,7 +295,7 @@ def note_candidates(note, polygon, view_scale):
         lines = []
         if command['tip'] is not None:
             leader = LineString([command['tip'], command['at']])
-            if any(leader.intersection(Polygon(ring).buffer(-1e-6)).length > 1e-6 for ring in polygon.interiors):
+            if _leader_crosses_hole(leader, polygon, command['tip'], note.get('leaderStartsInOwnHole')):
                 continue
             lines.append(dict(key=note['key'], role='leader', points=[command['tip'], command['at']]))
         yield dict(key=note['key'], choice=index, dimensions=[], notes=[command], radii=[],

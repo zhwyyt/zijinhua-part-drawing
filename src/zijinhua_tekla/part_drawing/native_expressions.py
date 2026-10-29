@@ -55,6 +55,12 @@ def _facts(material):
         else:
             item.update(width=hole['diameter'], length=hole['diameter']+hole['extension'],
                         angle=math.degrees(math.atan2(*reversed(hole['direction']))) % 180)
+        # fastener False is a hole-only opening: ordinary nΦ / n×D, even when
+        # the parameters were read from a bolt group. Absent means the older
+        # material path, which treats every bolt-group source as a bolt hole.
+        if hole.get('fastener') is True or (
+                hole.get('fastener') is None and any('/boltGroups/' in ref for ref in hole.get('sourceRefs', []))):
+            item['origin'] = 'BOLT'
         holes.append(item)
         refs[point_id] = hole['sourceRefs']
     return {'points': points, 'segments': segments, 'holes': holes, 'datum': datum, 'bounds': bounds,

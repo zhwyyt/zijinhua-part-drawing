@@ -264,6 +264,27 @@ class NativeLayoutTests(unittest.TestCase):
         self.assertFalse(boundary_matches(s,[[[0,0],[50,0]]],.1))
         self.assertFalse(boundary_matches(s,[[[0,.2],[100,.2]]],.1))
 
+    def test_faceted_symbol_slot_is_measured_from_the_outline(self):
+        req=dict(facts=dict(holes=[dict(id='h',pointId='hole:h',kind='SLOT',width=26,length=56,angle=90)],
+                            points={'hole:h':[215,80]}))
+        paths=[]
+        for x in (202, 228):
+            paths.append(dict(kind='LINE',points=[[x,65],[x,95]]))
+        for sign in (-1, 1):
+            samples=[[215+13*math.cos(math.pi*step/8), 80+sign*15+sign*13*math.sin(math.pi*step/8)]
+                     for step in range(9)]
+            for a,b in zip(samples, samples[1:]):
+                paths.append(dict(kind='LINE',points=[a,b]))
+        # The bolt axis crosses the hole and must not widen the measured slot.
+        paths.append(dict(kind='LINE',points=[[215,54],[215,106]]))
+        paths.append(dict(kind='LINE',points=[[189,80],[241,80]]))
+        measured=_hole_shapes(req,dict(paths=paths),.1)[0]
+        self.assertAlmostEqual(26, measured['width'])
+        self.assertAlmostEqual(56, measured['length'])
+        self.assertAlmostEqual(90, measured['angle'])
+        self.assertAlmostEqual(215, measured['center'][0])
+        self.assertAlmostEqual(80, measured['center'][1])
+
     def test_duplicate_half_circles_cannot_prove_a_complete_hole(self):
         req=dict(facts=dict(holes=[dict(id='h',pointId='hole:h',kind='ROUND',diameter=10)],points={'hole:h':[0,0]}))
         half=dict(kind='ARC',center=[0,0],radius=5,sweep=math.pi,points=sample_arc([0,0],5,0,math.pi))

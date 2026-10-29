@@ -49,7 +49,7 @@ python -m zijinhua_tekla.cli audit-native-geometry --capture outputs/native-sour
 
 `--evidence` 和 `--capture` 二选一。模型核验默认采用用户确认的0.1 mm（含），CLI可用 `--model-tolerance-mm` 显式覆盖，API的audit_native_geometry/load_geometry_audit同样默认0.1；原始双精度不舍入，输出记录实际预算。capture 另需显式 NC 核对预算和 NC 最粗分辨率，示例0.01仅为见证试验值，不是制造公差。读取器与解析器不依赖旧导出器。
 
-核查源参数的直线/直倒角/凹圆弧/圆角/三点弧候选，双厚度层及所有侧面、逐段覆盖，圆孔/单轴槽的参数/轴向/实体与 NC 一一对应，并排除自交、孔越界、重复与重叠。CHAMFER_NONE 的非零 X/Y 是未生效参数；三点弧不用 X 充当半径。NC 槽端定位不能当孔中心。孔模式实体与紧固件实体分开；`Bolt=true`按用户确认的贯穿孔规则处理，仍核对参数和目标关联；多目标特殊槽孔/扩孔需明确逐板孔形。STUD在孔公式前作为表面焊接附件排除，不生成孔。
+核查源参数的直线/直倒角/凹圆弧/圆角/三点弧候选，双厚度层及所有侧面、逐段覆盖，圆孔/单轴槽的参数/轴向/实体与 NC 一一对应，并排除自交、孔越界、重复与重叠。CHAMFER_NONE 的非零 X/Y 是未生效参数；三点弧不用 X 充当半径。NC 槽端定位不能当孔中心。孔模式实体与紧固件实体分开；`Bolt=true`按用户确认的贯穿孔规则处理，仍核对参数和目标关联。2026-10-27起，这块板的孔形用该组自己的槽孔参数，不用 Hole 标志改判；已提供且对不上的 NC 仍阻断。STUD在孔公式前作为表面焊接附件排除，不生成孔。
 
 输出 nativeGeometryAudit.v1 / r2b.8：退出码 0 为全部 EVIDENCE_MATCHED、1 至少一件 UNRESOLVED、2 输入非法/拒绝覆盖。EVIDENCE_MATCHED只表示可用证据匹配；`featureEvidence`逐项给出sourceRefs、proofStatus、missingProofs和ncRole，`evidenceSufficiency`聚合SUFFICIENT/INSUFFICIENT/CONFLICT。全部已确认孔槽与Boolean切割统一求解后可在模型预算内SUFFICIENT；`materialFinalState`记录完整材料结果、每源贡献、工程规则或实读孔壁依据。manufacturingStatus仍BLOCKED，不得传给旧引擎伪装为VERIFIED。
 
@@ -100,7 +100,7 @@ r2b.6仅升级审计算法：Bolt=false且单一目标的孔组实体在自身�
 
 新增planarCuts（每个贯穿切割候选及切割体实体检查）、cutFinalState（解析材料差集、最终全部面边覆盖及operationMappings）和finalOutline（切割后外轮廓）。原outline保留建模轮廓，不直接用于切割后尺寸规划。最终内环进入finishedHoleCandidates，以sourceOperationIds追溯；圆/槽保留几何参数，其他闭合切口为CUTOUT并保留解析线弧。
 
-circularCuts仍是旧的圆切割候选/两面环诊断；对于非圆或相交切割，其局部未匹配不能替代cutFinalState的组合结果。只有完整终态覆盖才能解除操作缺口；独立圆盘面不能替代带孔主面。所有操作和子对象都必须解释；分裂、多余/缺失边面、盲切、增材、明显斜切等返回UNRESOLVED。
+circularCuts仍是旧的圆切割候选/两面环诊断；对于非圆或相交切割，其局部未匹配不能替代cutFinalState的组合结果。只有完整终态覆盖才能解除操作缺口；独立圆盘面不能替代带孔主面。所有操作和子对象都必须解释；分裂、多余/缺失边面、盲切、增材等返回UNRESOLVED。r2b.13起，斜穿厚度但终态边能读出的切面不再仅因斜切停在这里，见规则里的「可读终态」。
 
 真实圆环78面228边全覆盖，逐特征SUFFICIENT的依据是MODEL_TOLERANCE_NOT_EXACT_BREP。旧cutFinalState在螺栓孔与切割并存时保留HOLE_CUT_INTERACTIONS_UNPROVEN诊断；r2b.8完整materialFinalState匹配后解除整件对应缺口。支持的纯切割圆/槽及最终外轮廓可对账NC，明确冲突保留；其他NC组合未覆盖时报BOOLEAN_FINAL_NC_MAPPING_REQUIRED。实现/验证见项目docs/design/2026-10-19-flat-plate-cut-final-state.md、docs/verification/2026-10-19-cut-final-state.md。
 

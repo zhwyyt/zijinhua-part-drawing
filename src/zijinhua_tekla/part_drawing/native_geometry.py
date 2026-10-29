@@ -127,10 +127,8 @@ def _hole_candidates(bolt, frame, path):
     if standard == "STUD":
         raise ValueError("STUD attachment requires independent non-hole effect proof")
     group_frame = value(bolt["coordinateSystem"])
-    gx, gy, gz = frame_axes(group_frame)
-    px, py, pz = frame_axes(frame)
-    if abs(abs(dot(gz, pz))-1) > 1e-8:
-        raise ValueError("Oblique hole axis unsupported")
+    gx, gy, _axis = frame_axes(group_frame)
+    px, py, _plate = frame_axes(frame)
     x, y = value(props["SlottedHoleX"]), value(props["SlottedHoleY"])
     diameter = value(props["BoltSize"]) + value(props["Tolerance"])
     if min(x, y) < 0 or (x and y) or value(props["Tolerance"]) < 0 or value(props["BoltSize"]) <= 0:
@@ -146,8 +144,16 @@ def _hole_candidates(bolt, frame, path):
     elif x or y:
         if hole_type != "HOLE_TYPE_SLOTTED" or value(props["RotateSlots"])["name"] != "ROTATE_SLOTS_PARALLEL":
             raise ValueError("Ambiguous slot rotation")
+    # A sloped cylinder is still a round hole. Only a slot whose long axis
+    # lies along the plate normal has no in-plane direction to draw.
     axis = gy if y else gx
-    direction = unit([dot(axis, px), dot(axis, py)])
+    projected = [dot(axis, px), dot(axis, py)]
+    if norm(projected) <= 1e-8:
+        if x or y:
+            raise ValueError("Slot direction is parallel to the plate normal")
+        direction = [1.0, 0.0]
+    else:
+        direction = unit(projected)
     shapes = []
     for i, point in enumerate(value(bolt["positions"])):
         center = project(point, frame)[:2]
@@ -707,23 +713,22 @@ def _material_final_state(part, outline, cuts, groups, frame, path, tolerance):
             if value(bolt['properties']['Bolt']) is True:
                 props = bolt['properties']
                 special = value(props['SlottedHoleX']) or value(props['SlottedHoleY'])
-                targets = bolt['targets']
-                target_ids = {p['id'] for p in [value(targets['partToBoltTo']), value(targets['partToBeBolted'])]
-                              if p is not None} | {p['id'] for p in value(targets['otherParts'])}
                 proof = {'status': 'RULE_CONFIRMED_THROUGH_HOLE', 'rule': 'BOLT-THROUGH-01',
                          'basis': 'USER_CONFIRMED_BOLT_HOLES_ARE_THROUGH', 'sourceRef': group['sourceRef']}
                 if special:
-                    # A sole target has an unambiguous Hole1. Otherwise require
-                    # target shape evidence, never a maximum connected-part count.
+                    # 2026-10-27: the bolt group's own parameters are this plate's
+                    # hole shape. Hole1–Hole5 do not reassign a slot to a round hole.
+                    # A supplied NC witness that fails to match still blocks above.
                     shape = group.get('targetShapeEvidence', {})
-                    if target_ids == {part['id']} and value(props['Hole1']) is True:
-                        proof['shapeBasis'] = 'SOLE_TARGET_HOLE1'
-                    elif shape.get('status') == 'MATCHED':
+                    if shape.get('status') == 'MATCHED':
                         proof['targetShapeEvidence'] = shape
                         proof['penetration'] = physical_penetration(
                             bolt, part['id'], group['candidates'], frame, solid['levels'], tolerance)
-                    else:
+                        proof['shapeBasis'] = 'NUMBERED_NC'
+                    elif shape:
                         raise ValueError('Special hole needs target-specific shape evidence: '+shape.get('reason', 'unavailable'))
+                    else:
+                        proof['shapeBasis'] = 'BOLT_GROUP_PARAMETERS'
             else:
                 proof = _hole_effect(bolt, part['id'], group['candidates'], frame, tolerance, group['sourceRef'], solid)
                 proof = dict(proof, status='HOLE_ONLY_CUTTER_CONFIRMED')
@@ -761,6 +766,241 @@ def _spatial_domain(part, frame, path, tolerance, holes):
     result['topology'] = check_hole_topology(segments, holes, tolerance)
     result['basis'] = 'OBSERVED_PRISM_NOT_EXACT_SURFACE'
     return result
+
+
+def _loop_diameter(points):
+    """Minor and major diameters of a closed loop about its vertex centroid."""
+    center = [sum(p[i] for p in points) / len(points) for i in range(len(points[0]))]
+    radii = [norm(sub(p, center)) for p in points]
+    return center, 2 * min(radii), 2 * max(radii)
+
+
+def _face_shows_diameter(solid, diameter, tolerance):
+    for face in value(solid['faces']):
+        for loop in value(face['loops']):
+            points = value(loop['vertices'])
+            if len(points) < 3:
+                continue
+            _center, minor, _major = _loop_diameter(points)
+            if abs(minor - diameter) <= tolerance:
+                return True
+    return False
+
+
+def _observed_flat_material(part, stock_outline, groups, frame, path, tolerance):
+    """Admit a flat plate from the final solid when the operation-by-operation proof stops.
+
+    The drawn edge, diameter and center are the ones on the solid. A sloped
+    cylinder stays an ordinary round hole. A partial-thickness face is a bevel
+    and stays on the section proof.
+    """
+    operations, children = value(part['operations']), value(part['children'])
+    if len({op['id'] for op in operations}) != len(operations):
+        raise ValueError('Duplicate cutting operation')
+    if not _known_cut_children(operations, children):
+        raise ValueError('Unknown child effect prevents reading the final solid')
+    if operations and 'segments' not in stock_outline:
+        raise ValueError('Stock outline is not readable')
+    solid = value(part['finalSolid'])
+    faces = value(solid['faces'])
+    axes = frame_axes(frame)
+    projected = []
+    for index, face in enumerate(faces):
+        loops = []
+        for loop in value(face['loops']):
+            points = [project(p, frame) for p in value(loop['vertices'])]
+            if len(points) < 3:
+                raise ValueError('Final face loop is degenerate')
+            loops.append(points)
+        if not loops:
+            raise ValueError('Final face has no loops')
+        normal = unit(value(face['normal']))
+        local_normal = [dot(normal, axis) for axis in axes]
+        if any(abs(dot(sub(point, loops[0][0]), local_normal)) > tolerance
+               for loop in loops for point in loop):
+            raise ValueError('Final face vertices contradict the face normal')
+        levels = [point[2] for loop in loops for point in loop]
+        projected.append((index, face, loops, min(levels), max(levels), local_normal))
+    all_levels = [point[2] for _, _, loops, _, _, _ in projected for loop in loops for point in loop]
+    if not all_levels:
+        raise ValueError('Final solid has no vertices')
+    low, high = min(all_levels), max(all_levels)
+    thickness = high - low
+    if thickness <= tolerance:
+        raise ValueError('Degenerate final plate thickness')
+    caps = []
+    for index, face, loops, z0, z1, local_normal in projected:
+        span = z1 - z0
+        if span <= tolerance:
+            level = (z0 + z1) / 2
+            if min(abs(level - low), abs(level - high)) > tolerance:
+                raise ValueError('Partial-thickness face has no flat-plate expression')
+            caps.append((index, face, loops, local_normal))
+        elif span < thickness - tolerance:
+            raise ValueError('Partial-thickness face has no flat-plate expression')
+    if len(caps) != 2:
+        raise ValueError('Final solid does not have two thickness caps')
+    positive = [cap for cap in caps if cap[3][2] > 0]
+    if len(positive) != 1 or positive[0][3][2] < 1 - 1e-6:
+        raise ValueError('Cap normal does not agree with the plate thickness axis')
+    index, face, loops, local_normal = positive[0]
+    other = next(cap for cap in caps if cap[0] != index)
+    if other[3][2] > -1 + 1e-6:
+        raise ValueError('Opposite cap normal points into the plate')
+    if value(face['originPartId']) != part['id'] or value(other[1]['originPartId']) != part['id']:
+        raise ValueError('Final cap source differs from the target instance')
+    if len(other[2]) != len(loops):
+        raise ValueError('Opposite cap does not show the same openings')
+
+    def area(points):
+        return abs(sum(cross(a[:2], b[:2]) for a, b in zip(points, points[1:] + points[:1])))
+
+    ranked = sorted(loops, key=area, reverse=True)
+    if len(ranked) > 1 and area(ranked[0]) <= area(ranked[1]) + tolerance:
+        raise ValueError('Final cap outer loop is ambiguous')
+    other_ranked = sorted(other[2], key=area, reverse=True)
+    if len(other_ranked) > 1 and area(other_ranked[0]) <= area(other_ranked[1]) + tolerance:
+        raise ValueError('Final cap outer loop is ambiguous')
+    refs = [path + f'/finalSolid/value/faces/value/{index}']
+    outer = [point[:2] for point in ranked[0]]
+    other_outer = [point[:2] for point in other_ranked[0]]
+    segments = [line(a, b, refs) for a, b in zip(outer, outer[1:] + outer[:1])]
+    for segment in segments:
+        segment['ownerIds'] = [part['id']]
+    simple_ring(segments, tolerance)
+    stock_points = ([segment['start'] for segment in stock_outline['segments']]
+                    if stock_outline.get('segments') else None)
+    stock_same = stock_points is not None and _point_set_equal(stock_points, outer, tolerance)
+    inners = [[point[:2] for point in loop] for loop in ranked[1:]]
+    # An uncut plate has one outline. Either cap drifting is the solid disagreeing
+    # with the stock, not a cut the final solid is allowed to measure.
+    if stock_points is not None and not operations and not (
+            stock_same and _point_set_equal(stock_points, other_outer, tolerance)):
+        raise ValueError('Final outline disagrees with the uncut stock')
+    if operations and stock_same and not inners:
+        raise ValueError('Cutting operation is not present in the final solid')
+    covered = [item for item in projected if item[0] not in (index, other[0])]
+    for loop in loops:
+        for start, end in zip(loop, loop[1:] + loop[:1]):
+            if not any(_point_set_equal([start, end], [a, b], tolerance)
+                       for _, _, face_loops, _, _, _ in covered
+                       for face_loop in face_loops
+                       for a, b in zip(face_loop, face_loop[1:] + face_loop[:1])):
+                raise ValueError('Final cap edge has no adjacent face')
+    plane_checks = []
+    for operation in operations:
+        if operation.get('runtimeType') not in ('Tekla.Structures.Model.CutPlane',
+                                                'Tekla.Structures.Model.Fitting'):
+            continue
+        plane = value(operation['plane'])
+        normal = frame_axes(plane)[2]
+        signed = [dot(sub(point, plane['origin']), normal)
+                  for item in faces for loop in value(item['loops']) for point in value(loop['vertices'])]
+        if min(signed) < -tolerance and max(signed) > tolerance:
+            raise ValueError('Cutting plane crosses the final solid')
+        plane_checks.append((normal, plane['origin'], signed))
+    for index, (normal, origin, signed) in enumerate(plane_checks):
+        if min(abs(distance) for distance in signed) <= tolerance:
+            continue
+        # An earlier parallel cut can sit entirely outside the final solid when a
+        # later cut on the same side took more material. A lone missed plane cannot.
+        side = 1 if max(signed) > 0 else -1
+        excused = False
+        for other_index, (other_normal, other_origin, other_signed) in enumerate(plane_checks):
+            if other_index == index or dot(normal, other_normal) < 1 - 1e-6:
+                continue
+            if min(abs(distance) for distance in other_signed) > tolerance:
+                continue
+            gap = dot(sub(other_origin, origin), normal)
+            if gap * side > tolerance:
+                excused = True
+                break
+        if not excused:
+            raise ValueError('Cutting plane does not meet the final solid')
+    openings = []
+    for points in inners:
+        center, minor, major = _loop_diameter(points)
+        ring = [line(a, b, refs) for a, b in zip(points, points[1:] + points[:1])]
+        simple_ring(ring, tolerance)
+        openings.append({'center': center[:2], 'dmin': minor, 'dmax': major, 'segments': ring})
+    bolts = value(part['boltGroups'])
+    if len(bolts) != len(groups):
+        raise ValueError('Hole group inventory does not match the part')
+    candidates = []
+    for bolt, group in zip(bolts, groups):
+        if group['classification'] == 'ATTACHMENT_STUD':
+            continue
+        if not isinstance(group['candidates'], list):
+            raise ValueError('Hole parameters are not readable')
+        fastener = value(bolt['properties']['Bolt'])
+        if type(fastener) is not bool:
+            raise ValueError('Bolt/hole-only classification is unknown')
+        targets = bolt['targets']
+        primary = [value(targets[key]) for key in ('partToBoltTo', 'partToBeBolted')]
+        target_ids = [item['id'] for item in primary if item is not None]
+        target_ids += [item['id'] for item in value(targets['otherParts'])]
+        if part['id'] not in target_ids:
+            raise ValueError('Hole group is not associated with the target instance')
+        if fastener is False and 'solidWithHighAccuracy' in bolt:
+            # The cutter solid is optional. When it is stored, a loop of another
+            # size contradicts the opening; tilt alone does not.
+            cutter = value(bolt['solidWithHighAccuracy'])
+            if any(not _face_shows_diameter(cutter, hole['diameter'], tolerance)
+                   for hole in group['candidates']):
+                raise ValueError('Hole-only cutter does not show the opening diameter')
+        for hole in group['candidates']:
+            if not inside_ring(hole['center'], segments, tolerance):
+                raise ValueError('Hole center lies outside the source plate')
+            candidates.append((bolt, group, hole, fastener))
+    claimed = {}
+    for opening_index, opening in enumerate(openings):
+        hits = [candidate_index for candidate_index, (_bolt, _group, hole, _fastener) in enumerate(candidates)
+                if abs(opening['dmin'] - hole['diameter']) <= tolerance
+                and inside_ring(hole['center'], opening['segments'], tolerance)]
+        if len(hits) != 1:
+            raise ValueError('Opening has no unique manufacturing diameter and center')
+        if hits[0] in claimed:
+            raise ValueError('One hole matches more than one opening')
+        claimed[hits[0]] = opening_index
+    for candidate_index, (_bolt, _group, _hole, fastener) in enumerate(candidates):
+        if fastener is False and candidate_index not in claimed:
+            raise ValueError('Hole-only group has no opening in the final solid')
+    holes, evidence = [], []
+    for candidate_index, (bolt, group, hole, fastener) in enumerate(candidates):
+        opening = openings[claimed[candidate_index]] if candidate_index in claimed else None
+        center = opening['center'] if opening else hole['center']
+        source_refs = list(hole['sourceRefs']) + [path + '/finalSolid']
+        item = {'id': hole['id'], 'kind': hole['kind'], 'center': list(center),
+                'diameter': hole['diameter'], 'extension': hole['extension'],
+                'direction': list(hole['direction']),
+                'segments': hole_segments(center, hole['diameter'], hole['extension'],
+                                          hole['direction'], source_refs),
+                'sourceRefs': source_refs, 'ownerIds': [part['id'], bolt['id']],
+                'fastener': fastener, 'basis': 'OBSERVED_FINAL_SOLID_WITHIN_TOLERANCE'}
+        holes.append(item)
+        if fastener:
+            proof = {'status': 'RULE_CONFIRMED_THROUGH_HOLE', 'rule': 'BOLT-THROUGH-01',
+                     'basis': 'USER_CONFIRMED_BOLT_HOLES_ARE_THROUGH',
+                     'shapeBasis': 'BOLT_GROUP_PARAMETERS', 'sourceRef': group['sourceRef'],
+                     'groupId': group['id']}
+        else:
+            proof = {'status': 'OPENING_MATCHED', 'basis': 'CYLINDER_DIAMETER_AND_PROJECTED_CENTER',
+                     'groupId': group['id'], 'sourceRef': group['sourceRef'],
+                     'diameter': hole['diameter'], 'minorDiameter': opening['dmin'],
+                     'majorDiameter': opening['dmax'], 'center': list(opening['center'])}
+        evidence.append(proof)
+    outline = {'kind': 'OUTLINE', 'segments': segments, 'sourceRefs': refs,
+               'basis': 'OBSERVED_FINAL_SOLID_WITHIN_TOLERANCE', 'ownerIds': [part['id']]}
+    return {'status': 'MATCHED', 'outline': outline, 'holes': holes,
+            'operationMappings': [{'operationId': operation['id'], 'status': 'OBSERVED_IN_FINAL_SOLID',
+                                   'sourceKind': operation['runtimeType'], 'sourceRef': path}
+                                  for operation in operations],
+            'solidCheck': {'status': 'MATCHED', 'levels': [low, high], 'thickness': thickness,
+                           'sourceRef': path + '/finalSolid',
+                           'basis': 'OBSERVED_FINAL_SOLID_WITHIN_TOLERANCE'},
+            'scope': 'OBSERVED_FINAL_SOLID', 'modelToleranceMm': tolerance, 'remainingProofs': [],
+            'basis': 'OBSERVED_FINAL_SOLID_WITHIN_TOLERANCE', 'holeEvidence': evidence,
+            'finalHoleSurfaceObservation': 'CAP_OPENING'}
 
 
 def _part_geometry(part, index, source, witness, nc_origin, tolerance, nc_tolerance, observations=None):
@@ -872,6 +1112,18 @@ def _part_geometry(part, index, source, witness, nc_origin, tolerance, nc_tolera
             material['issues'] = material_diagnostics
             if material['status'] != 'MATCHED':
                 issues.extend(material_diagnostics)
+    if material['status'] != 'MATCHED':
+        observed = _checked('OBSERVED_SOLID_UNRESOLVED', lambda: _observed_flat_material(
+            part, outline if outline.get('segments') else {}, groups, frame, path, tolerance), [])
+        if observed.get('status') == 'MATCHED':
+            material = observed
+            material['issues'] = []
+            issues = [item for item in issues if item['code'] not in (
+                'CUT_FINAL_STATE_UNRESOLVED', 'PRISM_UNRESOLVED', 'FITTING_UNRESOLVED')]
+            # No partial-thickness face survived the observed reading, so a failed
+            # narrower section attempt is not a missing section.
+            if section.get('status') != 'MATCHED':
+                section = {'status': 'NOT_APPLICABLE'}
     complete = material['status'] == 'MATCHED'
     final_outline = material['outline'] if complete else (final_cut['outline'] if final_cut['status'] == 'MATCHED' else outline)
     if final_cut['status'] == 'MATCHED':
@@ -1064,7 +1316,7 @@ def audit_native_geometry(capture, model_tolerance_mm=DEFAULT_MODEL_TOLERANCE_MM
         result.setdefault('blockedStage','SOURCE' if origins[index]['status']!='READ_CONSISTENT' else 'COMMON_GEOMETRY')
         result.setdefault('specializedGeometryStatus','UNRESOLVED')
         parts.append(result)
-    return {"schemaVersion": "nativeGeometryAudit.v1", "algorithmVersion": "r2b.12",
+    return {"schemaVersion": "nativeGeometryAudit.v1", "algorithmVersion": "r2b.13",
             "holeObservations": hole_observations,
             "inputDigest": digest, "captureDigest": digest if capture.get("schemaVersion") == "teklaNcCapture.v1" else None,
             "nativeEvidenceSha256": native_sha256,

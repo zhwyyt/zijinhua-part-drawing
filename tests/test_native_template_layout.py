@@ -61,8 +61,11 @@ class NativeTemplateLayoutTests(unittest.TestCase):
     def test_template_uses_the_smallest_series_scale_that_fits(self):
         req, geo, part, snapshot = self.data()
         fitted = build_layout(req, geo, part, template=snapshot)
-        envelope = fitted['layout']['envelope']
-        tight = _open_sheet(snapshot, envelope[2]-envelope[0]-1, envelope[3]-envelope[1]-1)
+        # One scale-1 arrangement is larger than another once the bolt note sits
+        # outside the plate, so a page one unit under that envelope can still fit.
+        # This page is the part plus 40 mm, which cannot hold that outside note at 1:1.
+        bounds = req['facts']['bounds']
+        tight = _open_sheet(snapshot, bounds[2]-bounds[0]+40, bounds[3]-bounds[1]+40)
         with self.assertRaisesRegex(ValueError, 'LAYOUT_OVERFLOW'):
             build_layout(req, geo, part, scale=1, template=tight)
         plan = build_layout(req, geo, part, template=tight)
@@ -78,6 +81,27 @@ class NativeTemplateLayoutTests(unittest.TestCase):
                             [d['distance'] for d in plan['dimensions']])
         with self.assertRaisesRegex(ValueError, 'LAYOUT_OVERFLOW'):
             build_layout(req, geo, part, template=tight, _view_scale=series[series.index(plan['scale'])-1])
+
+    def test_short_free_band_keeps_the_overall_side_and_moves_it_closer(self):
+        from test_native_sections import capture, evaluate
+        raw = capture()
+        req, geo = evaluate(raw)
+        part = raw['parts'][0]
+        template = evidence()
+        template['partId'] = part['id']
+        snapshot = build_template_snapshot(template, 'fixture-model', part['id'], 25)
+        # The preferred overall lane is 30 font-units, 300 mm from an empty side.
+        # This band can hold the closer line plus the section, not that offset.
+        plan = build_layout(req, geo, part, template=_open_sheet(snapshot, 4000, 750))
+        self.assertEqual('READY', plan['status'], plan.get('readability'))
+        self.assertEqual(1, plan['scale'])
+        overall = next(d for d in plan['dimensions'] if d['key'] == 'overall-0')
+        self.assertEqual([0, -1], overall['up'])
+        line = overall['coordinates'][0][1]+overall['up'][1]*overall['distance']
+        self.assertGreater(line, -300)
+        self.assertEqual('6*D26(56x26)', next(n['text'] for n in plan['notes'] if n['kind'] == 'hole_callout'))
+        self.assertEqual(['section:0'], [s['viewId'] for s in plan['sections']])
+        self.assertLessEqual(plan['viewPlan']['availableArea'][3]-plan['viewPlan']['availableArea'][1], 750)
 
     def test_scale_50_still_overflows(self):
         req, geo, part, snapshot = self.data()

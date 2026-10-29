@@ -133,6 +133,8 @@ internal static class NativeDrawing {
                     var templateAfter=TemplateCapture.Capture(drawing,job.modelPath,job.attributeFile);
                     File.WriteAllText(Path.Combine(output,p.id+".template-after.json"),Json.Serialize(templateAfter));
                     var report=Read(drawing,p,templateAfter.signature);File.WriteAllText(Path.Combine(output,p.id+".json"),Json.Serialize(report));
+                    var scaleLabels=TemplateCapture.ScaleLabels(templateAfter.paper);
+                    Need(scaleLabels.All(label=>label==TemplateCapture.ExpectedScaleLabel(p.scale)),"Title scale label differs from the view scale");
                     Need(templateAfter.signature==p.viewPlan.templateSignature,"Template changed after saved reopen");
                     CloseTarget(handler,drawing,false);opened=null;
                     var print=new D.PrintAttributes();print.PrinterInstance="DXF";print.Scale=1;
@@ -263,7 +265,7 @@ internal static class NativeDrawing {
             var bolt=o as D.Bolt;if(bolt!=null) {
                 var a=bolt.Attributes;
                 if(Symbol(p,bolt.ModelIdentifier.ID)) {
-                    // Planned symbol: every position is exactly one final round hole.
+                    // Planned symbol: every position is exactly one final bolt hole.
                     a.Representation=D.Bolt.Representation.Symbol2;a.Color=D.DrawingColors.Green;
                     a.SymbolContainsHole=true;a.SymbolContainsAxis=true;bolt.Attributes=a;
                     bolt.Hideable.ShowInDrawingView();Need(bolt.Modify(),"Show bolt symbol failed");continue;

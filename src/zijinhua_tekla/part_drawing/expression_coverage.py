@@ -202,8 +202,8 @@ class _Coverage:
         keys = ("diameter",) if group["kind"] == "ROUND" else ("width", "length", "angle")
         if not all(_close(item[k], round(group[k],1) if item.get('valueBasis')=='DISPLAY_TEXT' and k!='angle' else group[k]) for k in keys):
             raise ValueError("hole size/orientation mismatch")
-        text = f"{len(members)}Φ{_number(group['diameter'])}" if group["kind"] == "ROUND" else (
-            f"{len(members)}×D{_number(group['width'])}({_number(group['length'])}×{_number(group['width'])})")
+        from .dimension_scheme import hole_callout_text
+        text = hole_callout_text({**group, "count": len(members)})
         if item["text"] != text:
             raise ValueError("hole callout text mismatch")
         if any(member in self.hole_notes for member in members):
@@ -222,15 +222,25 @@ class _Coverage:
         self.mark(f"hole:{hole['id']}/shape", object_id)
 
     def bolt_symbol(self, item, object_id):
-        """A Tekla bolt symbol with hole and axis drawn shows a round hole and its cross."""
+        """A Tekla bolt symbol with hole and axis drawn shows the bolt hole and its cross."""
         hole = next(h for h in self.facts["holes"] if h["id"] == item["holeId"])
-        if (hole["kind"] != "ROUND" or item.get("holeKind") != "ROUND" or item.get("containsHole") is not True
-                or item.get("containsAxis") is not True or not item.get("representation", "").startswith("Symbol")
-                or not all(_close(a, b, self.geometry_tolerance) for a, b in zip(item["center"], self.facts["points"][hole["pointId"]]))
-                or len(item["center"]) != 2 or not _close(item["diameter"], hole["diameter"], self.geometry_tolerance)):
-            raise ValueError("bolt symbol does not show the source round hole")
+        same_kind = item.get("holeKind") == hole["kind"]
+        shown = (item.get("containsHole") is True and item.get("containsAxis") is True
+                 and str(item.get("representation", "")).startswith("Symbol"))
+        center_ok = (len(item.get("center") or []) == 2 and all(
+            _close(a, b, self.geometry_tolerance) for a, b in zip(item["center"], self.facts["points"][hole["pointId"]])))
+        if hole["kind"] == "ROUND":
+            size_ok = _close(item.get("diameter"), hole["diameter"], self.geometry_tolerance)
+        elif hole["kind"] == "SLOT":
+            size_ok = all(_close(item.get(k), hole[k], self.geometry_tolerance) for k in ("width", "length", "angle"))
+        else:
+            size_ok = False
+        if not (same_kind and shown and center_ok and size_ok):
+            raise ValueError("bolt symbol does not show the source bolt hole")
         self.mark(f"hole:{hole['id']}/shape", object_id)
         self.mark(f"hole:{hole['id']}/center_cross", object_id)
+        if hole["kind"] == "SLOT":
+            self.mark(f"hole:{hole['id']}/orientation", object_id)
 
     def center_lines(self, item, object_id):
         hole = next(h for h in self.facts["holes"] if h["id"] == item["holeId"])

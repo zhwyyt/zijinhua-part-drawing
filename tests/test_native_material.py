@@ -126,14 +126,18 @@ class NativeMaterialTests(unittest.TestCase):
         part['finalSolid'] = read(final_solid(holes=[(circle_points([40,30],5),10)]))
         self.assertNotEqual('SUFFICIENT',self.report(raw)['evidenceSufficiency'])
 
-    def test_rule_cannot_guess_multitarget_special_hole_parameters(self):
+    def test_multitarget_slot_uses_the_bolt_groups_own_parameters(self):
         raw = plate_with_hole()
         part = raw['parts'][0]
         part['finalSolid'] = read(prism(RECT))
         group = part['boltGroups']['value'][0]
         group['properties']['SlottedHoleX'] = read(20)
         group['targets']['otherParts'] = read([{'id':99}])
-        self.assertEqual('UNRESOLVED',self.report(raw)['materialFinalState']['status'])
+        material = self.report(raw)['materialFinalState']
+        self.assertEqual('MATCHED', material['status'], material)
+        proof = material['holeEvidence'][0]
+        self.assertEqual('RULE_CONFIRMED_THROUGH_HOLE', proof['status'])
+        self.assertEqual('BOLT_GROUP_PARAMETERS', proof['shapeBasis'])
 
     def test_rule_cannot_override_missing_source_identity(self):
         raw = plate_with_hole()

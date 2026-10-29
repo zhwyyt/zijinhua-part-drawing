@@ -70,6 +70,13 @@ class DisplayTests(unittest.TestCase):
 
 
 class BoltSymbolTests(unittest.TestCase):
+    def test_round_bolt_hole_uses_the_slot_form_with_zero_extension(self):
+        req, geo, raw = plate()
+        plan = build_layout(req, geo, raw)
+        note = next(n for n in plan['notes'] if n['kind']=='hole_callout')
+        self.assertEqual('1*D10(10x10)', note['text'])
+        self.assertEqual(['SYMBOL'], [b['display'] for b in plan['bolts']])
+
     def test_group_with_a_position_lost_to_cutting_stays_hidden(self):
         req, geo, raw = plate()
         facts = copy.deepcopy(req['facts'])

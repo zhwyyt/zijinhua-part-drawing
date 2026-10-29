@@ -11,7 +11,7 @@ python -m zijinhua_tekla.cli draw-native-parts --out outputs/native-drawing/new-
 
 需要NC补逐板孔形时，可提供 `--nc-settings-file <已有.ncfs文件>`，在新目录导出并核对采集前后源、编号、逐孔映射；不修改NC设置，不跳过几何门。
 
-M4：`--drawing-attributes`指定新图属性，已有自有图沿用其原模板。保存实时纸面原始证据与归一化快照；字高 25，图幅取模板。视图优先 1:1，放不下时接受 2、2.5、5、10、20、50，且必须与 `viewPlan.scale` 一致；剖面使用同一比例。表格、说明及图框共同约束可用区；模板缺失、未知图元或比例 50 仍放不下均阻断，不回退固定预留。新图准备成功即登记页号，后续规划失败也保留证据。见[M4设计](../../docs/design/2026-10-23-m4-live-template-snapshot.md)。
+M4：`--drawing-attributes`指定新图属性，已有自有图沿用其原模板。保存实时纸面原始证据与归一化快照；字高 25，图幅取模板。视图优先 1:1，放不下时接受 2、2.5、5、10、20、50，且必须与 `viewPlan.scale` 一致；剖面使用同一比例。表格、说明及图框共同约束可用区；模板缺失、未知图元或比例 50 仍放不下均阻断，不回退固定预留。标题栏比例文字（`1:2` 这类）不计入模板指纹，但保存后必须等于本次视图比例；图框或其他文字变化仍拒绝。新图准备成功即登记页号，后续规划失败也保留证据。见[M4设计](../../docs/design/2026-10-23-m4-live-template-snapshot.md)。
 
 v2 剖面：`sections` 各自携带 frame、cut、viewPlan 和标注命令；使用 `View.CreateSectionView` 创建真实 SectionView / SectionMark，全部视图预检所有权后才替换。每个视图读回 modelId、坐标系、原点和对象；主图与剖面覆盖、图面、纸面区域分别核验。`sourceFrame` 专门核对原始 DSTV，绘图 frame 可以是经几何核验的板面坐标系。2026-10-26 当前T2-10B-304主图＋A-A自有第1页已两次保存重开/SDK/DXF/源重查PASS，519项回归通过。见实测。
 

@@ -218,13 +218,16 @@ class ModelingIndependentPlateTests(unittest.TestCase):
         self.assertTrue(_point_set_equal(outline_points(reversed_result), expected, .1))
 
     def test_fitting_rejects_thickness_tilt_missed_plane_and_unmapped_child(self):
+        # A square end the solid actually has is measurable. The fitting plane
+        # being oblique through the thickness is not a separate block.
         oblique = fitting(30, (80, 0, 0), (0, 1, 0), (1, 0, 1))
+        raw = fit_plate([oblique], final_solid([[0, 0], [80, 0], [80, 60], [0, 60]]))
+        result = report(raw)
+        self.assertEqual('SUFFICIENT', result['evidenceSufficiency'], result['issues'])
+        self.assertTrue(_point_set_equal(outline_points(result), [[0, 0], [80, 0], [80, 60], [0, 60]], .1))
         missed = fitting(30, (80, 0, 0))
-        for op, solid in (
-            (oblique, final_solid([[0, 0], [80, 0], [80, 60], [0, 60]])),
-            (missed, final_solid([[0, 0], [70, 0], [70, 60], [0, 60]])),
-        ):
-            self.assertNotEqual('SUFFICIENT', report(fit_plate([op], solid))['evidenceSufficiency'])
+        missed_plate = fit_plate([missed], final_solid([[0, 0], [70, 0], [70, 60], [0, 60]]))
+        self.assertNotEqual('SUFFICIENT', report(missed_plate)['evidenceSufficiency'])
         raw = fit_plate([fitting(30, (80, 0, 0))], final_solid([[0, 0], [80, 0], [80, 60], [0, 60]]))
         raw['parts'][0]['children']['value'].append({'id': 99, 'runtimeType': 'Tekla.Structures.Model.Fitting'})
         self.assertNotEqual('SUFFICIENT', report(raw)['evidenceSufficiency'])

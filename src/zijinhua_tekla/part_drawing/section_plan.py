@@ -97,19 +97,37 @@ def build_section_layout(requirement, font_height, scale):
                 sectionRequirement=requirement,schemeDigest=content_digest(scheme))
 
 
+def _combined_paper(template, main_envelope, sections, view_scale):
+    font = template['style']['fontHeight']
+    envelopes = [main_envelope]+[s['layout']['envelope'] for s in sections]
+    sizes = [[(e[2]-e[0])/view_scale+4*font,(e[3]-e[1])/view_scale+4*font] for e in envelopes]
+    return sum(s[0] for s in sizes)+4*font*(len(sizes)-1), max(s[1] for s in sizes), sizes
+
+
+def _views_fit(template, main_envelope, sections, view_scale):
+    from .view_plan import build_view_plan
+    width, height, _ = _combined_paper(template, main_envelope, sections, view_scale)
+    try:
+        build_view_plan(template, [0, 0, width, height])
+        return True
+    except ValueError as error:
+        if str(error).startswith('LAYOUT_OVERFLOW'):
+            return False
+        raise
+
+
 def allocate_views(template, main, sections):
     """Reserve disjoint paper rectangles. Model envelopes are divided by the shared view scale once."""
     from .view_plan import build_view_plan
     view_scale = main['scale']
-    font = template['style']['fontHeight']; envelopes = [main['layout']['envelope']]+[s['layout']['envelope'] for s in sections]
-    sizes = [[(e[2]-e[0])/view_scale+4*font,(e[3]-e[1])/view_scale+4*font] for e in envelopes]
-    width = sum(s[0] for s in sizes)+4*font*(len(sizes)-1); height = max(s[1] for s in sizes)
-    base = build_view_plan(template,[0,0,width,height])
+    width, height, sizes = _combined_paper(template, main['layout']['envelope'], sections, view_scale)
+    base = build_view_plan(template, [0, 0, width, height])
     area = base['availableArea']; x = area[0]; views = [main]+sections
+    gap = 4*template['style']['fontHeight']
     for view,size in zip(views,sizes):
         view['viewPlan'] = dict(base,availableArea=[x,area[1],x+size[0],area[3]],
                                 plannedEnvelope=view['layout']['envelope'],scale=view_scale)
-        x += size[0]+4*font
+        x += size[0]+gap
     return base
 
 
@@ -145,15 +163,24 @@ def attach_sections(plan, requirements, template):
             edge=material[cross+(2 if side>0 else 0)]
             for lane in range(16):
                 pt=[0.,0.];pt[axis]=r['station'];pt[cross]=edge+side*(2*height+2+lane*2*height)*view_scale
-                half=2*height*view_scale
+                # The tag sits one font toward the part. Sideways and outward stay
+                # one font, so the box can pass between bolt-hole witnesses.
+                half=height*view_scale
+                inward=2*height*view_scale
                 bounds=[pt[0]-half,pt[1]-half,pt[0]+half,pt[1]+half]
+                if side>0:
+                    bounds[cross]=pt[cross]-inward
+                else:
+                    bounds[cross+2]=pt[cross]+inward
                 rect=box(*bounds)
+                grown=[min(extent[0],bounds[0]),min(extent[1],bounds[1]),max(extent[2],bounds[2]),max(extent[3],bounds[3])]
                 if (any(overlaps(bounds,b['bounds']) for b in plan['layout']['textBoxes']) or
-                        any(rect.intersects(LineString(line)) for line in lines)):
+                        any(rect.intersects(LineString(line)) for line in lines) or
+                        not _views_fit(template, grown, sections, view_scale)):
                     continue
                 ends.append(pt)
                 plan['layout']['textBoxes'].append(dict(key='section-mark:'+r['id'],text=r['label'],bounds=bounds))
-                extent=[min(extent[0],bounds[0]),min(extent[1],bounds[1]),max(extent[2],bounds[2]),max(extent[3],bounds[3])]
+                extent=grown
                 break
             else:
                 raise ValueError('LAYOUT_OVERFLOW: no collision-free section mark candidate')

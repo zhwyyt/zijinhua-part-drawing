@@ -70,6 +70,17 @@ def hole_boundary(hole, center):
             {'kind': 'arc', 'start': at(ends[0], 0, -r), 'center': ends[0], 'end': at(ends[0], 0, r)}]
 
 
+def bolt_hole_tip(members, facts):
+    """Arrow at the outermost hole center on the longer plate axis."""
+    bounds = facts['bounds']
+    axis = 0 if bounds[2]-bounds[0] >= bounds[3]-bounds[1] else 1
+    def rank(hole):
+        point = facts['points'][hole['pointId']]
+        return (point[axis], point[1-axis], hole['id'])
+    chosen = max(members, key=rank)
+    return facts['points'][chosen['pointId']]
+
+
 def near_hole_anchor(hole, center, at):
     if hole['kind'] == 'ROUND':
         d = math.dist(center, at)
@@ -110,9 +121,9 @@ BOLT_SHARED = re.compile(r'/boltGroups/value/(\d+)/(properties|targets)$')
 
 
 def bolt_display(facts, raw_part):
-    """A bolt group is drawn as its Tekla symbol only when each of its positions
-    is exactly one final round hole made by that position alone; any other
-    group stays hidden and its final holes are drawn from the material result."""
+    """A bolt group is drawn as its Tekla symbol when each position is exactly
+    one final round or slotted hole from that position. Any other group stays
+    hidden and its final holes are drawn from the material result."""
     groups = (raw_part.get('boltGroups') or {}).get('value') or []
     refs = facts.get('sourceFeatureRefs') or {}
     owner = {}
@@ -121,7 +132,7 @@ def bolt_display(facts, raw_part):
         positions = [BOLT_POSITION.search(r) for r in sources]
         shared = [BOLT_SHARED.search(r) for r in sources]
         found = [(int(m.group(1)), int(m.group(2))) for m in positions if m]
-        if (h['kind'] == 'ROUND' and len(found) == 1 and
+        if (h['kind'] in ('ROUND', 'SLOT') and len(found) == 1 and
                 all(m or s and int(s.group(1)) == found[0][0] for m, s in zip(positions, shared))):
             owner[h['id']] = found[0]
     result = []
@@ -271,6 +282,7 @@ def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, temp
     circular = features['circular']
     decimals = profile['display']['decimals']
     minimum = profile['pitch']['minIntervals']
+    bolt_points = {h['pointId'] for h in facts['holes'] if h.get('origin') == 'BOLT'}
 
     # Scheme groups become native dimension commands; lanes are paper offsets.
     side_placements = []
@@ -289,7 +301,8 @@ def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, temp
         values = [abs(b[axis]-a[axis]) for a,b in zip(pts,pts[1:])]
         # Tekla combines equal consecutive intervals itself (n@p); the plan only
         # predicts those runs so witnesses inside them are not drawn.
-        runs = combine_runs(values, minimum, tol)
+        # Shop bolt-hole chains stay separate dimensions, including equal pitches.
+        runs = [] if any(point in bolt_points for point in ids) else combine_runs(values, minimum, tol)
         command = dict(key=group['key'],axis='xy'[axis],points=ids,coordinates=pts,up=up,distance=distance,
                        role=group['role'],combine=bool(runs),combineRuns=runs,values=values,
                        displayValues=[display_round(v,decimals) for v in values])
@@ -348,8 +361,13 @@ def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, temp
         c=facts['points'][h['pointId']]
         if h['id'] in symbols:
             # The Tekla bolt symbol draws this hole and its axes.
-            objects.append(dict(objectId='symbol-'+h['id'],kind='bolt_symbol',holeId=h['id'],holeKind=h['kind'],center=c,
-                                diameter=h['diameter'],modelId=symbols[h['id']]['modelId'],**profile['holes']['symbol']))
+            symbol = dict(objectId='symbol-'+h['id'],kind='bolt_symbol',holeId=h['id'],holeKind=h['kind'],center=c,
+                          modelId=symbols[h['id']]['modelId'],**profile['holes']['symbol'])
+            if h['kind'] == 'ROUND':
+                symbol['diameter'] = h['diameter']
+            else:
+                symbol.update(width=h['width'], length=h['length'], angle=h['angle'])
+            objects.append(symbol)
             continue
         objects.append(dict(objectId='shape-'+h['id'],kind='hole_shape',holeId=h['id'],holeKind=h['kind'],visible=True,center=c,
                             **{k:v for k,v in h.items() if k in ('diameter','width','length','angle')}))
@@ -368,20 +386,26 @@ def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, temp
         g,text=callout['group'],callout['text']
         members=[h for h in facts['holes'] if h['id'] in g['members']]
         placements=[]
+        bolt_tip = bolt_hole_tip(members, facts) if g.get('origin')=='BOLT' else None
+        if bolt_tip is None:
+            for member in members:
+                center=facts['points'][member['pointId']]
+                for dx,dy in ((12,18),(-12,18),(12,-18),(-12,-18)):
+                    at=[center[0]+dx*scale,center[1]+dy*scale]
+                    area=box(*note_bounds(text,at,2.5*scale,leader=True))
+                    tip=near_hole_anchor(member,center,at)
+                    if polygon.contains(area) and polygon.buffer(tol).covers(LineString([tip,at])):
+                        placements.append((at,tip))
         for member in members:
-            center=facts['points'][member['pointId']]
-            for dx,dy in ((12,18),(-12,18),(12,-18),(-12,-18)):
-                at=[center[0]+dx*scale,center[1]+dy*scale]
-                area=box(*note_bounds(text,at,2.5*scale,leader=True))
-                tip=near_hole_anchor(member,center,at)
-                if polygon.contains(area) and polygon.buffer(tol).covers(LineString([tip,at])):
-                    placements.append((at,tip))
-        for member in members:
-            center=facts['points'][member['pointId']]
+            center=bolt_tip or facts['points'][member['pointId']]
             gap=(35+index*10)*scale*spacing
             for at in ([center[0]+12*scale,y1+gap],[x1+gap,center[1]],[x0-gap,center[1]],[center[0],y0-gap]):
-                placements.append((at,near_hole_anchor(member,center,at)))
-        note(g['id'],'hole_callout',text,None,candidates=[dict(at=at,tip=tip) for at,tip in placements],members=g['members'])
+                tip = bolt_tip if bolt_tip is not None else near_hole_anchor(member,center,at)
+                placements.append((at,tip))
+            if bolt_tip is not None:
+                break
+        note(g['id'],'hole_callout',text,None,candidates=[dict(at=at,tip=tip) for at,tip in placements],
+             members=g['members'],leaderStartsInOwnHole=bolt_tip is not None)
         objects.append(dict(objectId=g['id'],kind='hole_callout',holeKind=g['kind'],text=text,**{k:v for k,v in g.items() if k not in ('id','kind')}))
 
     arcs=[s for s in facts['segments'] if s['kind']=='ARC']
@@ -428,6 +452,12 @@ def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, temp
         note('spec:'+aspect,'specification',spec['value'],[(x0+x1)/2,y0-(65+10*index)*scale*spacing],feature=aspect)
         objects.append(dict(objectId='spec:'+aspect,kind='specification',aspect=aspect,text=spec['value']))
     padding = 5*scale
+    font = template['style']['fontHeight'] if template is not None else 0
+    section_envelopes = []
+    if template is not None and requirements.get('sectionRequirements'):
+        from .section_plan import build_section_layout
+        section_envelopes = [build_section_layout(item, font, view_scale)['layout']['envelope']
+                             for item in requirements['sectionRequirements']]
 
     @lru_cache(maxsize=4096)
     def fits_extent(extent):
@@ -444,7 +474,16 @@ def build_layout(requirements, geometry, raw_part, scale=None, spacing=1.0, temp
         return width<=1189 and height<=841
 
     def fits(chosen):
-        return fits_extent(tuple(scene_envelope(chosen,bounds,padding)))
+        extent = scene_envelope(chosen, bounds, padding)
+        if section_envelopes:
+            # allocate_views adds the same paper margin and places the section beside the main view.
+            extra = 4*font
+            envelopes = [extent]+section_envelopes
+            sizes = [[(e[2]-e[0])/view_scale+extra, (e[3]-e[1])/view_scale+extra] for e in envelopes]
+            width = sum(s[0] for s in sizes)+extra*(len(sizes)-1)
+            height = max(s[1] for s in sizes)
+            extent = [0, 0, width*view_scale, height*view_scale]
+        return fits_extent(tuple(extent))
 
     if template is not None and not fits_extent((x0-padding, y0-padding, x1+padding, y1+padding)):
         raise LayoutOverflow(dict(status='LAYOUT_OVERFLOW', reason='TEMPLATE_ENVELOPE_OVERFLOW',

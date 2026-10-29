@@ -297,9 +297,12 @@ class NativeGeometryTests(unittest.TestCase):
         for cap, projected in zip(check['capEvidence'],check['targetCapEvidence']):
             self.assertEqual(1-cap['level'],projected['targetLevel'])
 
-    def test_missing_solid_edges_are_not_full_prism_evidence(self):
+    def test_readable_faces_do_not_need_the_edge_catalog(self):
         change_part(self.capture,lambda p:p['finalSolid']['value'].update(edges=read([])))
-        self.assertEqual(1,self.report()['unresolvedCount'])
+        audit = self.report()
+        part = audit['parts'][0]
+        self.assertEqual(0, audit['unresolvedCount'])
+        self.assertEqual('OBSERVED_FINAL_SOLID_WITHIN_TOLERANCE', part['materialFinalState']['basis'])
 
     def test_repeated_hole_observations_preserved_not_counted_as_holes(self):
         add_hole(self.capture)
@@ -323,12 +326,19 @@ class NativeGeometryTests(unittest.TestCase):
         changes=[lambda b:b['targets'].update(partToBoltTo=read({'id':999})),
                  lambda b:b.update(coordinateSystem=read(dict(FRAME,axisY=[0,0,1]))),
                  lambda b:b['properties'].update(RotateSlots=read({'name':'ROTATE_SLOTS_ODD'})),
-                 lambda b:b['properties'].update(Bolt=read(True)),
                  lambda b:b['properties'].update(BoltStandard=read('STUD'))]
         for change in changes:
             self.capture=native_capture();add_hole(self.capture,20)
             change_part(self.capture,lambda p:change(p['boltGroups']['value'][0]))
             self.assertEqual(1,self.report()['unresolvedCount'])
+
+    def test_bolt_slot_without_a_solid_loop_stays_a_parameter_hole(self):
+        add_hole(self.capture, 20)
+        change_part(self.capture, lambda p: p['boltGroups']['value'][0]['properties'].update(Bolt=read(True)))
+        audit = self.report()
+        part = audit['parts'][0]
+        self.assertEqual(0, audit['unresolvedCount'], part.get('issues'))
+        self.assertEqual('BOLT-THROUGH-01', part['materialFinalState']['holeEvidence'][0]['rule'])
 
     def test_hole_wrong_radius_partial_depth_and_position_blocked(self):
         changes=[lambda b:b['properties'].update(Tolerance=read(3)),

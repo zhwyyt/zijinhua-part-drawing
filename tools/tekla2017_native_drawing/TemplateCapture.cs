@@ -4,8 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 using D = Tekla.Structures.Drawing;
 
@@ -18,6 +20,39 @@ public class TemplateEvidence {
 
 internal static class TemplateCapture {
     static readonly JavaScriptSerializer Json = new JavaScriptSerializer {MaxJsonLength=Int32.MaxValue,RecursionLimit=100};
+    static readonly Regex ScaleLabel = new Regex(@"^1:\d+(\.\d+)?$", RegexOptions.CultureInvariant);
+    // Tekla rewrites the title-block scale when the view denominator changes.
+    // The template fingerprint ignores that inscription. The writer still requires
+    // every such text to equal the planned scale.
+    public static string ExpectedScaleLabel(double scale) {
+        if(Math.Abs(scale-Math.Round(scale))<1e-9)
+            return "1:"+((int)Math.Round(scale)).ToString(CultureInfo.InvariantCulture);
+        return "1:"+scale.ToString("0.##",CultureInfo.InvariantCulture);
+    }
+    public static List<string> ScaleLabels(object node) {
+        var found=new List<string>();CollectScaleLabels(node,found);return found;
+    }
+    static void CollectScaleLabels(object node,List<string> found) {
+        var text=node as string;
+        if(text!=null) { if(ScaleLabel.IsMatch(text)) found.Add(text); return; }
+        var dict=node as IDictionary;
+        if(dict!=null) { foreach(DictionaryEntry entry in dict) CollectScaleLabels(entry.Value,found); return; }
+        var list=node as IEnumerable;
+        if(list!=null) { foreach(var item in list) CollectScaleLabels(item,found); }
+    }
+    static object NormalizeScaleLabel(object node) {
+        var text=node as string;
+        if(text!=null) return ScaleLabel.IsMatch(text)?"1:*":text;
+        var dict=node as IDictionary;
+        if(dict!=null) {
+            var copy=new Dictionary<string,object>();
+            foreach(DictionaryEntry entry in dict) copy[Convert.ToString(entry.Key)]=NormalizeScaleLabel(entry.Value);
+            return copy;
+        }
+        var list=node as IList;
+        if(list!=null) { var copy=new List<object>(); foreach(var item in list) copy.Add(NormalizeScaleLabel(item)); return copy; }
+        return node;
+    }
     static object Data(object value,int depth) {
         if(value==null)return null;
         var type=value.GetType();
@@ -70,7 +105,7 @@ internal static class TemplateCapture {
                 paper.Add(Data(item,0));
             }
             if(paper.Count!=1||matched!=origins.Count)throw new InvalidOperationException("Template paper layer is not uniquely identified");
-            var encoded=Encoding.UTF8.GetBytes(Json.Serialize(paper[0]));string signature;
+            var encoded=Encoding.UTF8.GetBytes(Json.Serialize(NormalizeScaleLabel(paper[0])));string signature;
             using(var hash=SHA256.Create())signature=BitConverter.ToString(hash.ComputeHash(encoded)).Replace("-","").ToLowerInvariant();
             return new TemplateEvidence {modelPath=modelPath,capturedUtc=DateTime.UtcNow.ToString("o"),
                 partId=drawing.PartIdentifier.ID,sheetNumber=drawing.SheetNumber,mark=drawing.Mark,

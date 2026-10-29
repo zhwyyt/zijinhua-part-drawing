@@ -2,7 +2,9 @@
 
 独立查询模型并保存 `teklaNativeEvidence.v1`。用于原生零件图的新读取路线，不依赖旧导出器，不生成图纸。Python `read-native-facts` 消费该证据，建立带来源的事实目录。
 
-当前读取器版本r2b.11、几何审计r2b.12。目标和 Boolean 操作体的 `rawSolid`（SDK RAW、不含 Boolean）及操作体 ID，与 `finalSolid` 分别保存。隐式当前选择中的非Part对象保留为`SKIPPED_NON_PART`，关联孔组仍从Part完整读取；全为非Part/空选择及显式ID中的非Part仍报错。
+当前读取器版本r2b.11、几何审计r2b.13。目标和 Boolean 操作体的 `rawSolid`（SDK RAW、不含 Boolean）及操作体 ID，与 `finalSolid` 分别保存。隐式当前选择中的非Part对象保留为`SKIPPED_NON_PART`，关联孔组仍从Part完整读取；全为非Part/空选择及显式ID中的非Part仍报错。
+
+r2b.13 在逐操作证明失败后，对能读出两块厚度盖、厚度、外轮廓和孔的平直板改用终态实体。斜穿厚度的圆孔仍是普通 `nΦd`，孔心取盖上环的投影中心。单独碰不到实体的切面、部分厚度坡口、矛盾来源和已提供但对不上的 NC 仍阻断。读取器和 schema 不变。
 
 Python审计r2b.12先生成通用几何事实和 `partType`，再选择专用核验。平直/折弯形态不由runtimeType或profile决定；非平直及缺证在 `TYPE_ROUTING` 阶段明确停止，来源异常另为 `SOURCE`。已识别平直板仍需完整加工终态证明。原始读取器和schema不变，无需为本次分层重新采集已有完整证据。见[设计](../../docs/design/2026-10-26-geometric-part-types.md)。
 

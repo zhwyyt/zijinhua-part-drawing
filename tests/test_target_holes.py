@@ -36,7 +36,7 @@ class TargetHoleTests(unittest.TestCase):
         self.assertEqual(6,len(h['targetShapeEvidence']['mappings']))
         self.assertEqual(45,round(g['sectionGeometry']['bevels'][0]['angle']))
 
-    def test_real_template_fits_main_and_section_with_unscaled_center_extensions(self):
+    def test_real_template_fits_main_and_section_with_bolt_symbol(self):
         c=capture();r,g=evaluate(c)
         raw=json.loads(base64.b64decode(c['before']['bytesBase64']))
         evidence=json.loads((Path(__file__).parent/'fixtures/native_sections/active_template.json').read_text('utf-8'))
@@ -45,8 +45,10 @@ class TargetHoleTests(unittest.TestCase):
         self.assertEqual('READY',p['status'])
         self.assertEqual('PLAN_COMPLETE',p['sectionCoverage']['status'])
         self.assertEqual(25,next(n['height'] for n in p['notes'] if n['kind']=='label'))
-        centers=[v for v in p['curves'] if v['role']=='center']
-        self.assertEqual({30,60},{round(__import__('math').dist(v['start'],v['end'])) for v in centers})
+        # The bolt symbol draws the hole and its axes. Owned centerlines are not planned.
+        self.assertEqual(['SYMBOL'], [b['display'] for b in p['bolts']])
+        self.assertEqual([], [v for v in p['curves'] if v['role'] in ('center', 'hole')])
+        self.assertEqual('6*D26(56x26)', next(n['text'] for n in p['notes'] if n['kind']=='hole_callout'))
         for mark in [b for b in p['layout']['textBoxes'] if b['key'].startswith('section-mark:')]:
             self.assertFalse(any(overlaps(mark['bounds'],b['bounds']) for b in p['layout']['textBoxes'] if b is not mark))
         self.assertFalse(overlaps(p['viewPlan']['availableArea'],p['sections'][0]['viewPlan']['availableArea']))

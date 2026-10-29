@@ -30,6 +30,42 @@ def _witness_visible(expected, render, tolerance, scale):
     return visible.length > tolerance and visible.difference(lines.buffer(tolerance)).is_empty
 
 
+def _faceted_slot(hole, expected, render, tol):
+    """Symbol2 slot outlines are exported as line facets, not ARC entities."""
+    radius=hole['width']/2
+    extra=(hole['length']-hole['width'])/2
+    angle=math.radians(hole.get('angle', 0))
+    direction=[math.cos(angle), math.sin(angle)]
+    spine=LineString([[expected[i]-direction[i]*extra for i in (0,1)],
+                      [expected[i]+direction[i]*extra for i in (0,1)]])
+    solid=spine.buffer(radius, quad_segs=64)
+    boundary=solid.boundary
+    inner=solid.buffer(-max(tol, .5))
+    lines=[]
+    for path in render['paths']:
+        if path['kind']!='LINE' or len(path['points'])<2:
+            continue
+        segment=LineString(path['points'])
+        # Keep the outline. An axis that only crosses the outline is not part of it.
+        if segment.distance(boundary)<=max(tol, .5) and segment.intersection(inner).length<=tol:
+            lines.append(segment)
+    if len(lines)<4:
+        return None
+    points=[point for line in lines for point in line.coords]
+    along=[sum((point[i]-expected[i])*direction[i] for i in (0,1)) for point in points]
+    normal=[-direction[1], direction[0]]
+    across=[sum((point[i]-expected[i])*normal[i] for i in (0,1)) for point in points]
+    measured_length, measured_width=max(along)-min(along), max(across)-min(across)
+    center=[expected[0]+direction[0]*(max(along)+min(along))/2+normal[0]*(max(across)+min(across))/2,
+            expected[1]+direction[1]*(max(along)+min(along))/2+normal[1]*(max(across)+min(across))/2]
+    if abs(measured_length-hole['length'])>tol or abs(measured_width-hole['width'])>tol or math.dist(center, expected)>tol:
+        return None
+    longest=max(lines, key=lambda line: line.length)
+    dx,dy=[longest.coords[-1][i]-longest.coords[0][i] for i in (0,1)]
+    return dict(center=center, width=measured_width, length=measured_length,
+                angle=math.degrees(math.atan2(abs(dy), abs(dx))))
+
+
 def _hole_shapes(requirements,render,tol):
     """Infer circles/capsules from exported arc centers/radii, not planned values."""
     arcs=[p for p in render['paths'] if p['kind'] in ('ARC','CIRCLE')]
@@ -47,7 +83,12 @@ def _hole_shapes(requirements,render,tol):
         else:
             radius=h['width']/2;extension=(h['length']-h['width'])/2
             candidates=[a for a in arcs if abs(a['radius']-radius)<=tol and abs(math.dist(a['center'],expected)-extension)<=tol and abs(a['sweep']-math.pi)<1e-4]
-            if len(candidates)!=2: raise ValueError('Expected two actual slot end arcs '+h['id'])
+            if len(candidates)!=2:
+                faceted=_faceted_slot(h, expected, render, tol)
+                if faceted is None:
+                    raise ValueError('Expected two actual slot end arcs '+h['id'])
+                results.append(dict(kind='hole_shape',objectId='dxf-hole:'+h['id'],holeId=h['id'],holeKind=h['kind'],visible=True,**faceted))
+                continue
             a,b=sorted(candidates,key=lambda p:p['center'])
             dx,dy=[b['center'][i]-a['center'][i] for i in (0,1)]
             measured=dict(center=[(a['center'][i]+b['center'][i])/2 for i in (0,1)],width=a['radius']+b['radius'],
@@ -167,9 +208,14 @@ def readback_observations(requirements,plan,raw,render):
         if bolt:
             # Exported symbol circle measures the hole; axes come from the saved symbol.
             saved=shown[bolt['modelId']]
-            objects.append(dict(kind='bolt_symbol',objectId='dxf-symbol:'+shape['holeId'],holeId=shape['holeId'],holeKind=shape['holeKind'],
-                                center=shape['center'],diameter=shape['diameter'],modelId=bolt['modelId'],representation=saved['representation'],
-                                containsHole=saved['hole'],containsAxis=saved['axis']))
+            symbol=dict(kind='bolt_symbol',objectId='dxf-symbol:'+shape['holeId'],holeId=shape['holeId'],holeKind=shape['holeKind'],
+                        center=shape['center'],modelId=bolt['modelId'],representation=saved['representation'],
+                        containsHole=saved['hole'],containsAxis=saved['axis'])
+            if shape['holeKind']=='ROUND':
+                symbol['diameter']=shape['diameter']
+            else:
+                symbol.update(width=shape['width'],length=shape['length'],angle=shape['angle'])
+            objects.append(symbol)
         else:objects.append(shape)
     for h in facts['holes']:
         if h['id'] in symbols:continue
@@ -200,7 +246,11 @@ def readback_observations(requirements,plan,raw,render):
             if g['kind']=='ROUND':obs['diameter']=values[1]
             else:obs.update(width=values[1],length=values[2],angle=g['angle'])
             representatives=[h for h in facts['holes'] if h['id'] in n['members']]
-            if not any(math.dist(near_hole_anchor(h,facts['points'][h['pointId']],row['at'][:2]),row['tip'][:2])<=tol for h in representatives):
+            if g.get('origin')=='BOLT':
+                from .native_layout import bolt_hole_tip
+                if math.dist(bolt_hole_tip(representatives, facts), row['tip'][:2])>tol:
+                    raise ValueError('Bolt hole leader misses the outermost hole center')
+            elif not any(math.dist(near_hole_anchor(h,facts['points'][h['pointId']],row['at'][:2]),row['tip'][:2])<=tol for h in representatives):
                 raise ValueError('Leader misses the near side of the called-out hole')
         objects.append(obs)
     for r in plan['radii']:
