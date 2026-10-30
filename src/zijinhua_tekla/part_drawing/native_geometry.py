@@ -11,9 +11,9 @@ import math
 from pathlib import Path
 import re
 
-from .analytic_geometry import (sub, dot, norm, unit, cross, frame_axes, project,
+from .analytic_geometry import (add, sub, mul, dot, norm, unit, cross, frame_axes, project,
                                 contour_segments, hole_segments, check_hole_topology, line, inside_ring,
-                                simple_ring)
+                                simple_ring, parameter, three_point_arc)
 from .nc_witness import _bytes, audit_nc_capture
 from .nc_geometry import match_nc_geometry, nc_hole_inventory, NcGeometryConflict
 from .geometry_evidence import native_sources, nc_source, feature_evidence, evidence_sufficiency
@@ -787,12 +787,214 @@ def _face_shows_diameter(solid, diameter, tolerance):
     return False
 
 
+def _distance_to_segment(point, start, end):
+    delta = sub(end, start)
+    length2 = dot(delta, delta)
+    if length2 <= 1e-20:
+        return norm(sub(point, start))
+    scale = max(0.0, min(1.0, dot(sub(point, start), delta) / length2))
+    return norm(sub(point, add(start, mul(delta, scale))))
+
+
+def _loop_distance(point, points):
+    best = None
+    for start, end in zip(points, points[1:] + points[:1]):
+        if norm(sub(end, start)) <= 1e-10:
+            continue
+        distance = _distance_to_segment(point, start, end)
+        best = distance if best is None else min(best, distance)
+    return best
+
+
+def _midpoint(segment):
+    return [(segment['start'][0] + segment['end'][0]) / 2,
+            (segment['start'][1] + segment['end'][1]) / 2]
+
+
+def _on_stock(segment, stock_segments, tolerance):
+    middle = _midpoint(segment)
+    return any(parameter(segment['start'], stock, tolerance) is not None
+               and parameter(segment['end'], stock, tolerance) is not None
+               and parameter(middle, stock, tolerance) is not None
+               for stock in stock_segments)
+
+
+def _on_loop(segment, points, tolerance):
+    distances = [_loop_distance(point, points) for point in (segment['start'], _midpoint(segment), segment['end'])]
+    return all(distance is not None and distance <= tolerance for distance in distances)
+
+
+def _boolean_cut_loops(operations, frame, path):
+    """In-plane cap loops of BooleanPart cutters. Unreadable cutters are skipped."""
+    normal = frame_axes(frame)[2]
+    loops = []
+    for index, operation in enumerate(operations):
+        if operation.get('runtimeType') != 'Tekla.Structures.Model.BooleanPart':
+            continue
+        try:
+            if value(operation['type'])['name'] != 'BOOLEAN_CUT':
+                continue
+            solid = value(operation['operativeSolid'])
+        except (ValueError, KeyError, TypeError):
+            continue
+        source = path + f'/operations/value/{index}/operativeSolid'
+        for face in value(solid['faces']):
+            face_normal = unit(value(face['normal']))
+            if abs(abs(dot(face_normal, normal)) - 1) > 1e-6:
+                continue
+            for loop in value(face['loops']):
+                points = [project(point, frame)[:2] for point in value(loop['vertices'])]
+                if len(points) >= 3:
+                    loops.append({'operationId': operation['id'], 'sourceRef': source, 'points': points})
+    return loops
+
+
+def _line_deviation(points):
+    delta = sub(points[-1], points[0])
+    length = norm(delta)
+    if length <= 1e-12:
+        return None
+    return max(abs(cross(sub(point, points[0]), delta)) / length for point in points[1:-1])
+
+
+def _radial_error(points, arc):
+    return max(abs(norm(sub(point, arc['center'])) - arc['radius']) for point in points)
+
+
+def _chord_error(points, arc):
+    worst = 0.0
+    for start, end in zip(points, points[1:]):
+        middle = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
+        worst = max(worst, abs(norm(sub(middle, arc['center'])) - arc['radius']))
+    return worst
+
+
+def _accept_arc(points, tolerance):
+    """One circle within tolerance, and not a straight line within that tolerance."""
+    deviation = _line_deviation(points)
+    if deviation is None or deviation <= tolerance or len(points) < 4:
+        return None
+    try:
+        primary = three_point_arc(points[0], points[len(points) // 2], points[-1])
+        other = three_point_arc(points[0], points[1], points[-1])
+    except ValueError:
+        return None
+    if (norm(sub(primary['center'], other['center'])) > tolerance
+            or abs(primary['radius'] - other['radius']) > tolerance):
+        return None
+    radial, chord = _radial_error(points, primary), _chord_error(points, primary)
+    if radial > tolerance or chord > tolerance:
+        return None
+    return primary, radial, chord
+
+
+def _cut_runs(flags):
+    count = len(flags)
+    if not any(flags) or all(flags):
+        return []
+    origin = next(index for index, flag in enumerate(flags) if not flag)
+    runs, index = [], 0
+    while index < count:
+        if not flags[(origin + index) % count]:
+            index += 1
+            continue
+        run = []
+        while index < count and flags[(origin + index) % count]:
+            run.append((origin + index) % count)
+            index += 1
+        runs.append(run)
+    return runs
+
+
+def _arc_spans(points, tolerance):
+    spans, start, last = [], 0, len(points) - 1
+    while start < last:
+        found = None
+        for end in range(last, start + 2, -1):
+            if end - start < 3:
+                break
+            accepted = _accept_arc(points[start:end + 1], tolerance)
+            if accepted is not None:
+                found = (end, accepted)
+                break
+        if found is None:
+            start += 1
+            continue
+        end, accepted = found
+        spans.append((start, end, accepted))
+        start = end
+    return spans
+
+
+def fit_cut_produced_contours(segments, stock_segments, cutter_loops, tolerance):
+    """Fit only Boolean-cut outline chains that already lie on the cutter.
+
+    Stock edges, hole symbols, and facets that do not lie on a BooleanPart
+    cutter stay lines. A chain becomes an arc only when its chords are within
+    the model tolerance of one circle and are not themselves a straight line.
+    A failed fit stays a line.
+    """
+    if not segments or not stock_segments or not cutter_loops:
+        return segments
+    flags, owners = [], []
+    for segment in segments:
+        if segment.get('kind') != 'LINE' or _on_stock(segment, stock_segments, tolerance):
+            flags.append(False)
+            owners.append(())
+            continue
+        ids = tuple(sorted({loop['operationId'] for loop in cutter_loops
+                            if _on_loop(segment, loop['points'], tolerance)}))
+        flags.append(bool(ids))
+        owners.append(ids)
+    runs = _cut_runs(flags)
+    if not runs:
+        return segments
+    output = list(segments)
+    for run in runs:
+        points = [segments[index]['start'] for index in run] + [segments[run[-1]]['end']]
+        spans = _arc_spans(points, tolerance)
+        if not spans:
+            continue
+        pieces, cursor = [], 0
+        for start, end, (arc, radial, chord) in spans:
+            pieces.extend(segments[run[index]] for index in range(cursor, start))
+            ids = sorted({op for index in range(start, end) for op in owners[run[index]]})
+            refs = list(segments[run[start]]['sourceRefs'])
+            for loop in cutter_loops:
+                if loop['operationId'] in ids and loop['sourceRef'] not in refs:
+                    refs.append(loop['sourceRef'])
+            pieces.append(dict(arc, sourceRefs=refs, basis='CUT_CONTOUR_FITTED_WITHIN_TOLERANCE',
+                               ownerIds=list(segments[run[start]].get('ownerIds', [])),
+                               fit={'method': 'CUT_CONTOUR_CIRCLE', 'center': list(arc['center']),
+                                    'radius': arc['radius'], 'maxRadialResidualMm': radial,
+                                    'maxChordDeviationMm': chord, 'chordCount': end - start,
+                                    'operationIds': ids}))
+            cursor = end
+        pieces.extend(segments[run[index]] for index in range(cursor, len(run)))
+        output[run[0]] = pieces
+        for index in run[1:]:
+            output[index] = None
+    result = []
+    for item in output:
+        if item is None:
+            continue
+        result.extend(item if isinstance(item, list) else [item])
+    return result
+
+
+def _fit_cut_produced_contours(segments, stock_segments, operations, frame, path, tolerance):
+    return fit_cut_produced_contours(
+        segments, stock_segments, _boolean_cut_loops(operations, frame, path), tolerance)
+
+
 def _observed_flat_material(part, stock_outline, groups, frame, path, tolerance):
     """Admit a flat plate from the final solid when the operation-by-operation proof stops.
 
     The drawn edge, diameter and center are the ones on the solid. A sloped
     cylinder stays an ordinary round hole. A partial-thickness face is a bevel
-    and stays on the section proof.
+    and stays on the section proof. Faceted contours are fitted to arcs only
+    when they are the Boolean-cut boundary and already lie on one circle within
+    the model tolerance. Stock edges and other facets stay lines.
     """
     operations, children = value(part['operations']), value(part['children'])
     if len({op['id'] for op in operations}) != len(operations):
@@ -989,8 +1191,14 @@ def _observed_flat_material(part, stock_outline, groups, frame, path, tolerance)
                      'diameter': hole['diameter'], 'minorDiameter': opening['dmin'],
                      'majorDiameter': opening['dmax'], 'center': list(opening['center'])}
         evidence.append(proof)
+    segments = _fit_cut_produced_contours(
+        segments, stock_outline.get('segments') or [], operations, frame, path, tolerance)
+    simple_ring(segments, tolerance)
     outline = {'kind': 'OUTLINE', 'segments': segments, 'sourceRefs': refs,
                'basis': 'OBSERVED_FINAL_SOLID_WITHIN_TOLERANCE', 'ownerIds': [part['id']]}
+    fits = [segment['fit'] for segment in segments if segment.get('fit')]
+    if fits:
+        outline['cutContourFits'] = fits
     return {'status': 'MATCHED', 'outline': outline, 'holes': holes,
             'operationMappings': [{'operationId': operation['id'], 'status': 'OBSERVED_IN_FINAL_SOLID',
                                    'sourceKind': operation['runtimeType'], 'sourceRef': path}
