@@ -2,9 +2,10 @@
 
 from .contracts import check_seal, require, seal
 from .semantic_coverage import audit_semantics
+from .template_loads import check_load_binding
 
 
-def prepare_layout_input(source, expressions, studies):
+def prepare_layout_input(source, expressions, studies, load_studies=()):
     """A preparation report is deliberately not an executable LayoutInput."""
     check_seal(expressions)
     coverage = audit_semantics(source, expressions)
@@ -20,6 +21,14 @@ def prepare_layout_input(source, expressions, studies):
         seen.add(identity)
         templates.append(dict(templateId=identity, studyDigest=study['digest'],
                               sheetSizeNative=study['sheetSizeNative'], pending=study['pending']))
+    loads = {}
+    by_id = {s['templateId']:s for s in studies}
+    for load in load_studies:
+        identity = load['templateId']
+        require(identity in by_id and identity not in loads, 'LOAD_REPORT_TEMPLATE',
+                'Unknown or duplicate load report')
+        check_load_binding(load,by_id[identity])
+        loads[identity] = load
     objects = expressions['objects']
     holes = [o['objectId'] for o in objects if o['kind']=='HOLE']
     contents = [o['objectId'] for o in objects if o['kind'] in ('THICKNESS','SPECIFICATION','LABEL')]
@@ -31,10 +40,13 @@ def prepare_layout_input(source, expressions, studies):
              dict(gate='NATIVE_SAVE_REOPEN_READBACK',objectIds=[o['objectId'] for o in objects])]
     if holes:
         gates.append(dict(gate='HOLE_SYMBOL_OR_EXPLICIT_GEOMETRY',objectIds=holes))
-    return seal(dict(schemaVersion='LayoutPreparation.v1',status='INPUT_BLOCKED',
+    result = dict(schemaVersion='LayoutPreparation.v1',status='INPUT_BLOCKED',
                      sourceEnvelopeDigest=source['digest'],expressionDigest=expressions['digest'],
                      source=source['source'],semantics=coverage,templateStudies=templates,
                      requiredObjectIds=[o['objectId'] for o in objects],
                      requiredPrimitiveKinds=sorted({o['kind'] for o in objects}),
                      pendingGates=gates,candidateGenerationAllowed=False,nativeWriteAllowed=False,
-                     scope='INPUT_PREPARATION_NOT_LAYOUT_INPUT'))
+                     scope='INPUT_PREPARATION_NOT_LAYOUT_INPUT')
+    if loads:
+        result['templateLoadStudies'] = [loads[key] for key in sorted(loads)]
+    return seal(result)

@@ -22,6 +22,10 @@ def _parser():
     preparation.add_argument('--source', type=Path, required=True)
     preparation.add_argument('--expression', type=Path, required=True)
     preparation.add_argument('--template-study', type=Path, action='append', required=True)
+    preparation.add_argument('--load-study', type=Path, action='append', default=[])
+    loads = commands.add_parser('template-load-study', help='Recheck detached SDK loads and immutable file snapshots')
+    loads.add_argument('--probe', type=Path, required=True, help='Directory containing probe.json and snapshots')
+    loads.add_argument('--template-study', type=Path, required=True)
     template = commands.add_parser('template-study', help='Inspect read-only captures, not production approval')
     template.add_argument('--study', type=Path, required=True)
     template.add_argument('--attributes', type=Path)
@@ -47,7 +51,12 @@ def main(argv=None):
         elif args.command == 'prepare-input':
             from .preparation import prepare_layout_input
             result = prepare_layout_input(read_json(args.source),read_json(args.expression),
-                                          [read_json(p) for p in args.template_study])
+                                          [read_json(p) for p in args.template_study],
+                                          [read_json(p) for p in args.load_study])
+        elif args.command == 'template-load-study':
+            from .template_loads import study_template_load
+            result = study_template_load(read_json(args.probe / 'probe.json'),
+                                         read_json(args.template_study),args.probe)
         elif args.command == 'template-study':
             from .templates import study_template
             capture, objects, presentation = [read_json(args.study / name) for name in

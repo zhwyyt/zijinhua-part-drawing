@@ -10,6 +10,7 @@
 | `expressions` | `NativeLayoutSources.v1` | 承接尺寸方案，生成物件/要求多对多映射；只证明语义责任完整，不证明图面可见 |
 | `prepare-input` | 单个source/expression及模板采样 | 重审语义并列出逐物件原生绑定/标定门；不生成可执行LayoutInput |
 | `template-study` | 只读采样目录及可选 `.wd` | 实测图幅、角色样式、字段差异、未完成能力；始终为 `STUDY_ONLY` |
+| `template-load-study` | SDK加载探针目录及单个模板研究报告 | 核对名称/路径加载、负对照与文件指纹；属性自动改写为INPUT_BLOCKED |
 | `check-observation` | `LayoutObservation.v1` | 检查线宽、多边形、边界、相交和最小净距；只返回几何结论 |
 | `environment` | 当前 Python 环境 | 固定 OR-Tools 版本，10 次单线程确定性小模型冒烟检查 |
 
@@ -50,6 +51,21 @@ python -m zijinhua_tekla.part_drawing.independent_layout prepare-input --source 
 ```
 
 输入准备当前输出INPUT_BLOCKED及退出码1，因为模板研究报告仍无生产资格；这是明确保留原生能力门，不代表已完整的加工语义失败。几何扩展范围、数值预算和限制见[实施验证](../../../../docs/verification/2026-10-31-independent-cutout-implementation.md)。
+
+### 模板加载核验
+
+`TemplateLoadProbe.cs` 是独立的受监测加载探针，不是原生写图器。现场发现 Tekla 会自动转换20/50旧格式 `.wd`，最终探针在连接前阻断这类文件；未命中已知风险也须逐调用核对文件摘要与目录新增/消失项。它不调用 Insert/Modify/Save/Close，不能因此推断 SDK 没有文件副作用。实际结果及两份属性恢复记录见[模板加载验证](../../../../docs/verification/2026-10-31-independent-template-load-probe.md)。
+
+构建使用同目录 `build-template-probe.ps1 -OutputDirectory <新目录>`。运行参数为 `job.json <新输出目录> <SDK目录>`；job包含明确的modelPath、partId和templates，每个模板包含templateId、attributePath及files（主属性、四份伴随文件、被引用布局）。前置发现旧格式时退出1并写preflight.json，尚未调用原生API。不要对现场原件去前缀来绕过此门。
+
+已采证据可离线核验：
+
+```powershell
+python -m zijinhua_tekla.part_drawing.independent_layout template-load-study --probe probe-directory --template-study template-study.json --out outputs/load-study-new
+# prepare-input 可重复追加 --load-study load-study-report.json；省略时原输出保持不变。
+```
+
+TemplateLoadStudy只增加诊断证据，不关闭LayoutPreparation原有7类门。实际加载解析路径、二进制布局传递依赖、图页内容/有效样式、单位/占用和保存重开仍需实证；20/50自动转换失败不能被相同图幅掩盖。
 
 每次输出 `report.json`。退出码 0 只表示离线命令完成，包括 `STUDY_ONLY` 和仅有范围排除的来源批次；必须检查报告状态、范围与待完成门。退出码 1 表示几何冲突、`UPSTREAM_CONTRACT_GAP` 或存在 `INPUT_BLOCKED`；2 表示输入、依赖、输出路径等错误。已有输出不会被覆盖。
 
