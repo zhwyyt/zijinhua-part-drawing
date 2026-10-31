@@ -8,6 +8,7 @@
 |---|---|---|
 | `sources` | `teklaNativeEvidence.v1` | 冻结原始实例、重新计算的几何和完整表达要求；附加视图保留并报告 `OUT_OF_SCOPE` |
 | `expressions` | `NativeLayoutSources.v1` | 承接尺寸方案，生成物件/要求多对多映射；只证明语义责任完整，不证明图面可见 |
+| `prepare-input` | 单个source/expression及模板采样 | 重审语义并列出逐物件原生绑定/标定门；不生成可执行LayoutInput |
 | `template-study` | 只读采样目录及可选 `.wd` | 实测图幅、角色样式、字段差异、未完成能力；始终为 `STUDY_ONLY` |
 | `check-observation` | `LayoutObservation.v1` | 检查线宽、多边形、边界、相交和最小净距；只返回几何结论 |
 | `environment` | 当前 Python 环境 | 固定 OR-Tools 版本，10 次单线程确定性小模型冒烟检查 |
@@ -38,6 +39,17 @@ python -m zijinhua_tekla.part_drawing.independent_layout expressions --sources o
 python -m zijinhua_tekla.part_drawing.independent_layout template-study --study outputs/layout-study-20261031-template50-01 --attributes "outputs/layout-study-20261031-template50-01/attribute-snapshots/标准零件图50(按1倍导出).wd" --out outputs/layout-template50-new
 python -m zijinhua_tekla.part_drawing.independent_layout check-observation --observation observation.json --out outputs/layout-check-new
 ```
+
+2026-10-31独立内口扩展：`sources --extend-cutouts` 对原INPUT_BLOCKED尝试独立切割/完整实体证明，成功封装为NativeLayoutSource.v2，保留旧失败并在使用时重放证明。`expressions --complete-cutouts` 对原成功来源补轴向矩形/圆角矩形内口尺寸；v2来源自动使用此扩展。未开启的r1行为保持不变。
+
+```powershell
+python -m zijinhua_tekla.part_drawing.independent_layout sources --evidence evidence.json --extend-cutouts --out outputs/cutout-source-new
+python -m zijinhua_tekla.part_drawing.independent_layout expressions --sources outputs/cutout-source-new/report.json --complete-cutouts --out outputs/cutout-expression-new
+# source-entry.json / expression-entry.json 是上面各批次entries中的同一个实例封装。
+python -m zijinhua_tekla.part_drawing.independent_layout prepare-input --source source-entry.json --expression expression-entry.json --template-study template10-report.json --template-study template20-report.json --template-study template50-report.json --out outputs/input-preparation-new
+```
+
+输入准备当前输出INPUT_BLOCKED及退出码1，因为模板研究报告仍无生产资格；这是明确保留原生能力门，不代表已完整的加工语义失败。几何扩展范围、数值预算和限制见[实施验证](../../../../docs/verification/2026-10-31-independent-cutout-implementation.md)。
 
 每次输出 `report.json`。退出码 0 只表示离线命令完成，包括 `STUDY_ONLY` 和仅有范围排除的来源批次；必须检查报告状态、范围与待完成门。退出码 1 表示几何冲突、`UPSTREAM_CONTRACT_GAP` 或存在 `INPUT_BLOCKED`；2 表示输入、依赖、输出路径等错误。已有输出不会被覆盖。
 

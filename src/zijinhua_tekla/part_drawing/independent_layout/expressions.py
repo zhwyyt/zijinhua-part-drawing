@@ -12,7 +12,10 @@ VERSION = 'independent-expressions.r1'
 
 def source_requirements(source):
     check_seal(source)
-    require(source.get('schemaVersion') == 'NativeLayoutSource.v1', 'SOURCE_SCHEMA', 'Native source required')
+    require(source.get('schemaVersion') in ('NativeLayoutSource.v1', 'NativeLayoutSource.v2'), 'SOURCE_SCHEMA', 'Native source required')
+    if source['schemaVersion']=='NativeLayoutSource.v2':
+        from .source_extension import verify_extended_source
+        verify_extended_source(source)
     plan = source['requirements']
     require(plan.get('schemaVersion') in ('expressionRequirements.v1', 'expressionRequirements.v2'),
             'REQUIREMENTS_SCHEMA', 'Unsupported upstream version')
@@ -103,7 +106,7 @@ def _objects(plan, scheme, decimals):
     return sorted(objects, key=lambda obj: obj['objectId'])
 
 
-def adapt_expressions(source):
+def adapt_expressions(source, complete_cutouts=False):
     """Freeze semantic responsibilities; no template, geometry occupancy or native pass."""
     plan = source_requirements(source)
     require(source['status'] == 'SOURCE_READY' and plan['status'] == 'READY', 'SOURCE_NOT_READY', source['status'])
@@ -115,8 +118,12 @@ def adapt_expressions(source):
     # The stable upstream scheme exposes specification pairs as Python tuples.
     # The independent JSON contract stores the same pairs as JSON arrays.
     scheme['specifications'] = [[aspect, value] for aspect, value in scheme['specifications']]
+    complete_cutouts = complete_cutouts or source['schemaVersion']=='NativeLayoutSource.v2'
+    if complete_cutouts:
+        from .cutout_dimensions import complete_cutout_scheme
+        scheme = complete_cutout_scheme(plan, scheme)
     objects = _objects(plan, scheme, profile['display']['decimals'])
-    envelope = dict(schemaVersion='LayoutExpressions.v1', adapterVersion=VERSION,
+    envelope = dict(schemaVersion='LayoutExpressions.v1', adapterVersion='independent-expressions.r2' if complete_cutouts else VERSION,
                     sourceEnvelopeDigest=source['digest'], source=source['source'],
                     units='VIEW_MM', coordinateSpace='AUDITED_MAIN_VIEW',
                     expressionRequirements=plan, scheme=scheme, schemeDigest=digest(scheme),
@@ -130,7 +137,7 @@ def adapt_expressions(source):
                  'scope': 'SEMANTIC_RESPONSIBILITIES_ONLY'})
 
 
-def adapt_expression_sources(sources):
+def adapt_expression_sources(sources, complete_cutouts=False):
     """Keep every source outcome visible; out-of-scope is never semantic success."""
     check_seal(sources)
     require(sources.get('schemaVersion') == 'NativeLayoutSources.v1', 'SOURCE_SCHEMA', 'Expected source batch')
@@ -142,7 +149,7 @@ def adapt_expression_sources(sources):
         require(identity not in identities, 'PART_ID_INVALID', str(identity))
         identities.add(identity)
         if source['status'] == 'SOURCE_READY':
-            entries.append(adapt_expressions(source))
+            entries.append(adapt_expressions(source, complete_cutouts))
         else:
             require(source['status'] in ('OUT_OF_SCOPE', 'INPUT_BLOCKED'), 'SOURCE_STATUS', source['status'])
             entries.append(seal(dict(schemaVersion='LayoutExpressionExclusion.v1', source=source['source'],

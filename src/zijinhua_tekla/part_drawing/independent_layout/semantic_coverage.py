@@ -267,8 +267,11 @@ def _upstream_scheme(plan, profile):
 def _validate_contract(source, expressions):
     check_seal(source)
     canonical_json(expressions)
-    require(source.get('schemaVersion') == 'NativeLayoutSource.v1' and source['status'] == 'SOURCE_READY',
+    require(source.get('schemaVersion') in ('NativeLayoutSource.v1','NativeLayoutSource.v2') and source['status'] == 'SOURCE_READY',
             'SOURCE_NOT_READY', 'Admitted source required')
+    if source['schemaVersion']=='NativeLayoutSource.v2':
+        from .source_extension import verify_extended_source
+        verify_extended_source(source)
     require(expressions.get('schemaVersion') == 'LayoutExpressions.v1' and
             expressions.get('units') == 'VIEW_MM' and expressions.get('coordinateSpace') == 'AUDITED_MAIN_VIEW',
             'EXPRESSION_CONTRACT', 'Wrong schema or coordinate space')
@@ -276,9 +279,9 @@ def _validate_contract(source, expressions):
     _same(expressions['source'], source['source'], 'SOURCE_MISMATCH')
     plan, scheme, profile = source['requirements'], expressions['scheme'], expressions['profile']
     require(plan.get('schemaVersion') in ('expressionRequirements.v1', 'expressionRequirements.v2') and
-            scheme.get('schemaVersion') == 'dimensionScheme.v1' and
+            scheme.get('schemaVersion') in ('dimensionScheme.v1','dimensionScheme.v2') and
             profile.get('schemaVersion') == 'planningConvention.v1' and
-            expressions.get('adapterVersion') == 'independent-expressions.r1',
+            expressions.get('adapterVersion') in ('independent-expressions.r1','independent-expressions.r2'),
             'SEMANTIC_VERSION', 'Unsupported version')
     _same(expressions['expressionRequirements'], plan, 'REQUIREMENTS_MISMATCH')
     require(digest(plan) == source['source']['requirementsDigest'] and
@@ -289,7 +292,11 @@ def _validate_contract(source, expressions):
             not plan.get('sectionRequirements'), 'SOURCE_NOT_READY', 'Full single-view requirements required')
     group_keys = [g['key'] for g in scheme['groups']]
     require(len(set(group_keys)) == len(group_keys), 'SCHEME_GROUP_DUPLICATE', 'Duplicate group keys')
-    _same(scheme, _upstream_scheme(plan, profile), 'UPSTREAM_SCHEME_MISMATCH')
+    if expressions['adapterVersion']=='independent-expressions.r1':
+        require(source['schemaVersion']=='NativeLayoutSource.v1','SEMANTIC_VERSION','Extended source needs extended dimensions')
+        _same(scheme, _upstream_scheme(plan, profile), 'UPSTREAM_SCHEME_MISMATCH')
+    else:
+        require(scheme['schemaVersion']=='dimensionScheme.v2','SEMANTIC_VERSION','Extended scheme required')
     return plan, scheme, profile
 
 
@@ -297,6 +304,9 @@ def audit_semantics(source, expressions):
     """Recheck semantic objects and compute bindings; never trust reported coverage."""
     plan, scheme, profile = _validate_contract(source, expressions)
     state, errors, seen = SemanticCoverage(plan, scheme, profile), _column_errors(expressions), set()
+    if expressions['adapterVersion']=='independent-expressions.r2':
+        from .cutout_dimensions import validate_cutout_scheme
+        errors.extend(validate_cutout_scheme(plan,scheme,_upstream_scheme(plan,profile)))
     require(isinstance(expressions['objects'], list), 'OBJECTS_INVALID', 'Expected object list')
     for item in expressions['objects']:
         identity = item.get('objectId') if isinstance(item, dict) else None

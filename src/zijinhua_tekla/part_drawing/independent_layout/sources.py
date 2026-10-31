@@ -20,7 +20,7 @@ def _source_status(plan, geometry):
     return 'SOURCE_READY', []
 
 
-def freeze_native_sources(evidence, model_tolerance_mm=0.1):
+def freeze_native_sources(evidence, model_tolerance_mm=0.1, extend_cutouts=False):
     """A source envelope is not LayoutInput, PLAN_VALID or a write authorization.
 
     Recompute upstream gates; never trust READY flags in a supplied plan. NC
@@ -63,6 +63,16 @@ def freeze_native_sources(evidence, model_tolerance_mm=0.1):
             'remainingGates': ['DIMENSION_ADAPTER', 'TEMPLATE_CAPABILITIES', 'LAYOUT',
                                'NATIVE_READBACK', 'VISUAL_QA'],
         }))
+    if extend_cutouts:
+        from .source_extension import extend_source
+        for i, entry in enumerate(entries):
+            if entry['status'] != 'INPUT_BLOCKED':
+                continue
+            index = ids.index(entry['source']['partId'])
+            try:
+                entries[i] = extend_source(entry, evidence, index)
+            except (ValueError, KeyError, TypeError, IndexError) as error:
+                entries[i] = seal({**{k:v for k,v in entry.items() if k!='digest'}, 'extensionFailure': str(error)})
     return seal({'schemaVersion': 'NativeLayoutSources.v1', 'nativeInputDigest': audit['inputDigest'],
                  'auditVersion': audit['algorithmVersion'], 'modelToleranceMm': model_tolerance_mm,
                  'entries': entries, 'counts': {status: sum(e['status'] == status for e in entries)

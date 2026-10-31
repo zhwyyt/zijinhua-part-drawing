@@ -6,7 +6,8 @@
 
 ## 独立布局系统
 
-- [ ] 完成闭合内口的独立几何来源扩展及 `INNER-CUTOUT-LOCATION-01` 尺寸契约：54真实样本已采、处理顺序已设计，见[矩形口记录](docs/verification/2026-10-31-rectangular-cutout-study.md)。先解决三个未解析切割及终态路径只接受唯一孔径的问题，完整证明全部内外边界和孔作用；再增加大小/圆角/真实局部基准两向定位。当前INPUT_BLOCKED，不能冒充语义缺口已复现或已修复；不改旧代码，不在布局器临时补规则，不删除要求。
+- [ ] 扩展并验证旋转/其他闭合内口的加工表达，以及独立来源扩展中的复杂孔交互。轴向矩形/圆角矩形及54的完整几何/定位已完成，见[实施记录](docs/verification/2026-10-31-independent-cutout-implementation.md)；剩余类型继续明确阻断，不改旧代码，不在布局器临时补规则。
+- [ ] 按已生成的LayoutPreparation逐项关闭实际模板/内容、单位/缩短、原语/字形占用、数值净距和保存重开门；54的报告绑定10/20/50采样及110个物件，但不是可执行LayoutInput。
 - [ ] 将已验证的610条样本语义绑定连接到实际渲染图元及保存重开读回；孔形/轴线联合责任须明确Symbol2或显式几何，厚度/规格须与当前模板内容来源绑定。语义完整不能直接放行写图。
 
 - [ ] 在已实现的 LayoutExpressions.v1 语义子契约上，按 [独立零件图布局系统技术方案与实施计划](docs/design/2026-10-30-independent-layout-system.md) 冻结 `LayoutInput.v1`、`LayoutCandidate.v1`、`LayoutPlan.v1`。

@@ -14,8 +14,14 @@ def _parser():
     source = commands.add_parser('sources', help='Reaudit native JSON and freeze source envelopes')
     source.add_argument('--evidence', type=Path, required=True)
     source.add_argument('--model-tolerance-mm', type=float, default=0.1)
+    source.add_argument('--extend-cutouts', action='store_true', help='Reprove supported blocked cutters on independent route')
     expressions = commands.add_parser('expressions', help='Adapt source batches and audit semantic responsibilities')
     expressions.add_argument('--sources', type=Path, required=True)
+    expressions.add_argument('--complete-cutouts', action='store_true', help='Add independent inner-loop machining dimensions')
+    preparation = commands.add_parser('prepare-input', help='Join one admitted source/expression to template studies and list missing gates')
+    preparation.add_argument('--source', type=Path, required=True)
+    preparation.add_argument('--expression', type=Path, required=True)
+    preparation.add_argument('--template-study', type=Path, action='append', required=True)
     template = commands.add_parser('template-study', help='Inspect read-only captures, not production approval')
     template.add_argument('--study', type=Path, required=True)
     template.add_argument('--attributes', type=Path)
@@ -34,10 +40,14 @@ def main(argv=None):
             raise ContractError('OUTPUT_EXISTS', str(args.out))
         if args.command == 'sources':
             from .sources import freeze_native_sources
-            result = freeze_native_sources(read_json(args.evidence), args.model_tolerance_mm)
+            result = freeze_native_sources(read_json(args.evidence), args.model_tolerance_mm, args.extend_cutouts)
         elif args.command == 'expressions':
             from .expressions import adapt_expression_sources
-            result = adapt_expression_sources(read_json(args.sources))
+            result = adapt_expression_sources(read_json(args.sources), args.complete_cutouts)
+        elif args.command == 'prepare-input':
+            from .preparation import prepare_layout_input
+            result = prepare_layout_input(read_json(args.source),read_json(args.expression),
+                                          [read_json(p) for p in args.template_study])
         elif args.command == 'template-study':
             from .templates import study_template
             capture, objects, presentation = [read_json(args.study / name) for name in
@@ -56,7 +66,7 @@ def main(argv=None):
         print(json.dumps({'command': args.command, 'out': str(args.out),
                           'status': result.get('status', result.get('counts'))}, ensure_ascii=False))
         counts = result.get('counts', {})
-        if (result.get('status') == 'GEOMETRY_CONFLICT' or counts.get('INPUT_BLOCKED', 0)
+        if (result.get('status') in ('GEOMETRY_CONFLICT','INPUT_BLOCKED') or counts.get('INPUT_BLOCKED', 0)
                 or counts.get('UPSTREAM_CONTRACT_GAP', 0)):
             return 1
         return 0
