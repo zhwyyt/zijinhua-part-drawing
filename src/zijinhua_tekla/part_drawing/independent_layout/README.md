@@ -86,7 +86,29 @@ python -m zijinhua_tekla.part_drawing.independent_layout template-bundle-study -
 
 每次输出 `report.json`。退出码 0 只表示离线命令完成，包括 `STUDY_ONLY` 和仅有范围排除的来源批次；必须检查报告状态、范围与待完成门。退出码 1 表示几何冲突、`UPSTREAM_CONTRACT_GAP` 或存在 `INPUT_BLOCKED`；2 表示输入、依赖、输出路径等错误。已有输出不会被覆盖。
 
+## 实际图页标定
+
+`NativePageProbe.cs` 和 `NativePageCapture.cs` 只用于明确授权的新测试页。构建：`build-template-probe.ps1 -Page -OutputDirectory <新目录>`；运行：`NativePageProbe.exe --create job.json <新证据目录> <SDK目录>`。`--preflight` 只核对状态和目录总数，`--inspect` 仅按所有权登记ID读取布局身份。无更新已有页、删除图纸或全目录枚举入口；已有活动图纸、已登记run、文件变化或页号冲突均停止。
+
+`prepare_page_job` 从fresh来源、三份模板研究/包、实际文件和隔离加载报告准备首轮诊断任务。复制改名的 `.lay` 在现场丢失表格身份，因此用 `bind_existing_layout(bundle, study)` 重放生成 `TemplateLayoutBinding.v1`，将主属性隔离而原布局按名称/哈希绑定。任务每套记录alias、files、size、samples、明确sheet，以及boundLayoutName、boundTableId、boundDependencies、bindingDigest；文件清单必须逐字节核验。它不是生产模板能力，不能重新直接加载20/50原 `.wd`。
+
+任务顶层记录runId、modelPath、partId、guid、position、modified、sourceEnvelopeDigest、ownership及ownershipSha256。仅将本轮页写到原台账的independentLayoutTests，原parts保留。副本是持久测试资产，仍有测试页时不删除。`assetResumeDirectory` 只复用没有创建回执的中断安装，并要求模型、完整目录清单和每份资产精确匹配；已登记run不能再次创建。
+
+```powershell
+python -m zijinhua_tekla.part_drawing.independent_layout page-study --job job.json --probe capture-directory --out outputs/page-study-new
+```
+
+`NativePageStudy.v1` 分别报告文字与连续重开、表格源字符串匹配、视图数量/越界。表格只统计实际纸面表格片段，试样不能补齐缺失标题栏。整页INPUT_BLOCKED不抹掉已通过的局部证据；SDK包围框和字体名不冒充真实字形。现场结果、六张测试页、公开布局更新失败及DXF字体差异见[图页验证](../../../../docs/verification/2026-10-31-native-page-calibration.md)。
+
+## 单主视图及只读PDF诊断
+
+`bind_single_main_view` 在已有布局绑定上生成唯一属性副本，仅启用FrontView；调用方须先用fresh来源证明单主视图准入。`PageTemplate.viewControl`记录region/sourceDigest，`NativeViewControl`按比例序列实测视图框、固定Origin并关闭缩短。这是基础原语试验，不是布局器。带viewControl的`page-study`会读取对应`*-view-control.json`，逐次核对目标/属性/边界/重开标题比例，同时将文字样本按数据库ID绑定原生矩形遮罩。缺回执不能通过；SDK框和遮罩均不代表真实字形。
+
+`NativePageProbe.exe --export-pdf job.json <新目录> <SDK目录>`仅按登记run和页ID导出测试页。使用安装版官方DPMPrinterCommand，独立XML启用嵌入字体，输出PDF而不发送打印任务；页面前后快照、模型/attributes/台账需保持。遇到已有活动页停止；故障报告保留，只有本探针打开的页才关闭，且不保存。`--inspect`补充按正确类型读取表格来源字段。新结果见[基础控制记录](../../../../docs/verification/2026-10-31-native-foundation-controls.md)：12页/84份试验资产保留；字体替换及中文缺字未关闭。
+
 ## 测试
+
+运行PDF占用相关测试需要下节`requirements-glyph.txt`中的附加解析器。
 
 测试位于仓库 `tests/test_independent_layout.py` 和 `tests/test_independent_expressions.py`，沿用项目根测试目录。使用同一 `PYTHONPATH` 运行：
 
@@ -96,6 +118,16 @@ python -m zijinhua_tekla.part_drawing.independent_layout template-bundle-study -
 ```
 
 沙箱拒绝临时目录访问时，应修正测试运行权限或设置可写测试临时目录，不跳过测试。
+
+## 真实字形与原语研究
+
+`glyph-study --capture <重开capture.json> --pdf <原生PDF> --receipt <单份导出回执.json> --align-frame --export-page <导出前页快照.json> --out <新目录>`提取嵌入TrueType真实曲线，并将墨迹与原生文字遮罩合并。PDF无Tekla对象ID，须先绑定原生ID、再唯一绑定位置/方向/全文/字体；缺字、替代和歧义阻断。内/外图框校正处理DPM比例舍入，不能以文字或箭头反拟合映射。省略`--align-frame`仅为NOMINAL_INK_DIAGNOSTIC，不提供精确源图占用。
+
+`primitive-study --job <新页任务.json> --probe <原生采集目录> --template 零件图10 --ink <图框校正后的glyph-study/report.json> --out <新目录>`核对合成sheet试样的两次重开、短尺寸值/样式/箭头和直/折引线。其他模板分别传零件图20/50。PRIMITIVES_OBSERVED是有限能力状态，不代表整页可读或净距通过；原始线与文字遮罩/墨迹并集相交并不等于最终可见穿字数。
+
+任务可选`PageSample.angle`为SDK角度制，默认0；新增`PageTemplate.primitives`包含`dimension`（start/end/up/distance/shortDimension）或`leader`（at/tip/text/elbows），共同字段key/font/height。仅新测试页执行，单位毫米、可选一位小数；所有请求点都是明确的sheet合成坐标，不能直接用于加工锚点。
+
+PDF研究依赖可由`python -m pip install -r src/zijinhua_tekla/part_drawing/independent_layout/requirements-glyph.txt`安装。本次使用Codex捆绑Python及pdfminer.six，另加载本仓库stage0依赖。字体、矩阵、PDF/页快照摘要和实际依赖版本均在报告内。详见[设计](../../../../docs/design/2026-10-31-glyph-primitive-occupancy.md)及[有限现场验证](../../../../docs/verification/2026-10-31-glyph-primitive-occupancy.md)。仍不提供候选文字预测、生产字体策略或完整CalibrationProfile。
 
 ## 相关文档
 

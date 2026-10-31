@@ -15,7 +15,7 @@ from zijinhua_tekla.part_drawing.independent_layout.__main__ import main
 from zijinhua_tekla.part_drawing.independent_layout.contracts import ContractError, seal
 from zijinhua_tekla.part_drawing.independent_layout.templates import study_template, read_attributes
 from zijinhua_tekla.part_drawing.independent_layout.template_bundles import (
-    build_template_bundle, verify_template_bundle, stage_bundle_files, study_bundle_load,
+    build_template_bundle, verify_template_bundle, stage_bundle_files, study_bundle_load, bind_existing_layout, bind_single_main_view,
 )
 
 
@@ -24,7 +24,7 @@ def fixture(n='20'):
     capture['modelPath'] = r'C:\model'
     capture['drawing']['Name'] = '零件图'+n
     original = (f'in_file "sample{n}"\nout_file "sample{n}"\ndl.width 5950\ndl.height 4210\n'
-                'dl.layout "layout"\ntext "尺寸"\n').encode('gb18030')
+                'dl.layout "layout"\ndl.sheet 43\ntext "尺寸"\n').encode('gb18030')
     original = b''.join(b'wdraw_dial.'+line for line in original.splitlines(keepends=True))
     converted = original.replace(b'wdraw_dial.',b'')+b'dv.aDrawingViews "1,1,,view,16,0,,system_view,"\n'
     study = study_template(capture,objects,presentation,original)
@@ -71,6 +71,42 @@ def probe_fixture(root):
 
 
 class TemplateBundleTests(unittest.TestCase):
+    def test_single_view_changes_only_declaration_and_alias(self):
+        args=fixture();bundle=build_template_bundle(*args)
+        parent=bind_existing_layout(bundle,args[0]);result=bind_single_main_view(bundle,args[0])
+        self.assertEqual(result,bind_single_main_view(bundle,args[0]))
+        self.assertEqual(parent['existingDependencies'],result['existingDependencies'])
+        self.assertEqual(43,result['tableLayoutId']);self.assertFalse(result['productionEligible'])
+        wd=lambda b:read_attributes(base64.b64decode(next(f for f in b['files'] if f['name'].endswith('.wd'))['contentBase64']))['fields']
+        expected=wd(parent);expected.update(in_file='"'+result['alias']+'"',out_file='"'+result['alias']+'"')
+        expected['dv.aDrawingViews']='"'+result['viewDeclarationAfter']+'"'
+        self.assertEqual(expected,wd(result))
+        parts=result['viewDeclarationAfter'].strip(',').split(',')
+        self.assertEqual(['1'],[parts[i] for i in range(0,len(parts),4) if parts[i+1]!='0'])
+
+    def test_existing_layout_binding_preserves_all_other_fields_and_dependencies(self):
+        args=fixture();bundle=build_template_bundle(*args);original=copy.deepcopy(bundle)
+        binding=bind_existing_layout(bundle,args[0])
+        self.assertEqual(bundle,original)
+        self.assertEqual(binding,bind_existing_layout(bundle,args[0]))
+        self.assertEqual(43,binding['tableLayoutId']);self.assertFalse(binding['productionEligible'])
+        self.assertEqual(5,len(binding['files']))
+        old=next(f for f in bundle['files'] if f['name'].endswith('.wd'))
+        new=next(f for f in binding['files'] if f['name'].endswith('.wd'))
+        expected=read_attributes(base64.b64decode(old['contentBase64']))['fields']
+        expected.update(in_file='"'+binding['alias']+'"',out_file='"'+binding['alias']+'"')
+        expected['dl.layout']='"layout"'
+        self.assertEqual(expected,read_attributes(base64.b64decode(new['contentBase64']))['fields'])
+        deps={f['name']:f['sha256'] for f in binding['existingDependencies']}
+        self.assertEqual(hashlib.sha256(args[4]['layout.lay']).hexdigest(),deps.pop('layout.lay'))
+        self.assertEqual({f['name']:f['sha256'] for f in bundle['files'] if '.wd.' not in f['name'] and not f['name'].endswith(('.wd','.lay'))},deps)
+        for f in binding['files']:
+            self.assertEqual(f['sha256'],hashlib.sha256(base64.b64decode(f['contentBase64'])).hexdigest())
+
+    def test_layout_binding_rejects_tampered_parent(self):
+        args=fixture();bundle=build_template_bundle(*args);bundle['files'][0]['sha256']='changed'
+        with self.assertRaises(ContractError):bind_existing_layout(reseal(bundle),args[0])
+
     def test_preserves_fields_and_only_rewrites_bound_references(self):
         args = fixture(); bundle = build_template_bundle(*args)
         verify_template_bundle(bundle,args[0])

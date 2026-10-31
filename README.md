@@ -17,8 +17,12 @@ python -m zijinhua_tekla.cli draw-native-parts --ownership "I:\zijinhuatekla\out
 
 读取器和写图器在 `tools/tekla2017_native_reader/`、`tools/tekla2017_native_drawing/`。规则见 [平板技能](skills/tekla-flat-plate-drawing/SKILL.md)。
 
-独立布局新路线已开始阶段0实施，另有[离线工具入口](src/zijinhua_tekla/part_drawing/independent_layout/README.md)，用于来源冻结、尺寸与语义覆盖适配、模板采样解析和最小几何验证。尚未提供新布局求解或现场写图能力，`draw-native-parts` 仍运行原实现。
+独立布局新路线已开始阶段0实施，另有[独立工具入口](src/zijinhua_tekla/part_drawing/independent_layout/README.md)，用于来源冻结、尺寸与语义覆盖适配、模板研究和受控测试页验证。尚未提供新布局求解或生产写图能力，`draw-native-parts` 仍运行原实现。
 
 独立内口扩展已支持经完整实体证明的轴向矩形/圆角矩形加工表达；54真实样例离线来源/262条语义责任通过。新增输入准备检查继续保留模板/原生能力门，尚未生成新图。见[实施验证](docs/verification/2026-10-31-independent-cutout-implementation.md)。
 
-模板加载核验已加入独立入口。20/50原属性的SDK自动改写问题已用唯一名称的属性副本避开：10/20/50均完成两次正确加载及安装前/移除后负对照，现场358个属性文件保持不变。三种图幅全部保留；实际图面、样式及保存重开尚待验证，仍未接线出图。见[隔离加载记录](docs/verification/2026-10-31-isolated-template-bundles.md)。
+模板加载核验已加入独立入口。20/50原属性的SDK自动改写问题已用唯一名称的属性副本避开：10/20/50均完成两次正确加载及安装前/移除后负对照，现场358个原属性文件保持不变。见[隔离加载记录](docs/verification/2026-10-31-isolated-template-bundles.md)。
+
+三规格已在584独立测试页上验证实际图框/材料表、16条文字试样及两次重开；新单主视图副本完成10的1:2.5、20/50的1:1固定放置和关闭缩短，视图框均在试验区域内。原生文字遮罩已按对象ID核验；官方PDF嵌入字体后仍有字体替换/中文缺字，候选现代仿宋/宋体的测试文字完整，但真实墨迹超出SDK框。见[基础控制验证](docs/verification/2026-10-31-native-foundation-controls.md)。
+
+后续已实现独立`glyph-study`真实字形读回占用及图框单位映射、`primitive-study`短尺寸/箭头/引线核验。三规格18条字形试样、30个短尺寸、6个引线完成有限验证，全量570项通过；保留短尺寸占用相交和表格原字体缺口，仍不提供生产CalibrationProfile或新布局求解。见[本轮记录](docs/verification/2026-10-31-glyph-primitive-occupancy.md)。

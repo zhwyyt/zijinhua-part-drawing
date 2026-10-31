@@ -34,6 +34,20 @@ def _parser():
     bundle_load.add_argument('--probe', type=Path, required=True)
     bundle_load.add_argument('--bundle', type=Path, action='append', required=True)
     bundle_load.add_argument('--template-study', type=Path, action='append', required=True)
+    pages = commands.add_parser('page-study', help='Audit new calibration pages and measured text after two reopens')
+    pages.add_argument('--job', type=Path, required=True)
+    pages.add_argument('--probe', type=Path, required=True)
+    glyphs = commands.add_parser('glyph-study', help='Measure embedded PDF ink and bind native sample IDs')
+    glyphs.add_argument('--capture', type=Path, required=True)
+    glyphs.add_argument('--pdf', type=Path, required=True)
+    glyphs.add_argument('--receipt', type=Path, required=True, help='Single export receipt with PDF hash and transform log')
+    glyphs.add_argument('--align-frame', action='store_true', help='Bind actual PDF mapping to independent inner/outer frame edges')
+    glyphs.add_argument('--export-page', type=Path, help='Export-before native page snapshot; required with --align-frame')
+    primitives = commands.add_parser('primitive-study', help='Audit synthetic short dimensions and leaders after two reopens')
+    primitives.add_argument('--job', type=Path, required=True)
+    primitives.add_argument('--probe', type=Path, required=True)
+    primitives.add_argument('--template', required=True)
+    primitives.add_argument('--ink', type=Path, required=True, help='Frame-aligned glyph-study report')
     template = commands.add_parser('template-study', help='Inspect read-only captures, not production approval')
     template.add_argument('--study', type=Path, required=True)
     template.add_argument('--attributes', type=Path)
@@ -81,6 +95,26 @@ def main(argv=None):
             from .template_bundles import study_bundle_load
             result = study_bundle_load(read_json(args.probe/'probe.json'),
                 [read_json(p) for p in args.bundle],[read_json(p) for p in args.template_study],args.probe)
+        elif args.command == 'page-study':
+            from .page_studies import study_native_pages
+            job = read_json(args.job)
+            captures = {identity:[read_json(args.probe/(identity+'-'+stage+'.json'))
+                         for stage in ('before','reopen1','reopen2')] for identity in ('零件图10','零件图20','零件图50')}
+            receipts = {t['templateId']:read_json(args.probe/(t['templateId']+'-view-control.json'))
+                        for t in job['templates'] if t.get('viewControl')}
+            result = study_native_pages(job,read_json(args.probe/'probe.json'),captures,
+                                        read_json(args.probe/'ownership-before.json'),read_json(args.probe/'ownership-after.json'),receipts)
+        elif args.command == 'glyph-study':
+            from .glyph_occupancy import study_glyph_occupancy
+            result = study_glyph_occupancy(read_json(args.capture),args.pdf.read_bytes(),read_json(args.receipt),args.align_frame,
+                                           read_json(args.export_page) if args.export_page else None)
+        elif args.command == 'primitive-study':
+            from .primitive_studies import study_primitives
+            templates=[t for t in read_json(args.job)['templates'] if t['templateId']==args.template]
+            if len(templates)!=1 or args.template not in ('零件图10','零件图20','零件图50'):
+                raise ContractError('PRIMITIVE_TEMPLATE', 'Expected one known template')
+            captures=[read_json(args.probe/(args.template+'-'+stage+'.json')) for stage in ('before','reopen1','reopen2')]
+            result=study_primitives(templates[0]['primitives'],captures,read_json(args.ink))
         elif args.command == 'template-study':
             from .templates import study_template
             capture, objects, presentation = [read_json(args.study / name) for name in

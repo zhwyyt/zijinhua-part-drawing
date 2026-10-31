@@ -272,3 +272,61 @@ def check_bundle_load_binding(report, studies):
             {e['templateId'] for e in entries}==set(expected)=={'零件图10','零件图20','零件图50'} and
             all(e['studyDigest']==expected[e['templateId']] for e in entries),
             'BUNDLE_LOAD_REPORT_BINDING', 'Load study belongs to different template samples')
+
+
+def bind_existing_layout(bundle, study):
+    """Reuse the sampled layout identity without modifying that layout or its table ID.
+
+    Tekla 2017 created pages with table ID 0 for renamed layout copies. Keep the
+    converted drawing/view attributes isolated, and bind the original .lay by hash.
+    """
+    verify_template_bundle(bundle,study)
+    fields = _normalized(base64.b64decode(bundle['originalBase64'],validate=True))
+    require(fields.get('dl.sheet','').isdigit() and int(fields['dl.sheet'])>0,
+            'BUNDLE_TABLE_ID', 'A positive sampled table layout ID is required')
+    layout = _name(_quoted(fields['dl.layout']))
+    layout_source = next(s for s in bundle['sources'] if s['name']==layout+'.lay')
+    alias = 'IL_'+digest(dict(bundleDigest=bundle['digest'],binding='EXISTING_READONLY_LAYOUT'))[:24]
+    files,dependencies = [],[]
+    for item in bundle['files']:
+        if item['name'].startswith(bundle['alias']+'.wd'):
+            raw = base64.b64decode(item['contentBase64'],validate=True)
+            if item['name'].endswith('.wd'):
+                raw = _rewrite(raw,{'in_file':'"'+alias+'"','out_file':'"'+alias+'"','dl.layout':fields['dl.layout']})
+            files.append(dict(name=alias+item['name'][len(bundle['alias']):],
+                              sha256=hashlib.sha256(raw).hexdigest(),contentBase64=base64.b64encode(raw).decode('ascii')))
+        elif not item['name'].endswith('.lay'):
+            dependencies.append(dict(name=item['name'],sha256=item['sha256']))
+    dependencies.append(dict(name=layout_source['name'],sha256=layout_source['sha256']))
+    return seal(dict(schemaVersion='TemplateLayoutBinding.v1',status='STUDY_ONLY',productionEligible=False,
+                     templateId=bundle['templateId'],bundleDigest=bundle['digest'],studyDigest=study['digest'],alias=alias,
+                     layoutName=layout,tableLayoutId=int(fields['dl.sheet']),files=files,existingDependencies=dependencies,
+                     scope='EXISTING_LAYOUT_HASH_BOUND_NOT_TRANSITIVE_CLOSURE'))
+
+
+def bind_single_main_view(bundle, study):
+    """Controlled test attributes; caller must prove source needs only a main view."""
+    parent = bind_existing_layout(bundle,study)
+    alias = 'IL_'+digest(dict(bindingDigest=parent['digest'],mode='SINGLE_FRONT_VIEW'))[:24]
+    files = []
+    for item in parent['files']:
+        raw = base64.b64decode(item['contentBase64'],validate=True)
+        if item['name'].endswith('.wd'):
+            fields = _fields(raw)
+            before = _quoted(fields['dv.aDrawingViews'])
+            parts = before.split(',')
+            trailing = parts[-1]==''
+            if trailing:parts.pop()
+            require(len(parts)%4==0 and sum(parts[i]=='1' for i in range(0,len(parts),4))==1,
+                    'BUNDLE_FRONT_VIEW', 'Exactly one front-view declaration required')
+            for i in range(0,len(parts),4):parts[i+1]='1' if parts[i]=='1' else '0'
+            after = ','.join(parts)+(',' if trailing else '')
+            raw = _rewrite(raw,{'in_file':'"'+alias+'"','out_file':'"'+alias+'"','dv.aDrawingViews':'"'+after+'"'})
+        files.append(dict(name=alias+item['name'][len(parent['alias']):],sha256=hashlib.sha256(raw).hexdigest(),
+                          contentBase64=base64.b64encode(raw).decode('ascii')))
+    return seal(dict(schemaVersion='TemplateMainViewBinding.v1',status='STUDY_ONLY',productionEligible=False,
+                     templateId=parent['templateId'],bundleDigest=bundle['digest'],studyDigest=study['digest'],
+                     parentBindingDigest=parent['digest'],alias=alias,layoutName=parent['layoutName'],
+                     tableLayoutId=parent['tableLayoutId'],existingDependencies=parent['existingDependencies'],files=files,
+                     viewDeclarationBefore=before,viewDeclarationAfter=after,
+                     scope='MAIN_VIEW_TEST_ATTRIBUTES_REQUIRE_ADMITTED_SOURCE'))

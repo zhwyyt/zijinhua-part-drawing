@@ -1,0 +1,3 @@
+# Optional native PDF ink studies; adds the parser to the stage-0 environment.
+-r requirements-stage0.lock
+pdfminer.six==20251230
