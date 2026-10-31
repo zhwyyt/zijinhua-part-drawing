@@ -16,3 +16,5 @@ python -m zijinhua_tekla.cli draw-native-parts --ownership "I:\zijinhuatekla\out
 同一包里还留着离线 `draw-parts` 和 `plan-expressions`，因为表达和几何模块的既有测试还调用它们。新的零件类型不从这两个入口扩展。
 
 读取器和写图器在 `tools/tekla2017_native_reader/`、`tools/tekla2017_native_drawing/`。规则见 [平板技能](skills/tekla-flat-plate-drawing/SKILL.md)。
+
+独立布局新路线已开始阶段0实施，另有[离线工具入口](src/zijinhua_tekla/part_drawing/independent_layout/README.md)，用于来源冻结、模板采样解析和最小几何验证。尚未提供新布局求解或现场写图能力，`draw-native-parts` 仍运行原实现。
