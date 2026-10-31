@@ -1,6 +1,7 @@
 param(
     [string]$SdkDir = 'D:\Program Files\Tekla Structures\2017\nt\bin\plugins',
-    [Parameter(Mandatory=$true)][string]$OutputDirectory
+    [Parameter(Mandatory=$true)][string]$OutputDirectory,
+    [switch]$Bundle
 )
 $ErrorActionPreference = 'Stop'
 if (Test-Path -LiteralPath $OutputDirectory) { throw 'Output directory already exists' }
@@ -12,9 +13,14 @@ foreach ($name in @('Tekla.Structures','Tekla.Structures.Model','Tekla.Structure
     $arguments += "/r:$path"
 }
 New-Item -ItemType Directory -Path $OutputDirectory | Out-Null
-$executable = Join-Path ([IO.Path]::GetFullPath($OutputDirectory)) 'TemplateLoadProbe.exe'
+$entry = if ($Bundle) { 'TemplateBundleProbe' } else { 'TemplateLoadProbe' }
+$executable = Join-Path ([IO.Path]::GetFullPath($OutputDirectory)) ($entry + '.exe')
 $arguments += "/out:$executable"
 $arguments += (Join-Path $PSScriptRoot 'TemplateLoadProbe.cs')
+if ($Bundle) {
+    $arguments += '/main:TemplateBundleProbe'
+    $arguments += (Join-Path $PSScriptRoot 'TemplateBundleProbe.cs')
+}
 & $compiler @arguments
 if ($LASTEXITCODE -ne 0) { throw "C# compile failed: $LASTEXITCODE" }
 Write-Output $executable

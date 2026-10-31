@@ -21,4 +21,4 @@ python -m zijinhua_tekla.cli draw-native-parts --ownership "I:\zijinhuatekla\out
 
 独立内口扩展已支持经完整实体证明的轴向矩形/圆角矩形加工表达；54真实样例离线来源/262条语义责任通过。新增输入准备检查继续保留模板/原生能力门，尚未生成新图。见[实施验证](docs/verification/2026-10-31-independent-cutout-implementation.md)。
 
-模板加载核验已加入独立入口。现场发现SDK加载20/50旧格式属性会自动改写文件，两份原件已恢复；新探针在连接前阻断该格式，加载结果仍不作为出图放行。见[模板验证记录](docs/verification/2026-10-31-independent-template-load-probe.md)。
+模板加载核验已加入独立入口。20/50原属性的SDK自动改写问题已用唯一名称的属性副本避开：10/20/50均完成两次正确加载及安装前/移除后负对照，现场358个属性文件保持不变。三种图幅全部保留；实际图面、样式及保存重开尚待验证，仍未接线出图。见[隔离加载记录](docs/verification/2026-10-31-isolated-template-bundles.md)。

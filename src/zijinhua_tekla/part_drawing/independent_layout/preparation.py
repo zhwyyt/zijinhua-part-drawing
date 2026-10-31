@@ -3,9 +3,10 @@
 from .contracts import check_seal, require, seal
 from .semantic_coverage import audit_semantics
 from .template_loads import check_load_binding
+from .template_bundles import check_bundle_load_binding
 
 
-def prepare_layout_input(source, expressions, studies, load_studies=()):
+def prepare_layout_input(source, expressions, studies, load_studies=(), bundle_load_study=None):
     """A preparation report is deliberately not an executable LayoutInput."""
     check_seal(expressions)
     coverage = audit_semantics(source, expressions)
@@ -49,4 +50,7 @@ def prepare_layout_input(source, expressions, studies, load_studies=()):
                      scope='INPUT_PREPARATION_NOT_LAYOUT_INPUT')
     if loads:
         result['templateLoadStudies'] = [loads[key] for key in sorted(loads)]
+    if bundle_load_study is not None:
+        check_bundle_load_binding(bundle_load_study,studies)
+        result['templateBundleLoadStudy'] = bundle_load_study
     return seal(result)

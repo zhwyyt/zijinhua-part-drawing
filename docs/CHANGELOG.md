@@ -2,6 +2,8 @@
 
 ## 2026-10-31
 
+- 新增独立属性包及受保护的临时加载工具，10/20/50均完成隔离加载、重复读取和移除负对照，358份现场原属性不变。新增`template-bundle`、`template-bundle-study`和输入准备补充证据；完整图页能力仍待验证。见[隔离加载记录](verification/2026-10-31-isolated-template-bundles.md)。
+
 - 新增独立模板加载探针、`template-load-study`及输入准备补充证据。区分名称加载、绝对路径和默认值回退；发现并回滚20/50旧属性的SDK自动转换，加入连接前阻断与逐调用文件检查。完整模板/原生门仍未通过，旧代码和图纸未写入。见[验证记录](verification/2026-10-31-independent-template-load-probe.md)。
 
 - 独立来源新增切割/完整实体证明，保留原失败并重放验证；补轴向矩形/圆角矩形的大小、R与局部两向定位。54真实样例262条要求完整，原125文件不变，全量490项通过。新增 `prepare-input` 输出逐物件待绑定/标定门，仍无新布局写图。见[实施验证](verification/2026-10-31-independent-cutout-implementation.md)。

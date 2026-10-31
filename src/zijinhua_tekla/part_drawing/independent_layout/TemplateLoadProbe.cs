@@ -30,7 +30,7 @@ public static class TemplateLoadProbe {
     static string Full(string path) { return Path.GetFullPath(path).TrimEnd('\\','/'); }
     static void Need(bool value, string message) { if(!value) throw new InvalidOperationException(message); }
     static object Point(Tekla.Structures.Geometry3d.Point p) { return new[]{p.X,p.Y,p.Z}; }
-    static object State(M.Model model, D.DrawingHandler handler, M.Part part) {
+    internal static object State(M.Model model, D.DrawingHandler handler, M.Part part) {
         Need(part.Select(), "Target refresh failed");
         var plane=model.GetWorkPlaneHandler().GetCurrentTransformationPlane();
         var matrix=plane.TransformationMatrixToGlobal;
@@ -53,7 +53,7 @@ public static class TemplateLoadProbe {
                 Point(matrix.Transform(new Tekla.Structures.Geometry3d.Point(0,1,0))),
                 Point(matrix.Transform(new Tekla.Structures.Geometry3d.Point(0,0,1)))}};
     }
-    static object Layout(D.LayoutAttributes layout) {
+    internal static object Layout(D.LayoutAttributes layout) {
         return new {size=new[]{layout.SheetSize.Width,layout.SheetSize.Height},
             mode=layout.SizeDefinitionMode.ToString(),autoSize=layout.AutoSizeOptions.ToString(),
             listHidden=layout.ListHiddenObjectsInTemplates};

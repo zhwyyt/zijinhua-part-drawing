@@ -23,9 +23,17 @@ def _parser():
     preparation.add_argument('--expression', type=Path, required=True)
     preparation.add_argument('--template-study', type=Path, action='append', required=True)
     preparation.add_argument('--load-study', type=Path, action='append', default=[])
+    preparation.add_argument('--bundle-load-study', type=Path)
     loads = commands.add_parser('template-load-study', help='Recheck detached SDK loads and immutable file snapshots')
     loads.add_argument('--probe', type=Path, required=True, help='Directory containing probe.json and snapshots')
     loads.add_argument('--template-study', type=Path, required=True)
+    bundle = commands.add_parser('template-bundle', help='Build local namespaced copies of converted attributes')
+    bundle.add_argument('--manifest', type=Path, required=True)
+    bundle.add_argument('--template-study', type=Path, required=True)
+    bundle_load = commands.add_parser('template-bundle-study', help='Verify all three isolated native loads')
+    bundle_load.add_argument('--probe', type=Path, required=True)
+    bundle_load.add_argument('--bundle', type=Path, action='append', required=True)
+    bundle_load.add_argument('--template-study', type=Path, action='append', required=True)
     template = commands.add_parser('template-study', help='Inspect read-only captures, not production approval')
     template.add_argument('--study', type=Path, required=True)
     template.add_argument('--attributes', type=Path)
@@ -52,11 +60,27 @@ def main(argv=None):
             from .preparation import prepare_layout_input
             result = prepare_layout_input(read_json(args.source),read_json(args.expression),
                                           [read_json(p) for p in args.template_study],
-                                          [read_json(p) for p in args.load_study])
+                                          [read_json(p) for p in args.load_study],
+                                          read_json(args.bundle_load_study) if args.bundle_load_study else None)
         elif args.command == 'template-load-study':
             from .template_loads import study_template_load
             result = study_template_load(read_json(args.probe / 'probe.json'),
                                          read_json(args.template_study),args.probe)
+        elif args.command == 'template-bundle':
+            from .template_bundles import build_template_bundle
+            manifest = read_json(args.manifest)
+            def input_path(value):
+                return args.manifest.parent / value
+            dependencies = manifest['dependencies']
+            if len({f['name'] for f in dependencies})!=len(dependencies):
+                raise ContractError('BUNDLE_DUPLICATE', 'Duplicate manifest dependency')
+            result = build_template_bundle(read_json(args.template_study),manifest['attributeName'],
+                input_path(manifest['original']).read_bytes(),input_path(manifest['converted']).read_bytes(),
+                {f['name']:input_path(f['source']).read_bytes() for f in dependencies})
+        elif args.command == 'template-bundle-study':
+            from .template_bundles import study_bundle_load
+            result = study_bundle_load(read_json(args.probe/'probe.json'),
+                [read_json(p) for p in args.bundle],[read_json(p) for p in args.template_study],args.probe)
         elif args.command == 'template-study':
             from .templates import study_template
             capture, objects, presentation = [read_json(args.study / name) for name in
@@ -70,6 +94,10 @@ def main(argv=None):
             from .environment import check_environment
             result = check_environment()
         args.out.mkdir(parents=True, exist_ok=False)
+        if args.command == 'template-bundle':
+            from .template_bundles import stage_bundle_files
+            entry = stage_bundle_files(result,read_json(args.template_study),args.out/'files')
+            (args.out/'template-job-entry.json').write_text(json.dumps(entry,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         (args.out / 'report.json').write_text(json.dumps(result, ensure_ascii=False, allow_nan=False,
                                                         indent=2) + '\n', encoding='utf-8')
         print(json.dumps({'command': args.command, 'out': str(args.out),
