@@ -121,8 +121,8 @@ PAL 的实现许可为 GPL，Adaptagrams 为 LGPL-2.1-or-later。第一阶段只
 |---|---|---|
 | key、axis、points、side、allowedSides、role、reference、localAllowed | 读取尺寸方案的显式字段；缺省值必须在适配版本中声明 | 不能从坐标接近猜测语义 |
 | coordinates、values | 由 point ID 查询 facts，并按已声明测量轴计算；保留原精度 | 缺 point 或轴则 INPUT_BLOCKED |
-| columnGroup | 承接上游明确同列关系；旧路线部分关系在 native_layout 中形成，须在阶段 0 登记并为新适配器单独实现已确认规则 | 关系无依据则 UPSTREAM_CONTRACT_GAP，不把不同对象强行合列 |
-| combineRuns | 按冻结的表达规则产生；螺栓孔不组合 n@pitch | 不按布局空间改变组合方式 |
+| columnGroup | 承接上游显式 column；2026-10-31核对当前 build_scheme 未生成列组，旧 native_layout 只透传/布局，不能声称已有更多上游同列语义 | 无列组明确为空；遇显式列组完整校验成员、测量轴与允许侧交集，不从坐标接近猜同列 |
+| combineRuns | 语义适配只承接方案显式 combined，经同组孔成员、同列、连续等距及间隔数校验；螺栓孔不组合 n@pitch | 不复制旧布局额外预测的局部组合，不按布局空间改变组合方式；后续增加组合须更新语义契约 |
 | requirementBindings | 建立静态对象及动态对象到 requirement 的多对多映射，并交覆盖器证明 | 无覆盖证明不得进入写图 |
 | anchorPolicy、representativeFeatureId | 按 §3.3.1 从来源和确认规则产生 | 禁止布局器任意换孔或换锚点类型 |
 
@@ -245,6 +245,8 @@ T02负责模板身份、依赖、内容绑定及单位，T03负责有效样式�
 新布局系统与 Tekla API、DXF 和现有 `native_layout` 解耦，定义独立的 `LayoutInput.v1`、`LayoutCandidate.v1` 和 `LayoutPlan.v1`。第一版先以普通 Python 数据结构和 JSON 证据实现，不立即引入 C++ 库。
 
 ### 4.1 LayoutInput
+
+阶段0已落地的 `LayoutExpressions.v1` 是本节 requirements/语义物件部分的子契约，绑定原生来源、完整要求、上游方案、规则配置、静态/动态责任及逐条覆盖证据。`SEMANTICS_COMPLETE` 只证明责任闭合；无模板内容、单位/可控性标定和实际占用时，不生成可投产 LayoutInput。具体字段见新模块 DESIGN.md。任意闭合内切口轮廓已保留，但上游未给定位尺寸时返回 UPSTREAM_CONTRACT_GAP；建立前置任务，不改几何规则或删除要求。
 
 `LayoutInput` 包含：
 
@@ -586,11 +588,11 @@ CP-SAT 选出离散方案后，允许在候选定义的安全区间内做小范�
 
 ## 7. 实施计划与验收门
 
-实施进度（2026-10-31）：用户已授权开始开发；新代码位于 `src/zijinhua_tekla/part_drawing/independent_layout/`，入口为 `python -m zijinhua_tekla.part_drawing.independent_layout`。本节是执行计划，阶段0仍在进行。详见 [阶段0实施记录](../verification/2026-10-31-independent-layout-stage0.md)。
+实施进度（2026-10-31）：用户已授权开始开发；新代码位于 `src/zijinhua_tekla/part_drawing/independent_layout/`，入口为 `python -m zijinhua_tekla.part_drawing.independent_layout`。本节是执行计划，阶段0仍在进行；尺寸与语义适配续作见 [续作记录](../verification/2026-10-31-independent-layout-expressions.md)。详见 [阶段0实施记录](../verification/2026-10-31-independent-layout-stage0.md)。
 
 | 阶段0子项 | 当前状态 | 下一验收点 |
 |---|---|---|
-| 来源重审与冻结封装 | 已实现；9件选择加101/225共11个不同实例有离线回放 | 完整尺寸组/覆盖适配，冻结三种正式契约 |
+| 来源重审、尺寸与语义覆盖 | 已实现；12份历史快照共11个不同实例，10个实例语义完整、305范围外；冻结 LayoutExpressions.v1 | 闭合内切口定位缺口、实际覆盖/模板绑定，冻结三种完整布局契约 |
 | 模板证据解析 | 三种源图及候选属性均可读取；10属性快照已补 | 实际加载、依赖闭包、当前内容绑定、角色与源图单位标定 |
 | 独立几何验证 | 最小线/多边形探针已实现；空图、未知图元和冲突拒绝 | 实际原语覆盖、角色净距与保存重开读回 |
 | 环境 | 隔离环境和精确依赖锁已建立，CP-SAT确定性冒烟可运行 | 布局规模、性能/内存预算及字体文件版本冻结 |

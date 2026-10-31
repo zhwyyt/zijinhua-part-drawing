@@ -8,12 +8,14 @@ from pathlib import Path
 from .contracts import ContractError, read_json
 
 
-def main(argv=None):
+def _parser():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest='command', required=True)
     source = commands.add_parser('sources', help='Reaudit native JSON and freeze source envelopes')
     source.add_argument('--evidence', type=Path, required=True)
     source.add_argument('--model-tolerance-mm', type=float, default=0.1)
+    expressions = commands.add_parser('expressions', help='Adapt source batches and audit semantic responsibilities')
+    expressions.add_argument('--sources', type=Path, required=True)
     template = commands.add_parser('template-study', help='Inspect read-only captures, not production approval')
     template.add_argument('--study', type=Path, required=True)
     template.add_argument('--attributes', type=Path)
@@ -22,13 +24,20 @@ def main(argv=None):
     commands.add_parser('environment', help='Check pinned OR-Tools with ten deterministic runs')
     for command in commands.choices.values():
         command.add_argument('--out', type=Path, required=True, help='Must be a new directory')
-    args = parser.parse_args(argv)
+    return parser
+
+
+def main(argv=None):
+    args = _parser().parse_args(argv)
     try:
         if args.out.exists():
             raise ContractError('OUTPUT_EXISTS', str(args.out))
         if args.command == 'sources':
             from .sources import freeze_native_sources
             result = freeze_native_sources(read_json(args.evidence), args.model_tolerance_mm)
+        elif args.command == 'expressions':
+            from .expressions import adapt_expression_sources
+            result = adapt_expression_sources(read_json(args.sources))
         elif args.command == 'template-study':
             from .templates import study_template
             capture, objects, presentation = [read_json(args.study / name) for name in
@@ -46,7 +55,9 @@ def main(argv=None):
                                                         indent=2) + '\n', encoding='utf-8')
         print(json.dumps({'command': args.command, 'out': str(args.out),
                           'status': result.get('status', result.get('counts'))}, ensure_ascii=False))
-        if result.get('status') == 'GEOMETRY_CONFLICT' or result.get('counts', {}).get('INPUT_BLOCKED', 0):
+        counts = result.get('counts', {})
+        if (result.get('status') == 'GEOMETRY_CONFLICT' or counts.get('INPUT_BLOCKED', 0)
+                or counts.get('UPSTREAM_CONTRACT_GAP', 0)):
             return 1
         return 0
     except (ValueError, KeyError, TypeError, OSError, ImportError) as error:
