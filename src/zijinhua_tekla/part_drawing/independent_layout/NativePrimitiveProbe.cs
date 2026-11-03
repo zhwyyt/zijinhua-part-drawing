@@ -14,6 +14,9 @@ public class PagePrimitive {
     public double? minimalDistance,searchMargin,arrowHeight,arrowWidth;
     public double[] start,end,up,at,tip;
     public double[][] elbows;
+    public double[][] points;
+    public string[] pointRefs;
+    public int? decimals;
     public PageDimensionExaggeration exaggeration;
 }
 public class PageDimensionExaggeration {
@@ -37,15 +40,19 @@ internal static class NativePrimitiveProbe {
             Need(s.space==null||s.space=="MODEL_GLOBAL","Unknown primitive coordinate space");
             int size=s.space==null?2:3;
             if(size==3)Need(!String.IsNullOrWhiteSpace(s.sourceDigest)&&s.anchorRefs!=null&&
-                s.anchorRefs.Keys.OrderBy(k=>k).SequenceEqual(s.kind=="dimension"?new[]{"end","start"}:new[]{"tip"})&&
+                s.anchorRefs.Keys.OrderBy(k=>k).SequenceEqual(s.kind=="dimension"?new[]{"end","start"}:s.kind=="dimensionGroup"?new string[0]:s.kind=="label"?new string[0]:new[]{"tip"})&&
                 s.anchorRefs.Values.All(v=>!String.IsNullOrWhiteSpace(v)),"Missing model anchor binding");
             Need(!String.IsNullOrWhiteSpace(s.key)&&!String.IsNullOrWhiteSpace(s.font)&&Finite(s.height)&&s.height>0,"Invalid primitive style");
             Need(s.arrowHeight.HasValue==s.arrowWidth.HasValue&&(!s.arrowHeight.HasValue||
                 (Finite(s.arrowHeight.Value)&&s.arrowHeight.Value>0&&s.arrowHeight.Value==s.arrowWidth.Value)),"Only positive equal arrow dimensions are calibrated");
-            if(s.kind=="dimension") {
-                Need(Point(s.start,size)&&Point(s.end,size)&&!s.start.SequenceEqual(s.end)&&Point(s.up,size)&&
+            if(s.kind=="dimension"||s.kind=="dimensionGroup") {
+                bool group=s.kind=="dimensionGroup";
+                if(group)Need(size==3&&s.points!=null&&s.points.Length>=2&&s.points.All(p=>Point(p,size))&&
+                    s.pointRefs!=null&&s.pointRefs.Length==s.points.Length&&s.pointRefs.Distinct().Count()==s.pointRefs.Length&&
+                    (s.decimals==0||s.decimals==1),"Invalid complete dimension group");
+                Need((group||(Point(s.start,size)&&Point(s.end,size)&&!s.start.SequenceEqual(s.end)))&&Point(s.up,size)&&
                     Math.Abs(s.up.Sum(v=>v*v)-1)<1e-9&&
-                    Math.Abs(Enumerable.Range(0,size).Sum(i=>(s.end[i]-s.start[i])*s.up[i]))<1e-6&&
+                    (group||Math.Abs(Enumerable.Range(0,size).Sum(i=>(s.end[i]-s.start[i])*s.up[i]))<1e-6)&&
                     Finite(s.distance)&&s.distance>0&&(s.shortDimension=="Inside"||s.shortDimension=="Outside"),"Invalid dimension sample");
                 Need(s.textPlacing==null||s.textPlacing=="AboveDimensionLine"||s.textPlacing=="OnDimensionLine","Invalid dimension text placing");
                 Need(s.minimalDistance.HasValue==s.searchMargin.HasValue&&(!s.minimalDistance.HasValue||
@@ -56,8 +63,8 @@ internal static class NativePrimitiveProbe {
                     Finite(x.width)&&x.width>0&&Finite(x.height)&&x.height>0&&x.position.HasValue&&Finite(x.position.Value)&&x.position.Value>=0,"Invalid dimension exaggeration");
             } else {
                 Need(s.textPlacing==null&&!s.minimalDistance.HasValue&&!s.searchMargin.HasValue&&s.exaggeration==null,"Dimension controls on leader");
-                Need(s.kind=="leader"&&Point(s.at,size)&&Point(s.tip,size)&&!s.at.SequenceEqual(s.tip)&&
-                    !String.IsNullOrWhiteSpace(s.text)&&s.elbows!=null&&s.elbows.All(p=>Point(p,size)),"Invalid leader sample");
+                Need((s.kind=="label"&&size==3&&Point(s.at,size)||s.kind=="leader"&&Point(s.at,size)&&Point(s.tip,size)&&!s.at.SequenceEqual(s.tip)&&
+                    s.elbows!=null&&s.elbows.All(p=>Point(p,size)))&&!String.IsNullOrWhiteSpace(s.text),"Invalid text sample");
             }
         }
     }
@@ -79,7 +86,7 @@ internal static class NativePrimitiveProbe {
             var matrix=inModel?G.MatrixFactory.ToCoordinateSystem(view.DisplayCoordinateSystem):null;
             Func<double[],G.Point> point=p=>{var q=inModel?matrix.Transform(P(p)):P(p);return new G.Point(q.X,q.Y,0);};
             D.DrawingObject obj;
-            if(s.kind=="dimension") {
+            if(s.kind=="dimension"||s.kind=="dimensionGroup") {
                 var a=new D.StraightDimensionSet.StraightDimensionSetAttributes(target);
                 a.Arrowhead.Head=D.ArrowheadTypes.FilledArrow;a.Arrowhead.Height=s.arrowHeight??s.height*.8;a.Arrowhead.Width=s.arrowWidth??s.height*.8;
                 a.Color=D.DrawingColors.Black;a.Text.Font.Color=D.DrawingColors.Black;a.Text.Font.Height=s.height;a.Text.Font.Name=s.font;
@@ -100,9 +107,10 @@ internal static class NativePrimitiveProbe {
                 a.ShortDimension=(D.DimensionSetBaseAttributes.ShortDimensionTypes)Enum.Parse(typeof(D.DimensionSetBaseAttributes.ShortDimensionTypes),s.shortDimension);
                 a.CombinedDimension.Format=D.DimensionSetBaseAttributes.CombineFormats.Off;
                 a.Format.Precision=D.DimensionSetBaseAttributes.DimensionValuePrecisions.OnePerTen;
-                a.Format.Format=D.DimensionSetBaseAttributes.DimensionValueFormats.OneOptionalDecimal;
+                a.Format.Format=s.decimals==0?D.DimensionSetBaseAttributes.DimensionValueFormats.NoDecimals:D.DimensionSetBaseAttributes.DimensionValueFormats.OneOptionalDecimal;
                 a.Format.Unit=D.DimensionSetBaseAttributes.DimensionValueUnits.Millimeter;
-                var points=new D.PointList();points.Add(point(s.start));points.Add(point(s.end));
+                var points=new D.PointList();
+                foreach(var p in s.kind=="dimensionGroup"?s.points:new[]{s.start,s.end})points.Add(point(p));
                 var up=point(s.up);var zero=point(inModel?new[]{0d,0d,0d}:new[]{0d,0d});
                 obj=new D.StraightDimensionSetHandler().CreateDimensionSet(container,points,new G.Vector(up.X-zero.X,up.Y-zero.Y,0),
                     s.distance*(inModel?view.Attributes.Scale:1),a);
@@ -111,8 +119,10 @@ internal static class NativePrimitiveProbe {
                 var a=new D.Text.TextAttributes();a.Font.Name=s.font;a.Font.Height=s.height;a.Font.Color=D.DrawingColors.Black;
                 a.Alignment=D.TextAlignment.Left;a.Frame.Type=D.FrameTypes.None;a.PlacingAttributes.IsFixed=true;
                 a.ArrowHead.Head=D.ArrowheadTypes.FilledArrow;a.ArrowHead.Height=s.arrowHeight??s.height*.8;a.ArrowHead.Width=s.arrowWidth??s.height*.8;
-                a.PreferredPlacing=D.PreferredTextPlacingTypes.LeaderLinePlacingType();
-                var text=new D.Text(container,point(s.at),s.text,new D.LeaderLinePlacing(point(s.tip)),a);
+                a.PreferredPlacing=s.kind=="label"?D.PreferredTextPlacingTypes.PointPlacingType():D.PreferredTextPlacingTypes.LeaderLinePlacingType();
+                if(s.kind=="label")a.ArrowHead.Head=D.ArrowheadTypes.NoArrow;
+                var text=s.kind=="label"?new D.Text(container,point(s.at),s.text,new D.PointPlacing(),a):
+                    new D.Text(container,point(s.at),s.text,new D.LeaderLinePlacing(point(s.tip)),a);
                 Need(text.Insert(),"Leader text insert failed: "+s.key);obj=text;
                 var children=text.GetObjects();int count=0;
                 while(children.MoveNext()) {
@@ -123,7 +133,7 @@ internal static class NativePrimitiveProbe {
                         Need(line.Modify(),"New test leader elbow control failed");
                     }
                 }
-                Need(count==1,"Expected one native leader child");
+                Need(count==(s.kind=="label"?0:1),"Unexpected native leader child count");
             }
             Need(obj.SetUserProperty("IL_PRIMITIVE",s.key)&&obj.SetUserProperty("COD_OWNER","NATIVE-PLATE-R1"),"Primitive tag failed");
         }

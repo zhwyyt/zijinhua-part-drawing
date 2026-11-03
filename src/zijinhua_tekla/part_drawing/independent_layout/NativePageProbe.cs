@@ -25,6 +25,7 @@ public class PageJob {
     public string runId,modelPath,ownership,ownershipSha256,guid,position,modified,sourceEnvelopeDigest,assetResumeDirectory;
     public int partId;
     public PageTemplate[] templates;
+    public bool completeLayout;
 }
 public static class NativePageProbe {
     const string Owner="NATIVE-PLATE-R1";
@@ -115,11 +116,17 @@ public static class NativePageProbe {
             Need(args.Length==4&&new[]{"--preflight","--create","--inspect","--export-pdf"}.Contains(args[0]),"Usage: --preflight|--create|--inspect|--export-pdf job.json new-output sdk");
             var job=Json.Deserialize<PageJob>(File.ReadAllText(args[1],Encoding.UTF8));
             Need(Regex.IsMatch(job.runId??"",@"\A[a-z0-9-]{1,60}\z"),"Invalid run ID");
-            Need(job.partId>0&&job.templates!=null&&job.templates.Length==3&&job.templates.Select(t=>t.templateId).OrderBy(s=>s).SequenceEqual(new[]{"零件图10","零件图20","零件图50"}),"All three templates required");
+            Need(job.partId>0&&job.templates!=null&&(job.completeLayout?
+                job.templates.Length==1&&job.templates[0].templateId=="零件图10":
+                job.templates.Length==3&&job.templates.Select(t=>t.templateId).OrderBy(s=>s).SequenceEqual(new[]{"零件图10","零件图20","零件图50"})),"Invalid template scope");
             Need(!Directory.Exists(args[2])&&!File.Exists(args[2]),"Output exists");
             foreach(var t in job.templates) {
                 Need(Regex.IsMatch(t.alias??"",@"\AIL_[0-9a-f]{24}\z"),"Invalid alias");
-                Need(t.sheet>0&&t.samples!=null&&t.samples.Length>0&&t.samples.Select(s=>s.key).Distinct().Count()==t.samples.Length,"Invalid samples/sheet");
+                Need(t.sheet>0&&t.samples!=null&&(job.completeLayout?t.samples.Length==0:t.samples.Length>0)&&t.samples.Select(s=>s.key).Distinct().Count()==t.samples.Length,"Invalid samples/sheet");
+                if(job.completeLayout)Need(t.viewControl!=null&&t.viewControl.scale.HasValue&&t.primitives!=null&&
+                    t.primitives.Count(p=>p.kind=="label")==1&&t.primitives.Any(p=>p.kind=="dimensionGroup")&&
+                    t.primitives.All(p=>p.kind=="label"||p.kind=="dimensionGroup"),"Incomplete trial plan");
+                else Need(t.primitives==null||t.primitives.All(p=>p.kind=="dimension"||p.kind=="leader"),"Complete primitives require completeLayout mode");
                 foreach(var sample in t.samples)Need(sample.height>0&&!Double.IsNaN(sample.height)&&!Double.IsInfinity(sample.height)&&!Double.IsNaN(sample.angle)&&!Double.IsInfinity(sample.angle)&&sample.at.Length==2&&sample.at.All(v=>!Double.IsNaN(v)&&!Double.IsInfinity(v))&&!String.IsNullOrWhiteSpace(sample.font)&&!String.IsNullOrWhiteSpace(sample.text),"Invalid text sample");
                 NativePrimitiveProbe.Validate(t.primitives);
                 if(t.primitives!=null)foreach(var p in t.primitives)if(p.space=="MODEL_GLOBAL")
@@ -242,7 +249,7 @@ public static class NativePageProbe {
                 }
                 installed.Add(f);expected.Add(f.name,f.sha256);Write(Path.Combine(output,"assets.json"),new {runId=job.runId,modelPath=job.modelPath,files=installed,retainedForSavedPages=true});
             }
-            Need(job.templates.Select(t=>t.sheet).Distinct().Count()==3,"Duplicate requested sheets");
+            Need(job.templates.Select(t=>t.sheet).Distinct().Count()==job.templates.Length,"Duplicate requested sheets");
             // A finite new-page request. Insert may fail on an occupied number; never find/modify that page.
             foreach(var t in job.templates) {
                 Need(h.GetActiveDrawing()==null,"Unexpected active drawing");CheckPart(part,job);
@@ -269,6 +276,7 @@ public static class NativePageProbe {
                 Write(prefix+"-created.json",record);Register(job,output,record,ref registryHash);
                 Need(h.SetActiveDrawing(d,true),"Open new test page failed");opened=d;CheckActive(h,d);
                 Write(prefix+"-template.json",NativePageCapture.Capture(d));
+                if(job.completeLayout)Write(prefix+"-removed-auto-annotations.json",NativeCompletePage.ClearNewPage(d));
                 if(t.viewControl!=null)Write(prefix+"-view-control.json",NativeViewControl.Apply(d,t.viewControl));
                 foreach(var sample in t.samples) {
                     var a=new D.Text.TextAttributes();a.Font.Name=sample.font;a.Font.Height=sample.height;a.Font.Color=D.DrawingColors.Black;
@@ -279,6 +287,7 @@ public static class NativePageProbe {
                     Need(text.SetUserProperty("COD_OWNER",Owner),"Owner tag failed");
                 }
                 NativePrimitiveProbe.Insert(d,t.primitives);
+                if(job.completeLayout)Write(prefix+"-final-view-control.json",NativeViewControl.Apply(d,t.viewControl));
                 d.CommitChanges();CheckActive(h,d);
                 Write(prefix+"-before.json",new {page=NativePageCapture.Capture(d),samples=Samples(d,t),primitives=NativePrimitiveProbe.Capture(d,t.primitives)});
                 Need(h.SaveActiveDrawing(),"Save test page failed");record["stage"]="SAVED";Register(job,output,record,ref registryHash);

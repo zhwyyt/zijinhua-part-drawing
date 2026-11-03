@@ -17,7 +17,7 @@ python -m zijinhua_tekla.cli draw-native-parts --ownership "I:\zijinhuatekla\out
 
 读取器和写图器在 `tools/tekla2017_native_reader/`、`tools/tekla2017_native_drawing/`。规则见 [平板技能](skills/tekla-flat-plate-drawing/SKILL.md)。
 
-独立布局新路线已开始阶段0实施，另有[独立工具入口](src/zijinhua_tekla/part_drawing/independent_layout/README.md)，用于来源冻结、尺寸与语义覆盖适配、模板研究和受控测试页验证。尚未提供新布局求解或生产写图能力，`draw-native-parts` 仍运行原实现。
+独立布局新路线已有首张完整原生预览：584 第37页按新候选和 CP-SAT 联合选择六组尺寸及编号，采用零件图10、1:2，完成保存重开及实际图面核验。用户已认可这张布局。当前只跑通无孔直边单主视图切片，标题栏仍有字体缺字；尚未接生产入口，`draw-native-parts` 仍运行原实现。见[首张完整图记录](docs/verification/2026-11-03-first-complete-drawing.md)及[独立工具入口](src/zijinhua_tekla/part_drawing/independent_layout/README.md)。
 
 独立内口扩展已支持经完整实体证明的轴向矩形/圆角矩形加工表达；54真实样例离线来源/262条语义责任通过。新增输入准备检查继续保留模板/原生能力门，尚未生成新图。见[实施验证](docs/verification/2026-10-31-independent-cutout-implementation.md)。
 

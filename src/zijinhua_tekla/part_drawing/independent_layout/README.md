@@ -1,6 +1,8 @@
 # independent_layout
 
-独立布局系统的阶段 0 离线工具。重新审计原生输入、适配尺寸方案并核验语义覆盖、整理三种模板采样及验证明确给定的几何占用，供后续新求解器使用。当前没有布局求解、Tekla 写图或正式入口接线能力。
+独立布局系统的来源、表达、候选、受控原生写入和核验模块。首张完整试验图已跑通无孔、直边、单主视图切片：`complete_trial.plan_complete_trial(source, font_path, region)` 按允许比例联合选择所有尺寸组及编号，`NativePageProbe` 的显式 `completeLayout` 模式仅创建一张新登记页，`complete_trial_readback.verify_complete_trial` 核验保存重开。未接正式入口，不具备任意平板生产能力。
+
+本切片使用零件图10已核验副本；job 的 `templates` 只有一项、`samples` 为空、`primitives` 为完整 `dimensionGroup` 和纯 `label`，不接受孔、圆弧或组合列的隐式删减。预测字宽不等于实际字形通过；写入后必须核对原生 PDF。完整设计和本次调用证据见[首张设计](../../../../docs/design/2026-11-03-first-complete-drawing.md)、[首张验证](../../../../docs/verification/2026-11-03-first-complete-drawing.md)。已有三规格试样模式保持原限制。
 
 ## 核心职责
 
