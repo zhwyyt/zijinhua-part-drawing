@@ -147,6 +147,14 @@ PDF研究依赖可由`python -m pip install -r src/zijinhua_tekla/part_drawing/i
 
 候选仅支持已有来源绑定的水平引线文字/样式平移，保持原锚点及实测箭头方向；移除已唯一绑定的可动引线原图元，以其余原始几何检查，恢复旧遮罩下的障碍。输出有限池、具体冲突与候选间成对冲突，不联合选择或调用Tekla；KNOWN_GEOMETRY_CLEAR仍须处理unresolved和原生读回，FINITE_POOL_BLOCKED不代表全域无解。六页432个候选及固定尺寸/编号阻挡见[验证](../../../../docs/verification/2026-11-03-page-obstacles-candidates.md)。
 
+## 实测尺寸、编号和引线联合候选
+
+`joint-candidate-study --scene <scene.json> --capture <同页重开.json> --primitives <原语报告.json> --ink <字形报告.json> --source <SOURCE_READY封装.json> --options <有限池配置.json> [--acceptances <接受记录数组.json>] --out <新目录>`生成`candidates.json`和联合选择`report.json`，不调用Tekla。配置包含`clearance`、`dimensions`（实测尺寸key到法向偏移数组）、`numberOffsets`（编号二维偏移数组），以及`leaders`（前述keys/offsets/channels）。所有距离为源图单位。
+
+目前支持已测两锚点尺寸集原侧移层、唯一纯PART_POS编号平移及水平引线。尺寸靠锚点的界线端不动，补绑原生端点小点；编号必须绑定来源、SDK框、显示ID、全文字形及重复遮罩。其余模板尺寸保持固定障碍，尚未实现组合尺寸链和全部工程偏好。
+
+联合选择固定OR-Tools 9.14.6206、单worker、确定性预算及词典序代价；`INFEASIBLE_CANDIDATES`只表示声明有限池无解，`SEARCH_LIMIT`不是无解。`JOINT_KNOWN_GEOMETRY_SELECTED`仍不是生产布局或原生验收；无解、搜索未完成或有unresolved时退出码1，研究完成且无缺口才为0，输入契约异常为2。六页研究与小池穷举对照见[联合候选验证](../../../../docs/verification/2026-11-03-joint-measured-candidates.md)。
+
 ## 相关文档
 
 - [模块设计](DESIGN.md)

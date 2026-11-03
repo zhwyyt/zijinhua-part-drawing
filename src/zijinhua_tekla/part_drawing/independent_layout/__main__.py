@@ -60,6 +60,10 @@ def _parser():
     obstacles.add_argument('--pdf', type=Path, required=True)
     obstacles.add_argument('--acceptances', type=Path, help='Exact previously accepted dimension-arrow observations')
     obstacles.add_argument('--candidates', type=Path, help='Finite leader keys, offsets, channels and clearance')
+    joint = commands.add_parser('joint-candidate-study', help='Select measured dimension, mark and leader candidates offline')
+    for name in ('scene','capture','primitives','ink','source','options'):
+        joint.add_argument('--'+name, type=Path, required=True)
+    joint.add_argument('--acceptances', type=Path, help='Exact accepted dimension-arrow observations')
     template = commands.add_parser('template-study', help='Inspect read-only captures, not production approval')
     template.add_argument('--study', type=Path, required=True)
     template.add_argument('--attributes', type=Path)
@@ -140,6 +144,14 @@ def main(argv=None):
             if args.candidates:
                 from .leader_candidates import generate_leader_candidates
                 extra_reports['candidates.json']=generate_leader_candidates(scene,primitives,capture,read_json(args.candidates))
+        elif args.command == 'joint-candidate-study':
+            from .joint_candidates import generate_joint_candidates
+            from .candidate_selection import select_joint_candidates
+            pool=generate_joint_candidates(read_json(args.scene),read_json(args.primitives),read_json(args.capture),
+                read_json(args.ink),read_json(args.source),read_json(args.options),
+                read_json(args.acceptances) if args.acceptances else [])
+            extra_reports['candidates.json']=pool
+            result=select_joint_candidates(pool)
         elif args.command == 'template-study':
             from .templates import study_template
             capture, objects, presentation = [read_json(args.study / name) for name in
@@ -164,6 +176,8 @@ def main(argv=None):
         print(json.dumps({'command': args.command, 'out': str(args.out),
                           'status': result.get('status', result.get('counts'))}, ensure_ascii=False))
         counts = result.get('counts', {})
+        if args.command=='joint-candidate-study' and (result['status']!='JOINT_KNOWN_GEOMETRY_SELECTED' or result['unresolved']):
+            return 1
         if (result.get('status') in ('GEOMETRY_CONFLICT','INPUT_BLOCKED') or counts.get('INPUT_BLOCKED', 0)
                 or counts.get('UPSTREAM_CONTRACT_GAP', 0)):
             return 1
