@@ -106,7 +106,7 @@ def _objects(plan, scheme, decimals):
     return sorted(objects, key=lambda obj: obj['objectId'])
 
 
-def adapt_expressions(source, complete_cutouts=False):
+def adapt_expressions(source, complete_cutouts=False, boundary_paths=False):
     """Freeze semantic responsibilities; no template, geometry occupancy or native pass."""
     plan = source_requirements(source)
     require(source['status'] == 'SOURCE_READY' and plan['status'] == 'READY', 'SOURCE_NOT_READY', source['status'])
@@ -122,8 +122,13 @@ def adapt_expressions(source, complete_cutouts=False):
     if complete_cutouts:
         from .cutout_dimensions import complete_cutout_scheme
         scheme = complete_cutout_scheme(plan, scheme)
+    if boundary_paths:
+        require(not complete_cutouts, 'BOUNDARY_SCOPE', 'Straight contour route only')
+        from .boundary_planning import plan_boundary_paths
+        scheme = plan_boundary_paths(plan, scheme)
     objects = _objects(plan, scheme, profile['display']['decimals'])
-    envelope = dict(schemaVersion='LayoutExpressions.v1', adapterVersion='independent-expressions.r2' if complete_cutouts else VERSION,
+    version = 'independent-expressions.r3' if boundary_paths else ('independent-expressions.r2' if complete_cutouts else VERSION)
+    envelope = dict(schemaVersion='LayoutExpressions.v1', adapterVersion=version,
                     sourceEnvelopeDigest=source['digest'], source=source['source'],
                     units='VIEW_MM', coordinateSpace='AUDITED_MAIN_VIEW',
                     expressionRequirements=plan, scheme=scheme, schemeDigest=digest(scheme),

@@ -10,7 +10,13 @@ from .view_primitives import model_point, _translate
 
 def verify_complete_trial(source, plan, captures):
     check_seal(plan)
-    expressions=adapt_expressions(source)
+    version=plan.get('expressionAdapterVersion','independent-expressions.r1')
+    require(version in ('independent-expressions.r1','independent-expressions.r3'),
+            'TRIAL_VERSION','Unsupported expression adapter')
+    expressions=adapt_expressions(source,boundary_paths=version=='independent-expressions.r3')
+    if version=='independent-expressions.r3':
+        from .boundary_planning import check_boundary_placements
+        check_boundary_placements(expressions,plan['placements'])
     require(plan['sourceDigest']==source['digest'] and plan['expressionDigest']==expressions['digest'],
             'TRIAL_SOURCE','Plan/source expression mismatch')
     expected={o['objectId']:o for o in expressions['objects'] if o['mobility']=='DYNAMIC'}
@@ -47,9 +53,27 @@ def verify_complete_trial(source, plan, captures):
             children=list(row['children']);values=[]
             require(len(children)==len(coords)-1,'TRIAL_INTERVALS','Dimension interval missing/extra')
             up=[sum(v*q for v,q in zip(planned['up'],axis)) for axis in axes]
+            if version=='independent-expressions.r3':
+                cross=1-'xy'.index(obj['axis'])
+                frame=source['requirements']['partType']['frame']
+                wanted=[obj['side']*v for v in frame['axisX' if cross==0 else 'axisY']]
+                require(math.dist(planned['up'],wanted)<=1e-6,'BOUNDARY_SIDE',key)
             require(abs(data['Distance']-planned['distance']*plan['scale'])<=1e-6 and
                     data['Attributes']['Format']['Format']==('NoDecimals' if planned['decimals']==0 else 'OneOptionalDecimal'),
                     'TRIAL_PLACEMENT','Wrong dimension distance/format')
+            if 'witnessLength' in planned:
+                witnesses=row.get('witnesses',[])
+                require(data['Attributes']['ExtensionLine']=='Yes' and len(witnesses)==len(coords),
+                        'TRIAL_WITNESS','Missing short witness or native suppression')
+                ordinate=sum(x*u for x,u in zip(coords[0],up))+data['Distance']
+                for point,witness in zip(coords,witnesses):
+                    shift=ordinate-sum(x*u for x,u in zip(point,up))
+                    line=[x+shift*u for x,u in zip(point,up)];w=witness['data']
+                    start=[x-u*planned['witnessLength']*plan['scale'] for x,u in zip(line,up)]
+                    end=[x+u*plan['height']*.4*plan['scale'] for x,u in zip(line,up)]
+                    require(near(w['StartPoint'],start) and near(w['EndPoint'],end) and
+                            w['Attributes']['Line']['Color']=='Black',
+                            'TRIAL_WITNESS','Wrong persisted witness geometry/style')
             for i,(start,end) in enumerate(zip(coords,coords[1:])):
                 matches=[c for c in children if near(c['data']['StartPoint'],start) and near(c['data']['EndPoint'],end)]
                 require(len(matches)==1,'TRIAL_ANCHORS','Native interval does not match actual source vertices')
@@ -65,6 +89,17 @@ def verify_complete_trial(source, plan, captures):
     require(len(displays)==1,'TRIAL_DISPLAY','Missing actual view display')
     segments=[_translate(s,sheet_origin) for s in displays[0]['Primitives']]
     bindings=[]
+    for row in last['primitives']:
+        for witness in row.get('witnesses',[]):
+            matches=[s for s in segments if s.get('Id')==witness['objectId']]
+            require(len(matches)==1 and matches[0]['Pen']['LineType']==1,
+                    'TRIAL_WITNESS_DISPLAY','Missing solid witness display')
+            lines=list(_nodes(matches[0],'.LinePrimitive'));w=witness['data']
+            start=[w['StartPoint'][k]/plan['scale']+sheet_origin[i] for i,k in enumerate(('X','Y'))]
+            end=[w['EndPoint'][k]/plan['scale']+sheet_origin[i] for i,k in enumerate(('X','Y'))]
+            require(any(near(l['StartPoint'],start) and near(l['EndPoint'],end) or
+                        near(l['StartPoint'],end) and near(l['EndPoint'],start) for l in lines),
+                    'TRIAL_WITNESS_DISPLAY','Short witness not actually displayed')
     for result in observations[-1]:
         items=result.get('intervals',[result])
         for item in items:
@@ -92,7 +127,7 @@ def verify_complete_trial(source, plan, captures):
                 for t in _nodes(v,'.TextPrimitive')]
     profiles=[t for t in table_text if re.match(r'^PL\d+(?:\.\d+)?\*',t)]
     thickness=next(o['value'] for o in expressions['objects'] if o['kind']=='THICKNESS')
-    require(len(profiles)==1 and abs(float(profiles[0][2:].split('*')[0])-thickness)<=source['requirements']['modelToleranceMm'] and
+    require(len(set(profiles))==1 and abs(float(profiles[0][2:].split('*')[0])-thickness)<=source['requirements']['modelToleranceMm'] and
             '1:'+format(plan['scale'],'g') in table_text,'TRIAL_TABLE','Thickness/scale table differs')
     return seal(dict(schemaVersion='CompleteTrialReadback.v1',status='NATIVE_COMPLETE_PREVIEW',productionEligible=False,
                      sourceDigest=source['digest'],planDigest=plan['digest'],captureDigests=[digest(c) for c in captures],

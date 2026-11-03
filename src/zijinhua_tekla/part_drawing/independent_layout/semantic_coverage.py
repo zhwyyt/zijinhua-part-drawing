@@ -281,7 +281,7 @@ def _validate_contract(source, expressions):
     require(plan.get('schemaVersion') in ('expressionRequirements.v1', 'expressionRequirements.v2') and
             scheme.get('schemaVersion') in ('dimensionScheme.v1','dimensionScheme.v2') and
             profile.get('schemaVersion') == 'planningConvention.v1' and
-            expressions.get('adapterVersion') in ('independent-expressions.r1','independent-expressions.r2'),
+            expressions.get('adapterVersion') in ('independent-expressions.r1','independent-expressions.r2','independent-expressions.r3'),
             'SEMANTIC_VERSION', 'Unsupported version')
     _same(expressions['expressionRequirements'], plan, 'REQUIREMENTS_MISMATCH')
     require(digest(plan) == source['source']['requirementsDigest'] and
@@ -295,6 +295,9 @@ def _validate_contract(source, expressions):
     if expressions['adapterVersion']=='independent-expressions.r1':
         require(source['schemaVersion']=='NativeLayoutSource.v1','SEMANTIC_VERSION','Extended source needs extended dimensions')
         _same(scheme, _upstream_scheme(plan, profile), 'UPSTREAM_SCHEME_MISMATCH')
+    elif expressions['adapterVersion']=='independent-expressions.r3':
+        from .boundary_planning import plan_boundary_paths
+        _same(scheme, plan_boundary_paths(plan, _upstream_scheme(plan, profile)), 'BOUNDARY_SCHEME_MISMATCH')
     else:
         require(scheme['schemaVersion']=='dimensionScheme.v2','SEMANTIC_VERSION','Extended scheme required')
     return plan, scheme, profile

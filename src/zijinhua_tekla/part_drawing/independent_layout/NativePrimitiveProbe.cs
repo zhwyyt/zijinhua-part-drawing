@@ -17,6 +17,7 @@ public class PagePrimitive {
     public double[][] points;
     public string[] pointRefs;
     public int? decimals;
+    public double? witnessLength;
     public PageDimensionExaggeration exaggeration;
 }
 public class PageDimensionExaggeration {
@@ -43,6 +44,7 @@ internal static class NativePrimitiveProbe {
                 s.anchorRefs.Keys.OrderBy(k=>k).SequenceEqual(s.kind=="dimension"?new[]{"end","start"}:s.kind=="dimensionGroup"?new string[0]:s.kind=="label"?new string[0]:new[]{"tip"})&&
                 s.anchorRefs.Values.All(v=>!String.IsNullOrWhiteSpace(v)),"Missing model anchor binding");
             Need(!String.IsNullOrWhiteSpace(s.key)&&!String.IsNullOrWhiteSpace(s.font)&&Finite(s.height)&&s.height>0,"Invalid primitive style");
+            Need(!s.witnessLength.HasValue||(s.kind=="dimensionGroup"&&Finite(s.witnessLength.Value)&&s.witnessLength.Value>0),"Invalid short witness control");
             Need(s.arrowHeight.HasValue==s.arrowWidth.HasValue&&(!s.arrowHeight.HasValue||
                 (Finite(s.arrowHeight.Value)&&s.arrowHeight.Value>0&&s.arrowHeight.Value==s.arrowWidth.Value)),"Only positive equal arrow dimensions are calibrated");
             if(s.kind=="dimension"||s.kind=="dimensionGroup") {
@@ -106,6 +108,7 @@ internal static class NativePrimitiveProbe {
                 a.DimensionType=D.DimensionSetBaseAttributes.DimensionTypes.Relative;
                 a.ShortDimension=(D.DimensionSetBaseAttributes.ShortDimensionTypes)Enum.Parse(typeof(D.DimensionSetBaseAttributes.ShortDimensionTypes),s.shortDimension);
                 a.CombinedDimension.Format=D.DimensionSetBaseAttributes.CombineFormats.Off;
+                if(s.witnessLength.HasValue)a.ExtensionLine=D.DimensionSetBaseAttributes.ExtensionLineTypes.Yes;
                 a.Format.Precision=D.DimensionSetBaseAttributes.DimensionValuePrecisions.OnePerTen;
                 a.Format.Format=s.decimals==0?D.DimensionSetBaseAttributes.DimensionValueFormats.NoDecimals:D.DimensionSetBaseAttributes.DimensionValueFormats.OneOptionalDecimal;
                 a.Format.Unit=D.DimensionSetBaseAttributes.DimensionValueUnits.Millimeter;
@@ -115,6 +118,21 @@ internal static class NativePrimitiveProbe {
                 obj=new D.StraightDimensionSetHandler().CreateDimensionSet(container,points,new G.Vector(up.X-zero.X,up.Y-zero.Y,0),
                     s.distance*(inModel?view.Attributes.Scale:1),a);
                 Need(obj!=null,"Dimension probe insert failed: "+s.key);
+                if(s.witnessLength.HasValue) {
+                    var direction=new G.Vector(up.X-zero.X,up.Y-zero.Y,0);direction.Normalize();
+                    var first=point(s.points[0]);double scale=view.Attributes.Scale;
+                    double ordinate=first.X*direction.X+first.Y*direction.Y+s.distance*scale;
+                    for(int index=0;index<s.points.Length;index++) {
+                        var p=point(s.points[index]);double shift=ordinate-p.X*direction.X-p.Y*direction.Y;
+                        var onLine=new G.Point(p.X+shift*direction.X,p.Y+shift*direction.Y,0);
+                        var start=new G.Point(onLine.X-direction.X*s.witnessLength.Value*scale,onLine.Y-direction.Y*s.witnessLength.Value*scale,0);
+                        var end=new G.Point(onLine.X+direction.X*s.height*.4*scale,onLine.Y+direction.Y*s.height*.4*scale,0);
+                        var line=new D.Line(container,start,end);line.Attributes.Line.Color=D.DrawingColors.Black;
+                        line.Attributes.Line.Type=D.LineTypes.SolidLine;line.Attributes.Arrowhead.Head=D.ArrowheadTypes.NoArrow;
+                        Need(line.Insert()&&line.SetUserProperty("IL_WITNESS",s.key+":"+index)&&
+                             line.SetUserProperty("COD_OWNER","NATIVE-PLATE-R1"),"Short witness insertion failed");
+                    }
+                }
             } else {
                 var a=new D.Text.TextAttributes();a.Font.Name=s.font;a.Font.Height=s.height;a.Font.Color=D.DrawingColors.Black;
                 a.Alignment=D.TextAlignment.Left;a.Frame.Type=D.FrameTypes.None;a.PlacingAttributes.IsFixed=true;
@@ -158,6 +176,17 @@ internal static class NativePrimitiveProbe {
             }
             var row=new Dictionary<string,object>{{"key",key},{"objectId",Id(obj)},
                 {"data",NativePageCapture.Props(obj,"Attributes","StartPoint","EndPoint","UpDirection","Distance","TextString","InsertionPoint","Placing")},{"children",children}};
+            var requested=samples.Single(s=>s.key==key);
+            if(requested.witnessLength.HasValue) {
+                var witnesses=new List<object>();
+                for(int index=0;index<requested.points.Length;index++) {
+                    string expected=key+":"+index;
+                    var found=objects.Where(o=>{string tag="";o.GetUserProperty("IL_WITNESS",ref tag);return tag==expected;}).ToArray();
+                    Need(found.Length==1&&found[0] is D.Line&&found[0].Select(),"Missing/duplicate short witness");
+                    witnesses.Add(new {key=expected,objectId=Id(found[0]),data=NativePageCapture.Props(found[0],"StartPoint","EndPoint","Attributes")});
+                }
+                row["witnesses"]=witnesses;
+            }
             if(samples.Single(s=>s.key==key).space=="MODEL_GLOBAL") {
                 var v=obj.GetView() as D.View;Need(v!=null&&v.Select(),"Model primitive lost view");
                 var parts=new List<D.Part>();var pe=v.GetObjects();while(pe.MoveNext()){var part=pe.Current as D.Part;if(part!=null)parts.Add(part);}

@@ -11,6 +11,9 @@ from zijinhua_tekla.part_drawing.independent_layout.complete_trial import _confl
 from zijinhua_tekla.part_drawing.independent_layout.complete_trial_readback import verify_complete_trial
 from zijinhua_tekla.part_drawing.independent_layout.contracts import ContractError
 from zijinhua_tekla.part_drawing.independent_layout.expressions import adapt_expressions
+from zijinhua_tekla.part_drawing.independent_layout.boundary_planning import _paths, check_boundary_placements
+from zijinhua_tekla.part_drawing.independent_layout.contracts import digest, seal
+from zijinhua_tekla.part_drawing.independent_layout.semantic_coverage import audit_semantics
 from test_independent_expressions import source as hole_source
 
 
@@ -74,6 +77,20 @@ class CompleteTrialTests(unittest.TestCase):
         b['level']=3;self.assertFalse(_conflict(a,b,.1))
         b['lines']=LineString([(-1,1),(3,1)]);self.assertTrue(_conflict(a,b,.1))
 
+    def test_short_witness_candidate_preserves_dimension_and_only_clips_extension(self):
+        d=next(o for o in adapt_expressions(self.f['source'])['objects'] if o['objectId']=='dimension/boundary-0-0')
+        with patch('zijinhua_tekla.part_drawing.independent_layout.complete_trial._font_width',return_value=40):
+            full=_dimension_candidates(d,[0,-315,1818,75],2,25,None)
+            both=_dimension_candidates(d,[0,-315,1818,75],2,25,None,short_witnesses=True)
+        self.assertEqual(len(full)*2,len(both))
+        for original,normal,short in zip(full,both[::2],both[1::2]):
+            self.assertTrue(original['lines'].equals(normal['lines']))
+            for field in ('key','axis','side','level','distance','ordinate'):
+                self.assertEqual(original[field],short[field])
+            self.assertTrue(original['text'].equals(short['text']))
+            self.assertLess(short['lines'].length,original['lines'].length)
+            self.assertGreater(short['cost'],original['cost'])
+
     def test_joint_solver_rejects_greedy_first_and_is_deterministic(self):
         def row(key,x,cost):
             text=box(x,10,x+2,12)
@@ -84,6 +101,109 @@ class CompleteTrialTests(unittest.TestCase):
         self.assertEqual('OPTIMAL',report['status'])
         self.assertEqual([1,0],[r['cost'] for r in a])
         self.assertEqual([r['extent'] for r in a],[r['extent'] for r in b])
+
+    def test_second_real_plate_preserves_short_intervals_and_six_visible_witnesses(self):
+        path=Path(__file__).parent/'fixtures/part_drawing/independent-complete-9p15.json'
+        self.f=json.loads(path.read_text('utf-8'))
+        result=self.audit()
+        self.assertEqual('PL20*238',result['profile'])
+        self.assertEqual(2,sum(b['text']=='3' for b in result['displayBindings']))
+        self.assertEqual(6,sum(len(r.get('witnesses',[])) for r in self.f['saved']['primitives']))
+        bad=copy.deepcopy(self.f['saved'])
+        row=next(r for r in bad['primitives'] if 'witnesses' in r)
+        row['witnesses'][0]['data']['StartPoint']['X']+=1
+        with self.assertRaisesRegex(ContractError,'TRIAL_WITNESS'):self.audit(bad)
+        bad=copy.deepcopy(self.f['saved'])
+        row=next(r for r in bad['primitives'] if 'witnesses' in r)
+        row['data']['Attributes']['ExtensionLine']='No'
+        with self.assertRaisesRegex(ContractError,'TRIAL_WITNESS'):self.audit(bad)
+        bad=copy.deepcopy(self.f['saved'])
+        witness=next(r['witnesses'][0] for r in bad['primitives'] if 'witnesses' in r)
+        display=next(s for v in bad['page']['presentation'] for s in v['Primitives'] if s.get('Id')==witness['objectId'])
+        display['Pen']['LineType']=2
+        with self.assertRaisesRegex(ContractError,'TRIAL_WITNESS_DISPLAY'):self.audit(bad)
+
+    def test_second_plate_fixes_source_sides_and_direct_interval_and_keeps_584_placements(self):
+        path=Path(__file__).parent/'fixtures/part_drawing/independent-complete-9p15.json'
+        second=json.loads(path.read_text('utf-8'))
+        # ASCII FangSong advances in the live evidence are half-em. Stub only the
+        # platform font access; exercise complete source adaptation and selection.
+        with patch('zijinhua_tekla.part_drawing.independent_layout.complete_trial.TTFont'), \
+             patch('zijinhua_tekla.part_drawing.independent_layout.complete_trial._font_width',
+                   side_effect=lambda font,text,height:len(text)*height*.7+height*.6):
+            plan=plan_complete_trial(second['source'],path,[150,400,2830,1900])
+            base=plan_complete_trial(self.f['source'],path,[150,400,2830,1900])
+        self.assertEqual(1,plan['scale'])
+        self.assertEqual('INFEASIBLE',plan['attempts'][0]['status'])
+        self.assertEqual('OPTIMAL',plan['attempts'][1]['status'])
+        expressions=adapt_expressions(second['source'],boundary_paths=True)
+        dimensions={d['objectId']:d for d in expressions['objects'] if d['kind']=='DIMENSION'}
+        rows={p['key']:p for p in plan['placements']}
+        for key,side,values in [('boundary-0-0',1,[401,69,93]),
+                                ('boundary-0-1',-1,[11,502,50]),
+                                ('boundary-0-3',1,[420,50,93])]:
+            self.assertEqual(side,rows['dimension/'+key]['side'])
+            self.assertEqual(values,dimensions['dimension/'+key]['displayValues'])
+        self.assertEqual('independent-expressions.r3',plan['expressionAdapterVersion'])
+        with self.assertRaisesRegex(ContractError,'BOUNDARY_SIDE'):
+            check_boundary_placements(expressions,second['plan']['placements'])
+        self.assertEqual(self.f['plan']['primitives'],base['primitives'])
+
+    def test_missing_shared_endpoint_or_relaxed_side_cannot_be_resealed_as_complete(self):
+        path=Path(__file__).parent/'fixtures/part_drawing/independent-complete-9p15.json'
+        source=json.loads(path.read_text('utf-8'))['source']
+        expressions=adapt_expressions(source,boundary_paths=True)
+        for field,value in [('points',['vertex:4','vertex:3','vertex:0']),('allowedSides',[-1,1])]:
+            bad=copy.deepcopy(expressions)
+            group=next(g for g in bad['scheme']['groups'] if g['key']=='boundary-0-3')
+            group[field]=value;bad['schemeDigest']=digest(bad['scheme'])
+            with self.assertRaisesRegex(ContractError,'BOUNDARY_SCHEME_MISMATCH'):
+                audit_semantics(source,bad)
+        bad=copy.deepcopy(expressions)
+        obj=next(o for o in bad['objects'] if o['objectId']=='dimension/boundary-0-3')
+        obj['points'].remove('vertex:2')
+        self.assertEqual('UPSTREAM_CONTRACT_GAP',audit_semantics(source,bad)['status'])
+
+    def test_corrected_native_page_has_direct_50_and_cannot_forge_placement_side(self):
+        path=Path(__file__).parent/'fixtures/part_drawing/independent-complete-9p15-corrected.json'
+        self.f=json.loads(path.read_text('utf-8'))
+        result=self.audit()
+        self.assertEqual(18,len(result['displayBindings']))
+        group=next(o for o in result['observations'][-1] if o['key']=='dimension/boundary-0-3')
+        self.assertEqual(['420','50','93'],[i['text'] for i in group['intervals']])
+        direct=group['intervals'][1]
+        self.assertEqual(['vertex:3','vertex:2'],direct['sourceRefs'])
+        self.assertAlmostEqual(49.9106487,direct['rawProjectedValue'],places=6)
+        bad=copy.deepcopy(self.f['plan'])
+        bad.pop('digest')
+        primitive=next(p for p in bad['primitives'] if p['key']=='dimension/boundary-0-0')
+        primitive['up']=[-v for v in primitive['up']]
+        with self.assertRaisesRegex(ContractError,'BOUNDARY_SIDE'):
+            verify_complete_trial(self.f['source'],seal(bad),[self.f['saved']]*3)
+
+    def test_boundary_paths_translate_mirror_and_reverse_without_using_part_identity(self):
+        path=Path(__file__).parent/'fixtures/part_drawing/independent-complete-9p15.json'
+        plan=json.loads(path.read_text('utf-8'))['source']['requirements']
+        def sides(facts,axis):
+            projected={s['id'] for s in facts['segments']
+                       if abs(s['end'][axis]-s['start'][axis])>plan['modelToleranceMm']}
+            return {k:p['side'] for p in _paths(facts,axis,plan['modelToleranceMm'])
+                    for k in p['segments'] if k in projected}
+        facts=plan['facts'];expected=[sides(facts,a) for a in (0,1)]
+        for sx,sy in ((1,1),(1,-1),(-1,1)):
+            changed=copy.deepcopy(facts)
+            for edge in changed['segments']:
+                for key in ('start','end'):
+                    x,y=edge[key];edge[key]=[sx*x+1000,sy*y-300]
+            for axis in (0,1):
+                sign=(sy,sx)[axis]
+                self.assertEqual({k:v*sign for k,v in expected[axis].items()},sides(changed,axis))
+        changed=copy.deepcopy(facts)
+        changed['boundaryLoops'][0]['segments'].reverse()
+        for edge in changed['segments']:
+            edge['start'],edge['end']=edge['end'],edge['start']
+            edge['startPoint'],edge['endPoint']=edge['endPoint'],edge['startPoint']
+        self.assertEqual(expected,[sides(changed,a) for a in (0,1)])
 
 
 if __name__=='__main__':

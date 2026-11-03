@@ -37,7 +37,7 @@ def _conflict(a, b, clearance):
     return False
 
 
-def _dimension_candidates(obj, bounds, scale, height, font):
+def _dimension_candidates(obj, bounds, scale, height, font, short_witnesses=False):
     axis = 'xy'.index(obj['axis']); cross = 1 - axis
     points = [[v / scale for v in p] for p in obj['coordinates']]
     result = []
@@ -60,11 +60,18 @@ def _dimension_candidates(obj, bounds, scale, height, font):
             lines = [LineString([xy(low, ordinate), xy(high, ordinate)])]
             lines.extend(LineString([p, xy(p[axis], ordinate + side * height * .4)]) for p in points)
             text = unary_union(texts); strokes = unary_union(lines)
-            result.append(dict(key=obj['objectId'], axis=axis, side=side, level=level,
+            candidate=dict(key=obj['objectId'], axis=axis, side=side, level=level,
                                overall=obj['role']=='overall', text=text, lines=strokes,
                                extent=text.union(strokes).bounds, ordinate=ordinate,
                                distance=side*(ordinate-points[0][cross]),
-                               cost=(side!=obj['side'])*1000+level*10))
+                               cost=(side!=obj['side'])*1000+level*10)
+            result.append(candidate)
+            if short_witnesses:
+                short_lines=[lines[0]]+[LineString([xy(p[axis],ordinate-side*height*2),
+                                                   xy(p[axis],ordinate+side*height*.4)]) for p in points]
+                strokes=unary_union(short_lines)
+                result.append(dict(candidate,lines=strokes,extent=text.union(strokes).bounds,
+                                   witnessLength=height*2,cost=candidate['cost']+100000))
     return result
 
 
@@ -131,6 +138,8 @@ def plan_complete_trial(source, font_path, region, height=25):
     require(all(o['kind'] in ('DIMENSION','LABEL','THICKNESS','SEGMENT') for o in objects) and
             not facts['holes'] and all(s['kind']=='LINE' for s in facts['segments']),
             'TRIAL_SCOPE','Only complete straight hole-free main views are supported')
+    expressions=adapt_expressions(source,boundary_paths=True)
+    objects=expressions['objects']
     dimensions=[o for o in objects if o['kind']=='DIMENSION']
     labels=[o for o in objects if o['kind']=='LABEL']
     require(len(labels)==1 and dimensions and all(not d['combined'] and d['columnGroup'] is None for d in dimensions),
@@ -150,6 +159,13 @@ def plan_complete_trial(source, font_path, region, height=25):
             rows.extend(_label_candidates(labels[0],paper,height,font))
             selected,report=_solve(rows,keys,region,height,paper.boundary)
             attempts.append(dict(scale=scale,**report))
+            if selected is None:
+                rows=[]
+                for d in dimensions:
+                    rows.extend(_dimension_candidates(d,paper.bounds,scale,height,font,short_witnesses=True))
+                rows.extend(_label_candidates(labels[0],paper,height,font))
+                selected,report=_solve(rows,keys,region,height,paper.boundary)
+                attempts.append(dict(scale=scale,shortWitnessCandidates=True,**report))
             if selected is not None:
                 break
     require(selected is not None,'TRIAL_NO_LAYOUT','No complete finite candidate solution')
@@ -165,11 +181,16 @@ def plan_complete_trial(source, font_path, region, height=25):
                              pointRefs=obj['points'],up=[row['side']*v for v in axis],
                              distance=row['distance'],decimals=expressions['profile']['display']['decimals'],
                              shortDimension='Outside',textPlacing='AboveDimensionLine',minimalDistance=2,searchMargin=2)
+            if 'witnessLength' in row:
+                primitive['witnessLength']=row['witnessLength']
         else:
             primitive.update(kind='label',text=obj['text'],at=model_point(source,[v*scale for v in row['at']]))
         primitives.append(primitive)
         placements.append({k:v for k,v in row.items() if k not in ('text','lines','extent')})
+    from .boundary_planning import check_boundary_placements
+    check_boundary_placements(expressions,placements)
     return seal(dict(schemaVersion='CompleteDrawingTrial.v1',productionEligible=False,
+                     expressionAdapterVersion=expressions['adapterVersion'],
                      sourceDigest=source['digest'],expressionDigest=expressions['digest'],
                      scale=scale,region=region,height=height,primitives=primitives,placements=placements,
                      attempts=attempts,fontSha256=hashlib.sha256(Path(font_path).read_bytes()).hexdigest(),

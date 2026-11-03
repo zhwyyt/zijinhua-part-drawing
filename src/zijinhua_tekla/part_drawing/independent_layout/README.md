@@ -4,6 +4,10 @@
 
 本切片使用零件图10已核验副本；job 的 `templates` 只有一项、`samples` 为空、`primitives` 为完整 `dimensionGroup` 和纯 `label`，不接受孔、圆弧或组合列的隐式删减。预测字宽不等于实际字形通过；写入后必须核对原生 PDF。完整设计和本次调用证据见[首张设计](../../../../docs/design/2026-11-03-first-complete-drawing.md)、[首张验证](../../../../docs/verification/2026-11-03-first-complete-drawing.md)。已有三规格试样模式保持原限制。
 
+9P-15实际验证补入可选`witnessLength`：完整候选在该比例无解时加入短显示界线候选，原生尺寸锚点不变；只对选中组抑制原生界线并插入逐点绑定实线。回读核验两次保存端点与实际DPM线型/显示。新页自动Mark带引线时，只接受能由父Mark枚举证明归属的子引线。见[逐张验证](../../../../docs/verification/2026-11-03-sequential-9p15.md)。
+
+用户否决第3页后，完整直边试出调用`adapt_expressions(..., boundary_paths=True)`的r3扩展：按真实轮廓两条完整路径分侧，已有链保留其单调段局部站点，禁止求解器换侧。计划记录`expressionAdapterVersion`，原生回读逐版本重建并核对方向；未声明版本的历史计划仍按r1核对，不能据此宣称工程布局通过。第4页直接补出420链中的50，待用户确认。
+
 ## 核心职责
 
 | 命令 | 输入 | 输出及限制 |
