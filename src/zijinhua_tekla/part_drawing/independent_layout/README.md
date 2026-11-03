@@ -139,6 +139,14 @@ dimension另支持研究用`exaggeration={direction,origin,width,position,height
 
 PDF研究依赖可由`python -m pip install -r src/zijinhua_tekla/part_drawing/independent_layout/requirements-glyph.txt`安装。本次使用Codex捆绑Python及pdfminer.six，另加载本仓库stage0依赖。字体、矩阵、PDF/页快照摘要和实际依赖版本均在报告内。详见[设计](../../../../docs/design/2026-10-31-glyph-primitive-occupancy.md)及[有限现场验证](../../../../docs/verification/2026-10-31-glyph-primitive-occupancy.md)。仍不提供候选文字预测、生产字体策略或完整CalibrationProfile。
 
+## 全页障碍与有限引线候选
+
+`page-obstacle-study --capture <重开capture.json> --primitives <PrimitiveStudy.json> --ink <GlyphOccupancyStudy.json> --pdf <同一PDF> --out <新目录>`生成`scene.json`和`report.json`。全页文字、白遮罩、原始/可见线和箭头进入障碍索引；来源/归属歧义阻断，未支持的字形与笔画列在unresolved。目标原语不冲突也不代表整页通过；有几何冲突或缺口时退出码1。
+
+可选`--acceptances <数组.json>`逐条绑定已接受的短尺寸箭头观察，字段为primitiveDigest/key/pdfPath/removedAreaFraction/basis，basis为USER_ACCEPTED_SHORT_DIMENSION_CLIPPING；它是调用方提供的人工验收记录，不能自动生成任意百分比豁免或用于引线。可选`--candidates <配置.json>`另输出`candidates.json`，配置例如`{"keys":["leader:0","leader:1"],"clearance":0.5,"offsets":[[0,0],[100,0]],"channels":[1200,1400]}`。距离均为源图单位，数值仅示意，需由当前试验明确定义。
+
+候选仅支持已有来源绑定的水平引线文字/样式平移，保持原锚点及实测箭头方向；移除已唯一绑定的可动引线原图元，以其余原始几何检查，恢复旧遮罩下的障碍。输出有限池、具体冲突与候选间成对冲突，不联合选择或调用Tekla；KNOWN_GEOMETRY_CLEAR仍须处理unresolved和原生读回，FINITE_POOL_BLOCKED不代表全域无解。六页432个候选及固定尺寸/编号阻挡见[验证](../../../../docs/verification/2026-11-03-page-obstacles-candidates.md)。
+
 ## 相关文档
 
 - [模块设计](DESIGN.md)

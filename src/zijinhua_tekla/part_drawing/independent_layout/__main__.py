@@ -53,6 +53,13 @@ def _parser():
     visible.add_argument('--primitives', type=Path, required=True)
     visible.add_argument('--ink', type=Path, required=True)
     visible.add_argument('--pdf', type=Path, required=True)
+    obstacles = commands.add_parser('page-obstacle-study', help='Index full-page obstacles and audit measured targets')
+    obstacles.add_argument('--capture', type=Path, required=True)
+    obstacles.add_argument('--primitives', type=Path, required=True)
+    obstacles.add_argument('--ink', type=Path, required=True)
+    obstacles.add_argument('--pdf', type=Path, required=True)
+    obstacles.add_argument('--acceptances', type=Path, help='Exact previously accepted dimension-arrow observations')
+    obstacles.add_argument('--candidates', type=Path, help='Finite leader keys, offsets, channels and clearance')
     template = commands.add_parser('template-study', help='Inspect read-only captures, not production approval')
     template.add_argument('--study', type=Path, required=True)
     template.add_argument('--attributes', type=Path)
@@ -67,6 +74,7 @@ def _parser():
 def main(argv=None):
     args = _parser().parse_args(argv)
     try:
+        extra_reports = {}
         if args.out.exists():
             raise ContractError('OUTPUT_EXISTS', str(args.out))
         if args.command == 'sources':
@@ -123,6 +131,15 @@ def main(argv=None):
         elif args.command == 'visible-stroke-study':
             from .visible_strokes import study_visible_strokes
             result=study_visible_strokes(read_json(args.primitives),read_json(args.ink),args.pdf.read_bytes())
+        elif args.command == 'page-obstacle-study':
+            from .page_obstacles import build_page_scene, audit_page_obstacles
+            capture=read_json(args.capture);primitives=read_json(args.primitives)
+            scene=build_page_scene(capture,primitives,read_json(args.ink),args.pdf.read_bytes())
+            result=audit_page_obstacles(scene,primitives,read_json(args.acceptances) if args.acceptances else [])
+            extra_reports['scene.json']=scene
+            if args.candidates:
+                from .leader_candidates import generate_leader_candidates
+                extra_reports['candidates.json']=generate_leader_candidates(scene,primitives,capture,read_json(args.candidates))
         elif args.command == 'template-study':
             from .templates import study_template
             capture, objects, presentation = [read_json(args.study / name) for name in
@@ -136,6 +153,8 @@ def main(argv=None):
             from .environment import check_environment
             result = check_environment()
         args.out.mkdir(parents=True, exist_ok=False)
+        for name,report in extra_reports.items():
+            (args.out/name).write_text(json.dumps(report,ensure_ascii=False,allow_nan=False,indent=2)+'\n',encoding='utf-8')
         if args.command == 'template-bundle':
             from .template_bundles import stage_bundle_files
             entry = stage_bundle_files(result,read_json(args.template_study),args.out/'files')

@@ -35,4 +35,6 @@ python -m zijinhua_tekla.cli draw-native-parts --ownership "I:\zijinhuatekla\out
 
 2026-11-03用户已接受当前短尺寸箭头轻微削边，本项外观不再阻断，也不继续文字移位/夸大修复。以上历史测量保留；该确认不代表独立布局其他能力门已经通过。
 
-真实584目标视图已完成10/20/50两组比例的坐标、实际轮廓锚点及保存重开验证；新增`primitive-study --source`，全量600项测试通过。1:5反例仍有严重遮箭头和引线碰字，下一步接全页障碍与候选避让，尚不放行生产布局。见[真实视图验证](docs/verification/2026-11-03-model-view-primitives.md)。
+真实584目标视图已完成10/20/50两组比例的坐标、实际轮廓锚点及保存重开验证；新增`primitive-study --source`，全量600项测试通过。1:5反例仍有严重遮箭头和引线碰字，尚不放行生产布局。见[真实视图验证](docs/verification/2026-11-03-model-view-primitives.md)。
+
+新增离线`page-obstacle-study`，核验全页文字、遮罩、线和箭头，生成保持真实锚点的有限引线候选及具体冲突。六页432个候选中33个避开已知障碍，但尚无完整组合，仍需尺寸组、编号共同参与布局及原生回读；全量619项测试通过。本轮未调用Tekla，见[障碍与候选验证](docs/verification/2026-11-03-page-obstacles-candidates.md)。
