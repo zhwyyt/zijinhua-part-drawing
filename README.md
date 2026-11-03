@@ -32,3 +32,7 @@ python -m zijinhua_tekla.cli draw-native-parts --ownership "I:\zijinhuatekla\out
 后续已完成两组新页文字控制/模板箭头尺寸候选对照。确认On与搜索间距不是通用修复；列明的部分Outside及直/折引线样例完整，最短尺寸仍削边，独立布局未放行。全量592项通过，既有页/属性/模型来源保持。见[文字控制记录](docs/verification/2026-11-03-dimension-text-controls.md)。
 
 公开尺寸夸大接口已完成新页对照：18个sheet尺寸属性保存但显示未拉宽，本组42个箭头仍削边约8%；报告明确区分属性与显示能力，真实目标视图待验证。全量595项通过，既有保护项保持，见[夸大记录](docs/verification/2026-11-03-dimension-exaggeration.md)。
+
+2026-11-03用户已接受当前短尺寸箭头轻微削边，本项外观不再阻断，也不继续文字移位/夸大修复。以上历史测量保留；该确认不代表独立布局其他能力门已经通过。
+
+真实584目标视图已完成10/20/50两组比例的坐标、实际轮廓锚点及保存重开验证；新增`primitive-study --source`，全量600项测试通过。1:5反例仍有严重遮箭头和引线碰字，下一步接全页障碍与候选避让，尚不放行生产布局。见[真实视图验证](docs/verification/2026-11-03-model-view-primitives.md)。

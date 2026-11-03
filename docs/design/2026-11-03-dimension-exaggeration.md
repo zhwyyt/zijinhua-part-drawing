@@ -1,5 +1,7 @@
 # 短尺寸公开接口边界与夸大显示试验
 
+2026-11-03试验后用户确认当前轻微箭头削边可接受，本项修复研究到此结束，不继续为此新增文字移位/夸大试验。下文保留原试验设计，未证明的接口能力不改写为已实现，也不再作为消除该外观问题的前置。
+
 ## 问题与能力边界
 
 上一轮模板箭头数值候选仍有21个箭头被文字遮罩削边。2026-11-03本机Drawing程序集的公开类型/继承成员反射、Drawing.xml及DrawingExtensions.xml没有提供StraightDimension数值文字坐标或相对移动接口；LeftTagLineOffset/RightTagLineOffset属于标签线，Text.MoveObjectRelative属于普通文字。此结论限定本机2017 SDK，不证明所有版本都没有能力。随附ExaggerateSelectedDimensions宏使用界面回调，不执行。

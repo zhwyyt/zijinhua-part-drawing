@@ -42,7 +42,11 @@ def audit_view_control(template, receipt, captures, part_id, source_digest):
     require(control['sourceDigest']==receipt['sourceDigest']==source_digest and receipt['region']==region,
             'CONTROL_SOURCE', 'Control receipt belongs to another admitted source/region')
     attempts=receipt['attempts']
-    require(0<len(attempts)<=len(SCALES) and [a['scale'] for a in attempts]==list(SCALES[:len(attempts)]),
+    explicit=control.get('scale')
+    require(explicit is None or type(explicit) in (int,float) and explicit in SCALES,
+            'CONTROL_SCALE', 'Unsupported explicit calibration scale')
+    expected=[explicit] if explicit is not None else list(SCALES[:len(attempts)])
+    require(0<len(attempts)<=len(SCALES) and [a['scale'] for a in attempts]==expected,
             'CONTROL_ATTEMPTS', 'Missing/reordered scale observations')
     fit=[]
     for a in attempts:

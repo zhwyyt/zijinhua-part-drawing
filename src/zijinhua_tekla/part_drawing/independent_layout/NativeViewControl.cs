@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using D=Tekla.Structures.Drawing;
 using G=Tekla.Structures.Geometry3d;
 
-public class PageViewControl { public double[] region; public string sourceDigest; }
+public class PageViewControl { public double[] region; public string sourceDigest; public double? scale; }
 internal static class NativeViewControl {
     internal static object Apply(D.SinglePartDrawing drawing,PageViewControl control) {
         var views=new List<D.View>();var e=drawing.GetSheet().GetAllViews();
         while(e.MoveNext()) {var v=e.Current as D.View;if(v!=null)views.Add(v);}
         if(views.Count!=1||views[0].ViewType.ToString()!="FrontView")throw new InvalidOperationException("Expected one native FrontView");
         var view=views[0];var region=control.region;var attempts=new List<object>();
-        foreach(double scale in new[]{1d,2d,2.5d,5d,10d,20d,50d}) {
+        var allowed=new[]{1d,2d,2.5d,5d,10d,20d,50d};
+        if(control.scale.HasValue&&Array.IndexOf(allowed,control.scale.Value)<0)throw new InvalidOperationException("Unsupported study scale");
+        foreach(double scale in control.scale.HasValue?new[]{control.scale.Value}:allowed) {
             if(!view.Select())throw new InvalidOperationException("View refresh failed");
             var attributes=view.Attributes;attributes.Scale=scale;attributes.FixedViewPlacing=true;
             attributes.Shortening.CutParts=false;view.Attributes=attributes;

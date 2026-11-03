@@ -45,6 +45,18 @@ class RotatedMaskTests(unittest.TestCase):
 
 
 class ViewControlTests(unittest.TestCase):
+    def test_explicit_scale_requires_one_matching_fitting_attempt(self):
+        args=control_fixture();args[0]['viewControl']['scale']=2;args[1]['attempts']=args[1]['attempts'][1:]
+        self.assertEqual('VIEW_CONTROL_MATCHED',audit_view_control(*args)['status'])
+        for mode in ('wrong','extra','unsupported','boolean','notfit'):
+            bad=copy.deepcopy(args)
+            if mode=='wrong':bad[0]['viewControl']['scale']=5
+            if mode=='extra':bad[1]['attempts'].insert(0,dict(scale=1,Width=1000,Height=800,fits=False))
+            if mode=='unsupported':bad[0]['viewControl']['scale']=3
+            if mode=='boolean':bad[0]['viewControl']['scale']=True
+            if mode=='notfit':bad[1]['attempts'][0].update(Width=1000,Height=800,fits=False)
+            with self.subTest(mode=mode),self.assertRaises(ContractError):audit_view_control(*bad)
+
     def test_saved_control_matches_only_finite_calibration(self):
         result=audit_view_control(*control_fixture())
         self.assertEqual('VIEW_CONTROL_MATCHED',result['status'])

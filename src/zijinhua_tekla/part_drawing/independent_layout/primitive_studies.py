@@ -83,7 +83,7 @@ def _exaggeration_control(planned, parent, child):
     return expected
 
 
-def study_primitives(planned, captures, extracted, tolerance=.1):
+def study_primitives(planned, captures, extracted, tolerance=.1, source=None):
     """Tolerance associates readback paths in source units, not a layout clearance."""
     from shapely.geometry import LineString, box
     check_seal(extracted)
@@ -103,14 +103,22 @@ def study_primitives(planned, captures, extracted, tolerance=.1):
     segments=[s for v in page['presentation'] if v.get('Position',{}).get('X')==0 and v.get('Position',{}).get('Y')==0
               for s in v.get('Primitives',[])]
     triangles=_pdf_triangles(extracted['paths']);results=[]
-    for p in planned:
+    for requested in planned:
         try:
+            p=requested;contexts=None;scale=1;origin=[0,0]
+            require(p.get('space') in (None,'MODEL_GLOBAL'),'PRIMITIVE_SPACE','Unknown coordinate space')
+            rows=[m[p['key']] for m in observed]
+            if p.get('space')=='MODEL_GLOBAL':
+                from .view_primitives import view_context
+                contexts=[view_context(p,c,r,source) for c,r in zip(captures,rows)]
+                context=contexts[-1];p=context['projected'];scale=context['scale'];origin=context['origin']
+            def sheet(point):return [point[i]/scale+origin[i] for i in range(2)] if contexts else point
             require(('arrowHeight' in p)==('arrowWidth' in p),'PRIMITIVE_ARROW_STYLE','Both arrow dimensions required')
             arrow_height=p.get('arrowHeight',p['height']*.8);arrow_width=p.get('arrowWidth',p['height']*.8)
             require(all(type(v) in (int,float) and math.isfinite(v) and v>0 for v in (arrow_height,arrow_width)),
                     'PRIMITIVE_ARROW_STYLE','Invalid arrow dimensions')
             require(arrow_height==arrow_width,'PRIMITIVE_ARROW_STYLE','Only equal arrow dimensions are calibrated')
-            rows=[m[p['key']] for m in observed];r=rows[-1];data=r['data'];a=data['Attributes']
+            r=rows[-1];data=r['data'];a=data['Attributes']
             unsaved=copy.deepcopy(rows[0]);initial_endpoint=None
             if p['kind']=='leader' and len(unsaved['children'])==len(r['children'])==1:
                 initial_endpoint=_xy(unsaved['children'][0]['data']['EndPoint'])
@@ -119,13 +127,14 @@ def study_primitives(planned, captures, extracted, tolerance=.1):
             checks=dict(sdkStable=digest(unsaved)==digest(rows[-1]) and digest(rows[1])==digest(rows[2]))
             require(len(r['children'])==1,'PRIMITIVE_CHILD','Exactly one child required')
             child=r['children'][0];d=child['data'];identity=child['objectId'] if p['kind']=='dimension' else r['objectId']
-            matches=[s for s in segments if s.get('Id')==identity]
+            matches=[s for s in (contexts[-1]['segments'] if contexts else segments) if s.get('Id')==identity]
             require(len(matches)==1,'PRIMITIVE_SEGMENT','Missing/ambiguous native segment')
             segment=matches[0];text=_text_observation(p['key'],identity,segment)
             display=[]
-            for capture in captures:
-                display.append([s for v in capture['page']['presentation'] if v.get('Position',{}).get('X')==0 and v.get('Position',{}).get('Y')==0
-                                for s in v.get('Primitives',[]) if s.get('Id')==identity])
+            for index,capture in enumerate(captures):
+                if contexts:display.append([s for s in contexts[index]['segments'] if s.get('Id')==identity])
+                else:display.append([s for v in capture['page']['presentation'] if v.get('Position',{}).get('X')==0 and v.get('Position',{}).get('Y')==0
+                                     for s in v.get('Primitives',[]) if s.get('Id')==identity])
             checks['displayStable']=all(len(s)==1 for s in display) and digest(display[1])==digest(display[2])
             checks['actualFont']=text['font']==p['font'] and text['height']==p['height']
             ink=bind_ink(text,segment,extracted['glyphs'])
@@ -157,7 +166,7 @@ def study_primitives(planned, captures, extracted, tolerance=.1):
                 arrow=a['Arrowhead'];font=a['Text']['Font']
                 native_triangles=[_polygon(q) for q in _nodes(segment,'.PolygonPrimitive') if len(q['OuterLoop']['Segments'])==3]
                 require(len(native_triangles)==2,'PRIMITIVE_ARROWS','Expected two actual dimension arrow triangles')
-                tips=[[p[k][i]+p['up'][i]*p['distance'] for i in range(2)] for k in ('start','end')]
+                tips=[sheet([p[k][i]+p['up'][i]*p['distance'] for i in range(2)]) for k in ('start','end')]
                 axis=[(p['end'][i]-p['start'][i])/length for i in range(2)]
                 for tip_index,tip in enumerate(tips):
                     matches=[q for q in native_triangles if any(_near(tip,v,1e-6) for v in q)]
@@ -189,20 +198,21 @@ def study_primitives(planned, captures, extracted, tolerance=.1):
                 arrow=a['ArrowHead'];font=a['Font'];symbols=list(_nodes(segment,'.SymbolPrimitive'))
                 require(len(symbols)==1,'PRIMITIVE_LEADER_SYMBOL','One actual leader arrow symbol required')
                 symbol=symbols[0]
-                checks['symbol']=symbol['SymbolLibrary']=='arrows.sym' and symbol['SymbolIndex']==17 and _near(_xy(symbol['Position']),p['tip'],1e-6)
-                route=[p['tip'],*p['elbows'],_xy(d['EndPoint'])]
+                checks['symbol']=symbol['SymbolLibrary']=='arrows.sym' and symbol['SymbolIndex']==17 and _near(_xy(symbol['Position']),sheet(p['tip']),1e-6)
+                route=[sheet(q) for q in [p['tip'],*p['elbows'],_xy(d['EndPoint'])]]
                 checks['routeLines']=len(lines)==len(route)-1 and all(any(
                     (_near(a,x,1e-6) and _near(b,y,1e-6)) or (_near(a,y,1e-6) and _near(b,x,1e-6)) for x,y in lines) for a,b in zip(route,route[1:]))
-                candidates=[q for q in triangles if any(_near(p['tip'],v,tolerance) for v in q['points'])]
+                candidates=[q for q in triangles if any(_near(sheet(p['tip']),v,tolerance) for v in q['points'])]
                 require(len(candidates)==1,'PRIMITIVE_PDF_ARROW','Leader tip has no unique actual filled triangle')
                 q=candidates[0];direction=[route[1][i]-route[0][i] for i in range(2)];distance=math.hypot(*direction)
                 require(distance>0,'PRIMITIVE_ROUTE','Zero leader segment')
                 unit=[v/distance for v in direction]
-                projected=[[(v[0]-p['tip'][0])*unit[0]+(v[1]-p['tip'][1])*unit[1],
-                            -(v[0]-p['tip'][0])*unit[1]+(v[1]-p['tip'][1])*unit[0]] for v in q['points']]
+                projected=[[(v[0]-route[0][0])*unit[0]+(v[1]-route[0][1])*unit[1],
+                            -(v[0]-route[0][0])*unit[1]+(v[1]-route[0][1])*unit[0]] for v in q['points']]
                 checks['pdfArrowSizeDirection']=abs(max(v[0] for v in projected)-arrow_width)<=tolerance and min(v[0] for v in projected)>=-tolerance and abs(max(v[1] for v in projected)-min(v[1] for v in projected)-arrow_height)<=tolerance
-                arrows=[dict(tip=p['tip'],points=q['points'],pdfPath=q['index'])];details=dict(route=route,symbol=symbol,unsavedSdkEndPoint=initial_endpoint,
+                arrows=[dict(tip=sheet(p['tip']),points=q['points'],pdfPath=q['index'])];details=dict(route=route,symbol=symbol,unsavedSdkEndPoint=initial_endpoint,
                                                                                            savedSdkEndPoint=_xy(d['EndPoint']))
+            if contexts:details['modelView']=contexts[-1]['evidence']
             checks['sdkStyle']=font['Name']==p['font'] and font['Height']==p['height'] and arrow['Head']=='FilledArrow' and arrow['Height']==arrow_height and arrow['Width']==arrow_width
             obstacle=box(*ink['occupancyBox']);clearances=[obstacle.distance(LineString(line)) for line in lines]
             results.append(dict(key=p['key'],kind=p['kind'],objectId=r['objectId'],displayObjectId=identity,
@@ -215,5 +225,6 @@ def study_primitives(planned, captures, extracted, tolerance=.1):
             results.append(dict(key=p['key'],status='INPUT_BLOCKED',error=str(error)))
     return seal(dict(schemaVersion='PrimitiveStudy.v1',status='PRIMITIVES_OBSERVED' if all(r['status']=='PRIMITIVE_MATCHED' for r in results) else 'INPUT_BLOCKED',
                      productionEligible=False,comparisonToleranceNative=tolerance,samples=results,captureDigests=[digest(c) for c in captures],
-                     scope='SYNTHETIC_SHEET_PRIMITIVES_NOT_MODEL_ANCHORS_OR_COMPLETE_CLEARANCE',
+                     scope=('SOURCE_BOUND_MODEL_VIEW_PRIMITIVES_NOT_COMPLETE_LAYOUT' if any(p.get('space')=='MODEL_GLOBAL' for p in planned)
+                            else 'SYNTHETIC_SHEET_PRIMITIVES_NOT_MODEL_ANCHORS_OR_COMPLETE_CLEARANCE'),
                      inkDigest=extracted['digest'],planDigest=digest(planned)))

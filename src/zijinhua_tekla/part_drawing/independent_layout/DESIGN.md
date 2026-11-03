@@ -144,6 +144,8 @@ TemplateBundleLoadStudy.v1离线重建每个包、验证全目录备份及逐步
 
 ## 可见笔画读回（2026-11-03）
 
+最新用户口径：当前短尺寸约8%的轻微箭头削边可接受，不再据此阻断或继续移字/夸大修复；下文历史研究结论及测量保留。后续候选/核验按该外观例外实现，线穿文字、严重遮蔽和错误测量仍不接受。本次仅记录设计口径，未改变现有研究报告或代码。
+
 `visible_strokes.py`只消费已关联的GlyphOccupancyStudy/PrimitiveStudy和同一PDF，输出VisibleStrokeStudy.v1。独立按PDF操作顺序恢复裁剪和图形状态，将原始用户空间笔宽几何变换到源图坐标，再扣后绘制白遮罩。与pdfminer路径逐项核对；不复用其已缩放lineWidth作为原宽。完全重复线按等数量同几何组关联，近邻不同线拒绝歧义。
 
 仅支持不透明黑白、单闭环直边裁剪/白填充、目标直线butt端帽和无miter回退的箭头填充/描边。报告逐路径面积损失和到逐字墨迹包络的距离，不发布角色阈值、不当全页障碍或精确字形碰撞检查。旧原语报告的原始中心线交叉保留，新增结果不覆盖它；字形不穿线仍可能箭头缺损。本轮66个箭头中20个削边，阶段0仍未关闭，新适配不接正式入口。见[设计](../../../../docs/design/2026-11-03-visible-stroke-clearance.md)和[验证](../../../../docs/verification/2026-11-03-visible-stroke-clearance.md)。
@@ -151,3 +153,9 @@ TemplateBundleLoadStudy.v1离线重建每个包、验证全目录备份及逐步
 后续文字控制对照增加显式TextPlacing、放置距离和等宽高箭头尺寸试样；这些只是新页请求，不作为文字位置事实。三份旧primitive报告重放精确一致。两组实测表明On可被原生条件布局忽略或产生严重遮箭头/穿字，搜索距离也不能当文字间隙；按实际模板尺寸字段组装FilledArrow/仿宋候选仍有最短尺寸失败。禁止从少量跨度比直接冻结Inside/Outside生产阈值。下一步需有真实锚点/值关联的可控文字位置设计，能力不足保持阻断，见[设计](../../../../docs/design/2026-11-03-dimension-text-controls.md)与[验证](../../../../docs/verification/2026-11-03-dimension-text-controls.md)。
 
 公开Exaggeration续作只扩展新页试验请求及父/子属性核对。本机没有找到独立数值文字坐标；18个sheet试样的夸大属性保存但显示不变，输出ATTRIBUTE_ONLY_NO_EXPANSION，PRIMITIVES_OBSERVED仍仅表示原语读回成立。箭头实际拉宽时旧端点关联明确阻断，不能从Width/Position推算显示坐标替代证据。下一步先补真实目标视图、单位和锚点路径，避免在sheet未生效配置上堆规则；9份历史报告精确保持。见[设计](../../../../docs/design/2026-11-03-dimension-exaggeration.md)和[验证](../../../../docs/verification/2026-11-03-dimension-exaggeration.md)。
+
+## 真实目标视图原语（2026-11-03）
+
+为替代sheet合成点的有限证据，独立探针新增MODEL_GLOBAL点、来源摘要和顶点角色引用；公开MatrixFactory投影到实际目标Part的DisplayCoordinateSystem，distance在SDK边界乘比例，文字/箭头源图尺寸保持。`view_primitives.py`从SOURCE_READY事实独立投影、核对实际Part轮廓端点，把原生局部显示按实际视图Position映射到源图再绑定PDF；不从请求生成观察。仅允许单平直主视图、正交坐标系、固定位置且未缩短。旧sheet输出包括数值类型/摘要保持，12份历史报告精确回放。
+
+显式viewControl.scale仅供新测试页单比例对照，仍受序列和实际拟合约束。初始区域拟合与加标注后视图框是不同事实，原严格审核不放宽。六页24个原语证明坐标与样式稳定，1:5反例说明全页既有编号/遮罩/其他引线必须参与障碍核验；只调整折引线自身端点不足以完成整页避让。暂不引入通用路由或按当前实例写位置规则，生产资格仍false。见[设计](../../../../docs/design/2026-11-03-model-view-primitives.md)与[验证](../../../../docs/verification/2026-11-03-model-view-primitives.md)。

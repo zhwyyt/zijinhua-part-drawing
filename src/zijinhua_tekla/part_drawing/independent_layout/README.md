@@ -131,7 +131,11 @@ python -m zijinhua_tekla.part_drawing.independent_layout page-study --job job.js
 
 dimension另支持研究用`exaggeration={direction,origin,width,position,height}`：direction取LeftDown/RightUp/Both，origin取NearDimensionLine/NearMeasuredObject，width/height为有限正数，position为有限非负数，五项必填。探针只用公开Exaggeration属性；离线同时核对父集/子尺寸。当前18个sheet样本均为`details.exaggeration.capabilityStatus=ATTRIBUTE_ONLY_NO_EXPANSION`，不是可用的文字移动接口。实际拉宽的箭头/折线路径尚未适配，旧端点绑定会阻断；不得拿该选项接生产，见[验证](../../../../docs/verification/2026-11-03-dimension-exaggeration.md)。
 
-任务可选`PageSample.angle`为SDK角度制，默认0；新增`PageTemplate.primitives`包含`dimension`（start/end/up/distance/shortDimension）或`leader`（at/tip/text/elbows），共同字段key/font/height。仅新测试页执行，单位毫米、可选一位小数；所有请求点都是明确的sheet合成坐标，不能直接用于加工锚点。
+任务可选`PageSample.angle`为SDK角度制，默认0；`PageTemplate.primitives`包含`dimension`（start/end/up/distance/shortDimension）或`leader`（at/tip/text/elbows），共同字段key/font/height。仅新测试页执行，尺寸毫米、可选一位小数。省略space仍为sheet合成坐标；该默认不能直接用于加工锚点。
+
+真实视图试样可设`space="MODEL_GLOBAL"`，所有点为全局3D模型毫米，up为全局单位向量；distance为源图距离，探针乘实际视图比例后传SDK，font/arrow尺寸仍为源图单位。`sourceDigest`绑定单个SOURCE_READY封装，`anchorRefs`将尺寸start/end或引线tip绑定实际facts.points顶点。`primitive-study`增加`--source <单个来源封装.json>`，在公开API目标视图投影之外独立核对实际轮廓端点、SDK坐标、DPM/PDF及重开稳定性。只支持平直正交主视图、未缩短、固定放置，不能代替完整加工覆盖或自动模型关联。
+
+`PageTemplate.viewControl.scale`可选指定允许序列内的一个试验比例，仍须实测放得下；省略时沿用最小适配比例。加入原语后的视图框可能超出初始区域，原严格viewControl审核保持，不能把初始拟合视为最终整页通过。三规格两组真实视图证明及严重遮挡反例见[记录](../../../../docs/verification/2026-11-03-model-view-primitives.md)。原表格缺字、角色净距与生产障碍门仍未闭合，当前轻微箭头削边按用户接受口径保留。
 
 PDF研究依赖可由`python -m pip install -r src/zijinhua_tekla/part_drawing/independent_layout/requirements-glyph.txt`安装。本次使用Codex捆绑Python及pdfminer.six，另加载本仓库stage0依赖。字体、矩阵、PDF/页快照摘要和实际依赖版本均在报告内。详见[设计](../../../../docs/design/2026-10-31-glyph-primitive-occupancy.md)及[有限现场验证](../../../../docs/verification/2026-10-31-glyph-primitive-occupancy.md)。仍不提供候选文字预测、生产字体策略或完整CalibrationProfile。
 

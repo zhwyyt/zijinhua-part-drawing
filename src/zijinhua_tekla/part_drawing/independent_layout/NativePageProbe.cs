@@ -122,6 +122,8 @@ public static class NativePageProbe {
                 Need(t.sheet>0&&t.samples!=null&&t.samples.Length>0&&t.samples.Select(s=>s.key).Distinct().Count()==t.samples.Length,"Invalid samples/sheet");
                 foreach(var sample in t.samples)Need(sample.height>0&&!Double.IsNaN(sample.height)&&!Double.IsInfinity(sample.height)&&!Double.IsNaN(sample.angle)&&!Double.IsInfinity(sample.angle)&&sample.at.Length==2&&sample.at.All(v=>!Double.IsNaN(v)&&!Double.IsInfinity(v))&&!String.IsNullOrWhiteSpace(sample.font)&&!String.IsNullOrWhiteSpace(sample.text),"Invalid text sample");
                 NativePrimitiveProbe.Validate(t.primitives);
+                if(t.primitives!=null)foreach(var p in t.primitives)if(p.space=="MODEL_GLOBAL")
+                    Need(p.sourceDigest==job.sourceEnvelopeDigest,"Model primitive source differs from job");
                 foreach(var f in t.files) {
                     Need(Regex.IsMatch(f.name??"",@"\A"+t.alias+@"(?:_r[0-9]+)?\.[a-z.]+\z"),"Invalid asset name");
                     Need(Hash(File.ReadAllBytes(f.source))==f.sha256,"Asset changed");
@@ -132,6 +134,7 @@ public static class NativePageProbe {
                     foreach(var f in t.boundDependencies)Need(Hash(File.ReadAllBytes(f.source))==f.sha256,"Bound dependency changed");
                 }
                 if(t.viewControl!=null) {
+                    Need(!t.viewControl.scale.HasValue||new[]{1d,2d,2.5d,5d,10d,20d,50d}.Contains(t.viewControl.scale.Value),"Invalid study scale");
                     var r=t.viewControl.region;
                     Need(r!=null&&r.Length==4&&r.All(v=>!Double.IsNaN(v)&&!Double.IsInfinity(v))&&
                         r[0]>=0&&r[1]>=0&&r[0]<r[2]&&r[1]<r[3]&&r[2]<=t.size[0]&&r[3]<=t.size[1]&&
