@@ -57,6 +57,97 @@ def leader_fixture():
 
 
 class PrimitiveStudyTests(unittest.TestCase):
+    def test_exaggeration_attribute_success_is_not_display_expansion(self):
+        args=list(fixture());x=dict(direction='Both',origin='NearDimensionLine',width=8,position=1,height=2)
+        args[0][0]['exaggeration']=x
+        for c in args[1]:
+            row=c['primitives'][0]
+            for a in (row['data']['Attributes'],row['children'][0]['data'].setdefault('Attributes',{})):
+                a['Exaggeration']={'ExaggerationEnabled':True,**{'Exaggeration'+k.title():v for k,v in x.items()}}
+        rebind(args);r=study_primitives(*args)
+        self.assertEqual('PRIMITIVES_OBSERVED',r['status'])
+        self.assertFalse(r['productionEligible'])
+        result=r['samples'][0]['details']['exaggeration']
+        self.assertEqual('ATTRIBUTE_ONLY_NO_EXPANSION',result['capabilityStatus'])
+        self.assertFalse(result['displayExpanded'])
+        self.assertEqual(result['anchorSpan'],result['observedArrowTipSpan'])
+        for location in ('parent','child'):
+            bad=copy.deepcopy(args)
+            for c in bad[1]:
+                row=c['primitives'][0]
+                a=row['data']['Attributes'] if location=='parent' else row['children'][0]['data']['Attributes']
+                a['Exaggeration']['ExaggerationEnabled']=False
+            rebind(bad)
+            with self.subTest(location=location):self.assertEqual('INPUT_BLOCKED',study_primitives(*bad)['status'])
+
+    def test_invalid_exaggeration_control_blocks(self):
+        valid=dict(direction='Both',origin='NearDimensionLine',width=8,position=1,height=2)
+        for update in (dict(direction='Unknown'),dict(origin='Unknown'),dict(width=True),dict(height=0),dict(position=-1),dict(extra=1)):
+            args=list(fixture());args[0][0]['exaggeration']={**valid,**update}
+            for c in args[1]:c['primitives'][0]['children'][0]['data']['Attributes']={}
+            rebind(args)
+            with self.subTest(update=update):self.assertEqual('INPUT_BLOCKED',study_primitives(*args)['status'])
+
+    def test_exaggeration_request_on_leader_blocks(self):
+        args=leader_fixture();args[0][0]['exaggeration']=dict(direction='Both',origin='NearDimensionLine',width=8,position=1,height=2)
+        self.assertEqual('INPUT_BLOCKED',study_primitives(*args)['status'])
+
+    def test_explicit_arrow_size_requires_sdk_and_actual_triangle(self):
+        for mode in ('match','sdk_only','geometry_only'):
+            args=list(fixture());args[0][0].update(arrowHeight=.8,arrowWidth=.8)
+            for capture in args[1]:
+                if mode!='geometry_only':capture['primitives'][0]['data']['Attributes']['Arrowhead'].update(Height=.8,Width=.8)
+                if mode!='sdk_only':
+                    polygons=capture['page']['presentation'][0]['Primitives'][0]['Primitives'][1:3]
+                    for tip,q in zip(([0,10],[10,10]),polygons):
+                        for edge in q['OuterLoop']['Segments']:
+                            for key in ('StartPoint','EndPoint'):
+                                for axis,origin in zip(('X','Y'),tip):edge[key][axis]=origin+(edge[key][axis]-origin)/2
+            body={k:v for k,v in args[2].items() if k!='digest'}
+            if mode!='sdk_only':
+                for tip,path in zip(([0,10],[10,10]),body['paths']):
+                    for command in path['commands']:
+                        for q in command[1:]:
+                            for i in (0,1):q[i]=tip[i]+(q[i]-tip[i])/2
+            args[2]=seal(body);rebind(args)
+            with self.subTest(mode=mode):self.assertEqual('PRIMITIVES_OBSERVED' if mode=='match' else 'INPUT_BLOCKED',study_primitives(*args)['status'])
+
+    def test_partial_negative_or_unverified_nonsquare_arrow_size_blocks(self):
+        for control in (dict(arrowHeight=.8),dict(arrowWidth=.8),dict(arrowHeight=-1,arrowWidth=-1),
+                        dict(arrowHeight=.8,arrowWidth=1.6),dict(arrowHeight=True,arrowWidth=True)):
+            args=list(fixture());args[0][0].update(control)
+            with self.subTest(control=control):self.assertEqual('INPUT_BLOCKED',study_primitives(*args)['status'])
+
+    def test_explicit_text_controls_must_match_actual_sdk_after_reopen(self):
+        for mode in ('match','text','distance','missing'):
+            args=list(fixture());args[0][0].update(textPlacing='OnDimensionLine',minimalDistance=8,searchMargin=9)
+            for capture in args[1]:
+                a=capture['primitives'][0]['data']['Attributes']
+                a['Text']['TextPlacing']='AboveDimensionLine' if mode=='text' else 'OnDimensionLine'
+                if mode!='missing':a['Placing']['Distance']=dict(MinimalDistance=7 if mode=='distance' else 8,SearchMargin=9)
+            rebind(args)
+            with self.subTest(mode=mode):
+                result=study_primitives(*args)
+                self.assertEqual('PRIMITIVES_OBSERVED' if mode=='match' else 'INPUT_BLOCKED',result['status'])
+
+    def test_invalid_or_partial_text_controls_block(self):
+        for control in (dict(textPlacing='Unknown'),dict(minimalDistance=1),dict(searchMargin=1),
+                        dict(minimalDistance=-1,searchMargin=1),dict(minimalDistance=True,searchMargin=1),
+                        dict(minimalDistance=float('inf'),searchMargin=1)):
+            args=list(fixture());args[0][0].update(control)
+            # Nonfinite plans are rejected by the outer JSON contract as well.
+            if control.get('minimalDistance')==float('inf'):
+                with self.assertRaises(ContractError):study_primitives(*args)
+            else:self.assertEqual('INPUT_BLOCKED',study_primitives(*args)['status'])
+
+    def test_requested_controls_do_not_override_observed_text_position(self):
+        args=list(fixture());args[0][0]['textPlacing']='OnDimensionLine'
+        for capture in args[1]:capture['primitives'][0]['data']['Attributes']['Text']['TextPlacing']='OnDimensionLine'
+        rebind(args);result=study_primitives(*args)
+        self.assertEqual('PRIMITIVES_OBSERVED',result['status'])
+        self.assertEqual([4,12,6,13],result['samples'][0]['ink']['inkBox'])
+        self.assertEqual([],result['samples'][0]['textLineIntersections'])
+
     def test_matched_primitive_is_not_layout_approval(self):
         r=study_primitives(*fixture());self.assertEqual('PRIMITIVES_OBSERVED',r['status']);self.assertFalse(r['productionEligible'])
         row=r['samples'][0];self.assertEqual(2,len(row['arrows']));self.assertEqual([],row['textLineIntersections'])

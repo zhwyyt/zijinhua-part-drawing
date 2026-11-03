@@ -1,5 +1,13 @@
 # 变更记录
 
+## 2026-11-03
+
+- 独立探针增加公开Exaggeration研究请求及父/子属性核对。三张新页的18个sheet尺寸未发生显示拉宽，明确输出ATTRIBUTE_ONLY_NO_EXPANSION，保留箭头削边反例；9份旧报告精确回放，全量595项通过，未接正式入口。见[夸大验证](verification/2026-11-03-dimension-exaggeration.md)。
+
+- 独立探针补显式文字位置模式、放置间距及箭头尺寸，并核对SDK和实际PDF。新增两组登记测试页，对照证明部分短尺寸仍削边，On还可造成穿字；保留失败与有限可用范围，不改正式入口。全量592项通过，见[文字控制验证](verification/2026-11-03-dimension-text-controls.md)。
+
+- 新增独立`visible-stroke-study`：离线重放PDF裁剪、白遮罩和原始笔宽，输出可见面积及基础净距。三规格36个原语有限测量完成，发现20个箭头削边，保持短尺寸未放行；全量587项通过，未调用Tekla。见[验证记录](verification/2026-11-03-visible-stroke-clearance.md)。
+
 ## 2026-10-31
 
 - 新增独立`glyph-study`真实字形/遮罩占用与图框映射校正、`primitive-study`短尺寸/箭头/引线验证。三规格新增两组试验页，修正默认无小数格式和长串插入位置；有限字形及原语读回通过，仍保留短尺寸占用冲突、字体角色及完整净距门。全量570项通过，旧实现不变。见[本轮记录](verification/2026-10-31-glyph-primitive-occupancy.md)。

@@ -125,6 +125,12 @@ python -m zijinhua_tekla.part_drawing.independent_layout page-study --job job.js
 
 `primitive-study --job <新页任务.json> --probe <原生采集目录> --template 零件图10 --ink <图框校正后的glyph-study/report.json> --out <新目录>`核对合成sheet试样的两次重开、短尺寸值/样式/箭头和直/折引线。其他模板分别传零件图20/50。PRIMITIVES_OBSERVED是有限能力状态，不代表整页可读或净距通过；原始线与文字遮罩/墨迹并集相交并不等于最终可见穿字数。
 
+`visible-stroke-study --primitives <primitive-study/report.json> --ink <同一字形报告> --pdf <同一原生PDF> --out <新目录>`离线重放裁剪、白遮罩绘制顺序和原始PDF笔宽，输出线/箭头可见面积、损失比例及到逐字墨迹包络/保守占用的距离。完全重复线按等数量同几何组绑定。hairline、目标虚线/非butt端帽、miter回退、彩色/透明及未知绘制阻断；不评价真实字形轮廓碰撞、全页障碍或生产布局。三规格实测发现20个箭头削边，仍须验证文字位置控制。见[验证记录](../../../../docs/verification/2026-11-03-visible-stroke-clearance.md)。
+
+新页job的dimension试样支持可选`textPlacing`（AboveDimensionLine/OnDimensionLine）、成对非负`minimalDistance/searchMargin`；所有原语支持成对正数且相等的`arrowHeight/arrowWidth`，省略仍用原0.8字高试样尺寸。primitive-study检查实际SDK及原生/PDF箭头，文字位置以实际字形/遮罩为准。On/搜索间距不是文字偏移接口，模板数值组装候选也有最短尺寸失败，详见[对照结果](../../../../docs/verification/2026-11-03-dimension-text-controls.md)。
+
+dimension另支持研究用`exaggeration={direction,origin,width,position,height}`：direction取LeftDown/RightUp/Both，origin取NearDimensionLine/NearMeasuredObject，width/height为有限正数，position为有限非负数，五项必填。探针只用公开Exaggeration属性；离线同时核对父集/子尺寸。当前18个sheet样本均为`details.exaggeration.capabilityStatus=ATTRIBUTE_ONLY_NO_EXPANSION`，不是可用的文字移动接口。实际拉宽的箭头/折线路径尚未适配，旧端点绑定会阻断；不得拿该选项接生产，见[验证](../../../../docs/verification/2026-11-03-dimension-exaggeration.md)。
+
 任务可选`PageSample.angle`为SDK角度制，默认0；新增`PageTemplate.primitives`包含`dimension`（start/end/up/distance/shortDimension）或`leader`（at/tip/text/elbows），共同字段key/font/height。仅新测试页执行，单位毫米、可选一位小数；所有请求点都是明确的sheet合成坐标，不能直接用于加工锚点。
 
 PDF研究依赖可由`python -m pip install -r src/zijinhua_tekla/part_drawing/independent_layout/requirements-glyph.txt`安装。本次使用Codex捆绑Python及pdfminer.six，另加载本仓库stage0依赖。字体、矩阵、PDF/页快照摘要和实际依赖版本均在报告内。详见[设计](../../../../docs/design/2026-10-31-glyph-primitive-occupancy.md)及[有限现场验证](../../../../docs/verification/2026-10-31-glyph-primitive-occupancy.md)。仍不提供候选文字预测、生产字体策略或完整CalibrationProfile。

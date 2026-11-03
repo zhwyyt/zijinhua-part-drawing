@@ -141,3 +141,13 @@ Python 导入父包时仍会执行其既有 `__init__.py`，因此环境必须�
 TemplateBundleProbe以FileShare.Read句柄保护全部原属性，独立备份全目录；唯一本地别名通过CreateNew安装，逐调用校验整个目录和活动状态。两次加载前后以同名缺失负对照限定实际解析路径，清理只针对本次创建且哈希未变的文件。进程硬终止不保证自动清理，保留安装意图、拥有文件和状态日志供恢复。
 
 TemplateBundleLoadStudy.v1离线重建每个包、验证全目录备份及逐步预期清单，三个规格缺一不可；不能仅相信filesRestored等布尔标志。负对照异常不能代替缺失图幅。成功子项ISOLATED_LOAD_MATCHED，顶层STUDY_ONLY、productionEligible=false；prepare-input只补绑定证据，原7类门不变。现场三规格全部通过，358份原属性及旧125文件不变。详细证据见[验证记录](../../../../docs/verification/2026-10-31-isolated-template-bundles.md)。
+
+## 可见笔画读回（2026-11-03）
+
+`visible_strokes.py`只消费已关联的GlyphOccupancyStudy/PrimitiveStudy和同一PDF，输出VisibleStrokeStudy.v1。独立按PDF操作顺序恢复裁剪和图形状态，将原始用户空间笔宽几何变换到源图坐标，再扣后绘制白遮罩。与pdfminer路径逐项核对；不复用其已缩放lineWidth作为原宽。完全重复线按等数量同几何组关联，近邻不同线拒绝歧义。
+
+仅支持不透明黑白、单闭环直边裁剪/白填充、目标直线butt端帽和无miter回退的箭头填充/描边。报告逐路径面积损失和到逐字墨迹包络的距离，不发布角色阈值、不当全页障碍或精确字形碰撞检查。旧原语报告的原始中心线交叉保留，新增结果不覆盖它；字形不穿线仍可能箭头缺损。本轮66个箭头中20个削边，阶段0仍未关闭，新适配不接正式入口。见[设计](../../../../docs/design/2026-11-03-visible-stroke-clearance.md)和[验证](../../../../docs/verification/2026-11-03-visible-stroke-clearance.md)。
+
+后续文字控制对照增加显式TextPlacing、放置距离和等宽高箭头尺寸试样；这些只是新页请求，不作为文字位置事实。三份旧primitive报告重放精确一致。两组实测表明On可被原生条件布局忽略或产生严重遮箭头/穿字，搜索距离也不能当文字间隙；按实际模板尺寸字段组装FilledArrow/仿宋候选仍有最短尺寸失败。禁止从少量跨度比直接冻结Inside/Outside生产阈值。下一步需有真实锚点/值关联的可控文字位置设计，能力不足保持阻断，见[设计](../../../../docs/design/2026-11-03-dimension-text-controls.md)与[验证](../../../../docs/verification/2026-11-03-dimension-text-controls.md)。
+
+公开Exaggeration续作只扩展新页试验请求及父/子属性核对。本机没有找到独立数值文字坐标；18个sheet试样的夸大属性保存但显示不变，输出ATTRIBUTE_ONLY_NO_EXPANSION，PRIMITIVES_OBSERVED仍仅表示原语读回成立。箭头实际拉宽时旧端点关联明确阻断，不能从Width/Position推算显示坐标替代证据。下一步先补真实目标视图、单位和锚点路径，避免在sheet未生效配置上堆规则；9份历史报告精确保持。见[设计](../../../../docs/design/2026-11-03-dimension-exaggeration.md)和[验证](../../../../docs/verification/2026-11-03-dimension-exaggeration.md)。

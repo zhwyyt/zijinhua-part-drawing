@@ -1,10 +1,12 @@
 # TASKLIST
 
-更新时间：2026-10-31
+更新时间：2026-11-03
 
 只列本仓库未完成的零件图工作。识别、配送和 BOX 工序图留在 `I:\zijinhuatekla`。
 
 ## 独立布局系统
+
+- [ ] 在真实目标视图验证短尺寸的原生可控显示、单位往返与实际锚点路径，补箭头完整性、角色净距及全页障碍。本机公开API未找到独立数值文字坐标；新页18个sheet尺寸夸大属性保存成功但图面未拉宽，本组42/54箭头削边约8%，见[夸大记录](docs/verification/2026-11-03-dimension-exaggeration.md)。不要继续在sheet调参推断生产能力。此前Above/On和搜索间距失败保留；模板数值候选中列明的Outside跨度比1/2/4/8、Inside4/8及引线完整，不得归纳阈值，见[文字控制记录](docs/verification/2026-11-03-dimension-text-controls.md)。
 
 - [ ] 闭合10/20/50表格/字体运行时依赖；本例直接字段、整数数量、隐藏重量及静态原文已核对，备注/修订/日期、多行汇总、20孔说明角色与10未启用系统3D视图仍缺证。见[基础控制记录](docs/verification/2026-10-31-native-foundation-controls.md)。
 - [ ] 在已实现glyph-study真实轮廓/遮罩并集及图框映射基础上，接入候选测量/回读核验，补角色、字符/角度域和版本化生产字体策略。仿宋/宋体三字号0/30/90度已有有限证据；原表格字体仍有替代/缺字，20真实孔说明等角色未补齐，尚不能发布CalibrationProfile。见[字形与原语记录](docs/verification/2026-10-31-glyph-primitive-occupancy.md)。

@@ -48,6 +48,10 @@ def _parser():
     primitives.add_argument('--probe', type=Path, required=True)
     primitives.add_argument('--template', required=True)
     primitives.add_argument('--ink', type=Path, required=True, help='Frame-aligned glyph-study report')
+    visible = commands.add_parser('visible-stroke-study', help='Replay clipping, opaque masks and actual PDF stroke widths')
+    visible.add_argument('--primitives', type=Path, required=True)
+    visible.add_argument('--ink', type=Path, required=True)
+    visible.add_argument('--pdf', type=Path, required=True)
     template = commands.add_parser('template-study', help='Inspect read-only captures, not production approval')
     template.add_argument('--study', type=Path, required=True)
     template.add_argument('--attributes', type=Path)
@@ -115,6 +119,9 @@ def main(argv=None):
                 raise ContractError('PRIMITIVE_TEMPLATE', 'Expected one known template')
             captures=[read_json(args.probe/(args.template+'-'+stage+'.json')) for stage in ('before','reopen1','reopen2')]
             result=study_primitives(templates[0]['primitives'],captures,read_json(args.ink))
+        elif args.command == 'visible-stroke-study':
+            from .visible_strokes import study_visible_strokes
+            result=study_visible_strokes(read_json(args.primitives),read_json(args.ink),args.pdf.read_bytes())
         elif args.command == 'template-study':
             from .templates import study_template
             capture, objects, presentation = [read_json(args.study / name) for name in

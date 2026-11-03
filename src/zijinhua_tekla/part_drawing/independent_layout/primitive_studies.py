@@ -65,6 +65,24 @@ def _text_observation(key, object_id, segment):
     return dict(key=key,objectId=object_id,text=t['Text'],font=t['Font'],height=t['Height'],angle=math.degrees(t['Angle']),box=box)
 
 
+def _exaggeration_control(planned, parent, child):
+    """Attribute readback is evidence only; it does not prove display expansion."""
+    x=planned['exaggeration']
+    require(isinstance(x,dict) and set(x)=={'direction','origin','width','position','height'},
+            'PRIMITIVE_EXAGGERATION','Complete exaggeration control required')
+    require(x['direction'] in ('LeftDown','RightUp','Both') and
+            x['origin'] in ('NearDimensionLine','NearMeasuredObject') and
+            all(type(x[k]) in (int,float) and math.isfinite(x[k]) and x[k]>0 for k in ('width','height')) and
+            type(x['position']) in (int,float) and math.isfinite(x['position']) and x['position']>=0,
+            'PRIMITIVE_EXAGGERATION','Invalid exaggeration control')
+    expected={'ExaggerationEnabled':True,**{'Exaggeration'+k.title():v for k,v in x.items()}}
+    for a in (parent,child):
+        actual=a.get('Exaggeration',{})
+        require(actual.get('ExaggerationEnabled') is True and all(actual.get(k)==v for k,v in expected.items()),
+                'PRIMITIVE_EXAGGERATION','Parent/child exaggeration readback differs from request')
+    return expected
+
+
 def study_primitives(planned, captures, extracted, tolerance=.1):
     """Tolerance associates readback paths in source units, not a layout clearance."""
     from shapely.geometry import LineString, box
@@ -87,6 +105,11 @@ def study_primitives(planned, captures, extracted, tolerance=.1):
     triangles=_pdf_triangles(extracted['paths']);results=[]
     for p in planned:
         try:
+            require(('arrowHeight' in p)==('arrowWidth' in p),'PRIMITIVE_ARROW_STYLE','Both arrow dimensions required')
+            arrow_height=p.get('arrowHeight',p['height']*.8);arrow_width=p.get('arrowWidth',p['height']*.8)
+            require(all(type(v) in (int,float) and math.isfinite(v) and v>0 for v in (arrow_height,arrow_width)),
+                    'PRIMITIVE_ARROW_STYLE','Invalid arrow dimensions')
+            require(arrow_height==arrow_width,'PRIMITIVE_ARROW_STYLE','Only equal arrow dimensions are calibrated')
             rows=[m[p['key']] for m in observed];r=rows[-1];data=r['data'];a=data['Attributes']
             unsaved=copy.deepcopy(rows[0]);initial_endpoint=None
             if p['kind']=='leader' and len(unsaved['children'])==len(r['children'])==1:
@@ -110,6 +133,19 @@ def study_primitives(planned, captures, extracted, tolerance=.1):
             ink['auxiliaryBoxKind']='DISPLAY_TEXT_MASK';ink.pop('sdkBox');ink.pop('overflowSdk')
             arrows=[];lines=list(_lines(segment));details={}
             if p['kind']=='dimension':
+                exaggeration=_exaggeration_control(p,a,d.get('Attributes',{})) if 'exaggeration' in p else None
+                if 'textPlacing' in p:
+                    require(p['textPlacing'] in ('AboveDimensionLine','OnDimensionLine'),
+                            'PRIMITIVE_TEXT_CONTROL','Unsupported text placing')
+                    checks['textPlacing']=a['Text'].get('TextPlacing')==p['textPlacing']
+                require(('minimalDistance' in p)==('searchMargin' in p),
+                        'PRIMITIVE_TEXT_CONTROL','Both placing distances required')
+                if 'minimalDistance' in p:
+                    require(all(type(p[k]) in (int,float) and math.isfinite(p[k]) and p[k]>=0
+                                for k in ('minimalDistance','searchMargin')),
+                            'PRIMITIVE_TEXT_CONTROL','Invalid placing distances')
+                    checks['placingDistances']=all(a['Placing'].get('Distance',{}).get(field)==p[key]
+                        for key,field in (('minimalDistance','MinimalDistance'),('searchMargin','SearchMargin')))
                 length=math.dist(p['start'],p['end']);value=Decimal(str(length)).quantize(Decimal('.1'),rounding=ROUND_HALF_UP)
                 expected=format(value,'f').rstrip('0').rstrip('.') if '.' in format(value,'f') else format(value,'f')
                 sdk_value=''.join(v['unformatted'] for v in d['Value'])
@@ -131,11 +167,21 @@ def study_primitives(planned, captures, extracted, tolerance=.1):
                     inward=sum(tail[i]*axis[i] for i in range(2))*(1 if tip_index==0 else -1)>0
                     axial=[sum((v[i]-tip[i])*axis[i] for i in range(2)) for v in q]
                     normal=[-(v[0]-tip[0])*axis[1]+(v[1]-tip[1])*axis[0] for v in q]
-                    checks['arrowSize'+str(tip_index)]=abs(max(abs(v) for v in axial)-p['height']*.8)<=1e-6 and abs(max(normal)-min(normal)-p['height']*.8)<=1e-6
+                    checks['arrowSize'+str(tip_index)]=abs(max(abs(v) for v in axial)-arrow_width)<=1e-6 and abs(max(normal)-min(normal)-arrow_height)<=1e-6
                     arrows.append(dict(tip=tip,points=q,pdfPath=pdf['index'],bodyInsideSpan=inward))
                 details=dict(length=length,displayText=text['text'],sdkValueText=sdk_value,expectedText=expected,
                              childValueFonts=[v.get('Font') for v in d['Value']])
+                if 'textPlacing' in p or 'minimalDistance' in p:
+                    details['textControls']=dict(textPlacing=a['Text'].get('TextPlacing'),placingDistance=a['Placing'].get('Distance'))
+                if exaggeration is not None:
+                    # This adapter binds tips to unexpanded endpoints. An expanded route
+                    # needs its own anchor-to-arrow proof and is rejected above.
+                    actual_tips=[next(v for v in arrow['points'] if _near(v,arrow['tip'],1e-6)) for arrow in arrows]
+                    details['exaggeration']=dict(attributes=exaggeration,anchorSpan=length,
+                        observedArrowTipSpan=math.dist(*actual_tips),
+                        displayExpanded=False,capabilityStatus='ATTRIBUTE_ONLY_NO_EXPANSION')
             else:
+                require('exaggeration' not in p,'PRIMITIVE_EXAGGERATION','Dimension control on leader')
                 checks.update(text=text['text']==p['text'],tip=_near(_xy(d['StartPoint']),p['tip'],1e-6),
                               position=_near(_xy(data['InsertionPoint']),p['at'],1e-6),
                               elbows=len(d['ElbowPoints'])==len(p['elbows']) and all(_near(_xy(x),y,1e-6) for x,y in zip(d['ElbowPoints'],p['elbows'])),
@@ -154,10 +200,10 @@ def study_primitives(planned, captures, extracted, tolerance=.1):
                 unit=[v/distance for v in direction]
                 projected=[[(v[0]-p['tip'][0])*unit[0]+(v[1]-p['tip'][1])*unit[1],
                             -(v[0]-p['tip'][0])*unit[1]+(v[1]-p['tip'][1])*unit[0]] for v in q['points']]
-                checks['pdfArrowSizeDirection']=abs(max(v[0] for v in projected)-p['height']*.8)<=tolerance and min(v[0] for v in projected)>=-tolerance and abs(max(v[1] for v in projected)-min(v[1] for v in projected)-p['height']*.8)<=tolerance
+                checks['pdfArrowSizeDirection']=abs(max(v[0] for v in projected)-arrow_width)<=tolerance and min(v[0] for v in projected)>=-tolerance and abs(max(v[1] for v in projected)-min(v[1] for v in projected)-arrow_height)<=tolerance
                 arrows=[dict(tip=p['tip'],points=q['points'],pdfPath=q['index'])];details=dict(route=route,symbol=symbol,unsavedSdkEndPoint=initial_endpoint,
                                                                                            savedSdkEndPoint=_xy(d['EndPoint']))
-            checks['sdkStyle']=font['Name']==p['font'] and font['Height']==p['height'] and arrow['Head']=='FilledArrow' and arrow['Height']==arrow['Width']==p['height']*.8
+            checks['sdkStyle']=font['Name']==p['font'] and font['Height']==p['height'] and arrow['Head']=='FilledArrow' and arrow['Height']==arrow_height and arrow['Width']==arrow_width
             obstacle=box(*ink['occupancyBox']);clearances=[obstacle.distance(LineString(line)) for line in lines]
             results.append(dict(key=p['key'],kind=p['kind'],objectId=r['objectId'],displayObjectId=identity,
                                 status='PRIMITIVE_MATCHED' if all(checks.values()) else 'INPUT_BLOCKED',checks=checks,

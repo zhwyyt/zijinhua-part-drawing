@@ -26,3 +26,9 @@ python -m zijinhua_tekla.cli draw-native-parts --ownership "I:\zijinhuatekla\out
 三规格已在584独立测试页上验证实际图框/材料表、16条文字试样及两次重开；新单主视图副本完成10的1:2.5、20/50的1:1固定放置和关闭缩短，视图框均在试验区域内。原生文字遮罩已按对象ID核验；官方PDF嵌入字体后仍有字体替换/中文缺字，候选现代仿宋/宋体的测试文字完整，但真实墨迹超出SDK框。见[基础控制验证](docs/verification/2026-10-31-native-foundation-controls.md)。
 
 后续已实现独立`glyph-study`真实字形读回占用及图框单位映射、`primitive-study`短尺寸/箭头/引线核验。三规格18条字形试样、30个短尺寸、6个引线完成有限验证，全量570项通过；保留短尺寸占用相交和表格原字体缺口，仍不提供生产CalibrationProfile或新布局求解。见[本轮记录](docs/verification/2026-10-31-glyph-primitive-occupancy.md)。
+
+新增`visible-stroke-study`离线核对裁剪、白遮罩和实际笔宽。36个原语的可见线/箭头未碰逐字墨迹包络，但20个箭头被遮罩削边，短尺寸布局仍未放行；全量587项通过，本轮未操作现场图纸。见[可见笔画记录](docs/verification/2026-11-03-visible-stroke-clearance.md)。
+
+后续已完成两组新页文字控制/模板箭头尺寸候选对照。确认On与搜索间距不是通用修复；列明的部分Outside及直/折引线样例完整，最短尺寸仍削边，独立布局未放行。全量592项通过，既有页/属性/模型来源保持。见[文字控制记录](docs/verification/2026-11-03-dimension-text-controls.md)。
+
+公开尺寸夸大接口已完成新页对照：18个sheet尺寸属性保存但显示未拉宽，本组42个箭头仍削边约8%；报告明确区分属性与显示能力，真实目标视图待验证。全量595项通过，既有保护项保持，见[夸大记录](docs/verification/2026-11-03-dimension-exaggeration.md)。
