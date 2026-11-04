@@ -4,6 +4,8 @@ Tekla 2017 原生零件图。代码从 `I:\zijinhuatekla` 的 `exp/tekla-native-
 
 当前接通的是平直板：API 读取、几何事实、类型、专用核验、加工表达、布局和写图。折弯板、曲面板、折梁以后在本仓库做，现在还不会出图。
 
+2026-11-04工作方向调整：暂缓继续推进自动出图，先扩展跨类型的几何事实与加工要求，再建设硬正确性、人工风格两层质检。计划收集50份人工图纸，大部分配对模型及加工说明；本次只完成[路线与验收设计](docs/design/2026-11-04-facts-and-two-layer-quality.md)，新能力尚未实现。
+
 ```powershell
 $env:PYTHONPATH = "$PWD/src"
 python -m zijinhua_tekla.cli draw-native-parts --ownership "I:\zijinhuatekla\outputs\m4-implementation-20261023\t1-ownership.json" --drawing-attributes "标准零件图10(按1倍导出)" --out outputs/native-drawing/new-batch
