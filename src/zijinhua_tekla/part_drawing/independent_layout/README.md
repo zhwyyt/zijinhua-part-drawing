@@ -168,3 +168,19 @@ PDF研究依赖可由`python -m pip install -r src/zijinhua_tekla/part_drawing/i
 - [阶段 0 实施记录](../../../../docs/verification/2026-10-31-independent-layout-stage0.md)
 
 语义续作的范围、回放与缺口见 [尺寸与覆盖适配记录](../../../../docs/verification/2026-10-31-independent-layout-expressions.md)。`expressions` 的范围排除会单独列出，不能把退出码0理解为每个实例均通过；正式图面验收仍未接通。
+
+
+## 孔槽/圆弧完整图试验（2026-11-03）
+
+`plan_complete_trial(..., complete_features=True)`显式启用r4，默认r3不变。适配单外环及孔槽、R说明、显式中心线与NativeFeatureCurves；不支持其他闭合内口/附加视图。单孔局部定位为孔旁硬约束，两段均短的外置文字占用按102实际证据处理，不能代替多段短尺寸适配。`verify_complete_trial`复核源锚点、孔旁距离、原生及实际显示曲线和两次重开。
+
+八件历史实例已创建新页并实际核验；225/618主图文字清晰，其他六件仍有表格避让或短尺寸等失败。固定region尚未消费不同页的真实材料表高度，正式入口未接线。设计和逐件证据见[本批设计](../../../../docs/design/2026-11-03-existing-parts-batch.md)与[验证](../../../../docs/verification/2026-11-03-existing-parts-batch.md)。
+
+内部独立特征现按共同孔旁优先规则生成尺寸候选，并在原生回读时重查实际位置；远端不参与普通评分竞争。共同规则覆盖孔中心和闭合内轮廓，矩形/圆角/倒角矩形策略回归不代表这些内口已经接通原生整页出图。见[规则和能力边界](../../../../docs/design/2026-11-03-internal-feature-locality.md)。
+
+
+## 六件修复试验（2026-11-03）
+
+`template_regions(capture)`从实际模板DPM求空白矩形，`verify_template_clearance(plan,capture)`核验最终视图框、模板净距与表格自身越界。2026-11-04用户否决拆链方案，自动拆段实现已删除；显式`split_crowded=True`请求报错。`measured_shorts=True`单独启用短端文字/线延长包络，完整尺寸链保持一个原生尺寸集。回读逐链核对原始锚点清单，拒绝历史拆链图。
+
+111/451/73保持本批问题技术检查通过。101/102拆链页已撤销通过结论，第5页完整链已实际出图/重开回读，但80/360仍有文字碰线；450共享材料表仍超框。见[撤销与恢复记录](../../../../docs/verification/2026-11-04-dimension-chain-restoration.md)。

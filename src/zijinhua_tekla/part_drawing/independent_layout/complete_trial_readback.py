@@ -5,19 +5,30 @@ import re
 from .contracts import check_seal, digest, require, seal
 from .expressions import adapt_expressions
 from .foundation_studies import _nodes
-from .view_primitives import model_point, _translate
+from .view_primitives import model_point, _translate, source_basis
 
 
 def verify_complete_trial(source, plan, captures):
     check_seal(plan)
+    require(not plan.get('fragmentedDimensions'),'DIMENSION_CHAIN_CONTINUITY',
+            'A semantic dimension chain must remain one native set')
     version=plan.get('expressionAdapterVersion','independent-expressions.r1')
-    require(version in ('independent-expressions.r1','independent-expressions.r3'),
+    require(version in ('independent-expressions.r1','independent-expressions.r3','independent-expressions.r4'),
             'TRIAL_VERSION','Unsupported expression adapter')
-    expressions=adapt_expressions(source,boundary_paths=version=='independent-expressions.r3')
-    if version=='independent-expressions.r3':
-        from .boundary_planning import check_boundary_placements
-        check_boundary_placements(expressions,plan['placements'])
-    require(plan['sourceDigest']==source['digest'] and plan['expressionDigest']==expressions['digest'],
+    expressions=adapt_expressions(source,boundary_paths=version=='independent-expressions.r3',
+                                  complete_features=version=='independent-expressions.r4')
+    expression_digest=expressions['digest']
+    chains={o['objectId']:o['points'] for o in expressions['objects'] if o['kind']=='DIMENSION'}
+    rendered=[p for p in plan['primitives'] if p['kind']=='dimensionGroup']
+    require(len(rendered)==len(chains) and {p['key'] for p in rendered}==set(chains) and
+            all(p['pointRefs']==chains[p['key']] for p in rendered),
+            'DIMENSION_CHAIN_CONTINUITY','Complete chain anchors must stay in one native set')
+    from .boundary_planning import check_boundary_placements
+    if 'boundaryPlanning' in expressions['scheme']:check_boundary_placements(expressions,plan['placements'])
+    if version=='independent-expressions.r4':
+        from .feature_locality import check_local_feature_placements
+        check_local_feature_placements(expressions,plan['placements'],plan['scale'],plan['height'])
+    require(plan['sourceDigest']==source['digest'] and plan['expressionDigest']==expression_digest,
             'TRIAL_SOURCE','Plan/source expression mismatch')
     expected={o['objectId']:o for o in expressions['objects'] if o['mobility']=='DYNAMIC'}
     require(len(captures)==3,'TRIAL_REOPEN','Before and two reopens required')
@@ -29,7 +40,7 @@ def verify_complete_trial(source, plan, captures):
                 'TRIAL_READBACK_COVERAGE','Missing/extra native object')
         require(len(capture['page']['views'])==1,'TRIAL_VIEW','One view required')
         actual_view=capture['page']['views'][0]['view']
-        results=[]
+        results=[];actual_placements=[]
         for key,obj in expected.items():
             row=rows[key];binding=row['viewBinding'];view=binding['view'];a=view['Attributes']
             require(binding['modelPartId']==source['rawPart']['id'] and a['Scale']==plan['scale'] and
@@ -48,19 +59,25 @@ def verify_complete_trial(source, plan, captures):
                 require(data['TextString']==obj['text'] and near(data['InsertionPoint'],project(planned['at'])) and
                         not row['children'],'TRIAL_LABEL','Label differs or has leader')
                 results.append(dict(key=key,objectId=row['objectId'],text=data['TextString']));continue
+            if obj['kind'] in ('HOLE_NOTE','RADIUS'):
+                from .feature_readback import verify_note
+                verify_note(obj,row,planned,source,project)
+                results.append(dict(key=key,objectId=row['objectId'],text=data['TextString']));continue
             require(obj['kind']=='DIMENSION','TRIAL_SCOPE','Unsupported readback role')
             coords=[project(model_point(source,p)) for p in obj['coordinates']]
             children=list(row['children']);values=[]
             require(len(children)==len(coords)-1,'TRIAL_INTERVALS','Dimension interval missing/extra')
             up=[sum(v*q for v,q in zip(planned['up'],axis)) for axis in axes]
-            if version=='independent-expressions.r3':
+            if version in ('independent-expressions.r3','independent-expressions.r4'):
                 cross=1-'xy'.index(obj['axis'])
-                frame=source['requirements']['partType']['frame']
-                wanted=[obj['side']*v for v in frame['axisX' if cross==0 else 'axisY']]
-                require(math.dist(planned['up'],wanted)<=1e-6,'BOUNDARY_SIDE',key)
+                require(any(math.dist(planned['up'],[side*v for v in source_basis(source)[cross]])<=1e-6
+                            for side in obj['allowedSides']),'BOUNDARY_SIDE',key)
             require(abs(data['Distance']-planned['distance']*plan['scale'])<=1e-6 and
                     data['Attributes']['Format']['Format']==('NoDecimals' if planned['decimals']==0 else 'OneOptionalDecimal'),
                     'TRIAL_PLACEMENT','Wrong dimension distance/format')
+            if version=='independent-expressions.r4':
+                sign=sum(x*y for x,y in zip(planned['up'],source_basis(source)[cross]))
+                actual_placements.append(dict(key=key,ordinate=(obj['coordinates'][0][cross]+sign*data['Distance'])/plan['scale']))
             if 'witnessLength' in planned:
                 witnesses=row.get('witnesses',[])
                 require(data['Attributes']['ExtensionLine']=='Yes' and len(witnesses)==len(coords),
@@ -83,6 +100,8 @@ def verify_complete_trial(source, plan, captures):
                 values.append(dict(objectId=child['objectId'],text=text,sourceRefs=obj['points'][i:i+2],
                                    rawProjectedValue=obj['values'][i]))
             results.append(dict(key=key,objectId=row['objectId'],intervals=values))
+        if version=='independent-expressions.r4':
+            check_local_feature_placements(expressions,actual_placements,plan['scale'],plan['height'])
         observations.append(results)
     last=captures[-1];view=last['page']['views'][0]['view'];sheet_origin=[view['Origin'][k] for k in ('X','Y')]
     displays=[d for d in last['page']['presentation'] if math.dist([d['Position'][k] for k in ('X','Y')],sheet_origin)<1e-6]
@@ -112,24 +131,32 @@ def verify_complete_trial(source, plan, captures):
             bindings.append(dict(key=result['key'],objectId=item['objectId'],text=item['text']))
     # Target-part contour is observed independently of dimensions.
     binding=last['primitives'][0]['viewBinding']
-    target=[s for s in segments if s.get('Id')==binding['targetObjectId']]
-    require(len(target)==1,'TRIAL_CONTOUR','Target display missing')
-    actual_lines=[[[l[k][c] for c in ('X','Y')] for k in ('StartPoint','EndPoint')]
-                  for l in _nodes(target[0],'.LinePrimitive')]
-    residuals=[]
-    for edge in source['requirements']['facts']['segments']:
-        endpoints=[[q/plan['scale']+sheet_origin[i] for i,q in enumerate(project(model_point(source,edge[k])))]
-                   for k in ('start','end')]
-        residual=min(min(max(math.dist(a,c),math.dist(b,d)),max(math.dist(a,d),math.dist(b,c)))
-                     for a,b in actual_lines for c,d in [endpoints])
-        require(residual<=.1,'TRIAL_CONTOUR','Real contour differs from source');residuals.append(residual)
+    residuals=[];features=None
+    if version=='independent-expressions.r4':
+        from .feature_readback import verify_curves
+        features=verify_curves(source,plan,captures,project,segments)
+    else:
+        target=[s for s in segments if s.get('Id')==binding['targetObjectId']]
+        require(len(target)==1,'TRIAL_CONTOUR','Target display missing')
+        actual_lines=[[[l[k][c] for c in ('X','Y')] for k in ('StartPoint','EndPoint')]
+                      for l in _nodes(target[0],'.LinePrimitive')]
+        for edge in source['requirements']['facts']['segments']:
+            endpoints=[[q/plan['scale']+sheet_origin[i] for i,q in enumerate(project(model_point(source,edge[k])))]
+                       for k in ('start','end')]
+            residual=min(min(max(math.dist(a,c),math.dist(b,d)),max(math.dist(a,d),math.dist(b,c)))
+                         for a,b in actual_lines for c,d in [endpoints])
+            require(residual<=.1,'TRIAL_CONTOUR','Real contour differs from source');residuals.append(residual)
     table_text=[t['Text'] for v in last['page']['presentation'] if v['Position']['X']==v['Position']['Y']==0
                 for t in _nodes(v,'.TextPrimitive')]
     profiles=[t for t in table_text if re.match(r'^PL\d+(?:\.\d+)?\*',t)]
     thickness=next(o['value'] for o in expressions['objects'] if o['kind']=='THICKNESS')
-    require(len(set(profiles))==1 and abs(float(profiles[0][2:].split('*')[0])-thickness)<=source['requirements']['modelToleranceMm'] and
+    require(bool(profiles) and (version=='independent-expressions.r4' or len(set(profiles))==1) and
+            all(abs(float(p[2:].split('*')[0])-thickness)<=source['requirements']['modelToleranceMm'] for p in profiles) and
             '1:'+format(plan['scale'],'g') in table_text,'TRIAL_TABLE','Thickness/scale table differs')
     return seal(dict(schemaVersion='CompleteTrialReadback.v1',status='NATIVE_COMPLETE_PREVIEW',productionEligible=False,
                      sourceDigest=source['digest'],planDigest=plan['digest'],captureDigests=[digest(c) for c in captures],
                      observations=observations,displayBindings=bindings,profile=profiles[0],
-                     maximumContourResidual=max(residuals),remainingGates=['ACTUAL_PDF_VISUAL','TEMPLATE_FONT_COMPLETENESS']))
+                     **({'tableProfiles':sorted(set(profiles))} if version=='independent-expressions.r4' else {}),
+                     maximumContourResidual=max(residuals) if residuals else None,
+                     **({'features':features} if features is not None else {}),
+                     remainingGates=['ACTUAL_PDF_VISUAL','TEMPLATE_FONT_COMPLETENESS']))

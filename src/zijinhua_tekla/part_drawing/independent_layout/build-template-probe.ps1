@@ -30,6 +30,7 @@ if ($Page) {
     $arguments += (Join-Path $PSScriptRoot 'NativePdfExport.cs')
     $arguments += (Join-Path $PSScriptRoot 'NativePrimitiveProbe.cs')
     $arguments += (Join-Path $PSScriptRoot 'NativeCompletePage.cs')
+    $arguments += (Join-Path $PSScriptRoot 'NativeFeatureCurves.cs')
     $arguments += (Join-Path $PSScriptRoot '../../../../tools/tekla2017_native_drawing/TargetDrawingLookup.cs')
 }
 & $compiler @arguments

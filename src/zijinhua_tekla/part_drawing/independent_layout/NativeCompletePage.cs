@@ -9,7 +9,7 @@ internal static class NativeCompletePage {
         var id=typeof(D.DatabaseObject).GetProperty("Identifier",BindingFlags.Instance|BindingFlags.NonPublic);
         return ((Tekla.Structures.Identifier)id.GetValue(obj,null)).ID;
     }
-    internal static object ClearNewPage(D.SinglePartDrawing drawing) {
+    internal static object ClearNewPage(D.SinglePartDrawing drawing,bool featureCurves=false) {
         var remove=new List<D.DrawingObject>();var receipts=new List<object>();int parts=0,views=0;
         var leaders=new List<D.DrawingObject>();var markChildren=new HashSet<int>();
         var ve=drawing.GetSheet().GetAllViews();
@@ -22,7 +22,7 @@ internal static class NativeCompletePage {
                     if(part.ModelIdentifier.ID!=drawing.PartIdentifier.ID)throw new InvalidOperationException("Unexpected drawing part");
                     parts++;continue;
                 }
-                if(o is D.StraightDimensionSet||o is D.Mark) {
+                if(o is D.StraightDimensionSet||o is D.Mark||featureCurves&&o is D.RadiusDimension) {
                     remove.Add(o);var mark=o as D.Mark;
                     if(mark!=null) {
                         var children=mark.GetObjects();
@@ -33,7 +33,7 @@ internal static class NativeCompletePage {
                     }
                 }
                 else if(o is D.LeaderLine)leaders.Add(o);
-                else if(!(o is D.StraightDimension))throw new InvalidOperationException("Unexpected auto object: "+o.GetType().FullName);
+                else if(!(o is D.StraightDimension)&&!(featureCurves&&o is D.Bolt))throw new InvalidOperationException("Unexpected auto object: "+o.GetType().FullName);
             }
         }
         if(views!=1||parts!=1)throw new InvalidOperationException("Complete trial requires exactly one target view/part");

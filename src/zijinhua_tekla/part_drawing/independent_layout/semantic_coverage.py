@@ -281,7 +281,8 @@ def _validate_contract(source, expressions):
     require(plan.get('schemaVersion') in ('expressionRequirements.v1', 'expressionRequirements.v2') and
             scheme.get('schemaVersion') in ('dimensionScheme.v1','dimensionScheme.v2') and
             profile.get('schemaVersion') == 'planningConvention.v1' and
-            expressions.get('adapterVersion') in ('independent-expressions.r1','independent-expressions.r2','independent-expressions.r3'),
+            expressions.get('adapterVersion') in ('independent-expressions.r1','independent-expressions.r2',
+                                                 'independent-expressions.r3','independent-expressions.r4'),
             'SEMANTIC_VERSION', 'Unsupported version')
     _same(expressions['expressionRequirements'], plan, 'REQUIREMENTS_MISMATCH')
     require(digest(plan) == source['source']['requirementsDigest'] and
@@ -298,6 +299,16 @@ def _validate_contract(source, expressions):
     elif expressions['adapterVersion']=='independent-expressions.r3':
         from .boundary_planning import plan_boundary_paths
         _same(scheme, plan_boundary_paths(plan, _upstream_scheme(plan, profile)), 'BOUNDARY_SCHEME_MISMATCH')
+    elif expressions['adapterVersion']=='independent-expressions.r4':
+        require(source['schemaVersion']=='NativeLayoutSource.v1' and len(plan['facts']['boundaryLoops'])==1,
+                'FEATURE_SCOPE','Single exterior loop required')
+        expected = _upstream_scheme(plan, profile)
+        if all(s['kind']=='LINE' for s in plan['facts']['segments']):
+            from .boundary_planning import plan_boundary_paths
+            expected = plan_boundary_paths(plan, expected, allow_holes=True)
+        from .hole_datums import local_hole_datums
+        expected = local_hole_datums(plan, expected)
+        _same(scheme, expected, 'FEATURE_SCHEME_MISMATCH')
     else:
         require(scheme['schemaVersion']=='dimensionScheme.v2','SEMANTIC_VERSION','Extended scheme required')
     return plan, scheme, profile

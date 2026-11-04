@@ -106,7 +106,7 @@ def _objects(plan, scheme, decimals):
     return sorted(objects, key=lambda obj: obj['objectId'])
 
 
-def adapt_expressions(source, complete_cutouts=False, boundary_paths=False):
+def adapt_expressions(source, complete_cutouts=False, boundary_paths=False, complete_features=False):
     """Freeze semantic responsibilities; no template, geometry occupancy or native pass."""
     plan = source_requirements(source)
     require(source['status'] == 'SOURCE_READY' and plan['status'] == 'READY', 'SOURCE_NOT_READY', source['status'])
@@ -126,8 +126,18 @@ def adapt_expressions(source, complete_cutouts=False, boundary_paths=False):
         require(not complete_cutouts, 'BOUNDARY_SCOPE', 'Straight contour route only')
         from .boundary_planning import plan_boundary_paths
         scheme = plan_boundary_paths(plan, scheme)
+    if complete_features:
+        require(not complete_cutouts and not boundary_paths, 'FEATURE_SCOPE', 'Separate simple feature route required')
+        require(len(plan['facts']['boundaryLoops'])==1, 'FEATURE_SCOPE', 'Single exterior loop required')
+        if all(s['kind']=='LINE' for s in plan['facts']['segments']):
+            from .boundary_planning import plan_boundary_paths
+            scheme = plan_boundary_paths(plan, scheme, allow_holes=True)
+        from .hole_datums import local_hole_datums
+        scheme = local_hole_datums(plan, scheme)
     objects = _objects(plan, scheme, profile['display']['decimals'])
     version = 'independent-expressions.r3' if boundary_paths else ('independent-expressions.r2' if complete_cutouts else VERSION)
+    if complete_features:
+        version = 'independent-expressions.r4'
     envelope = dict(schemaVersion='LayoutExpressions.v1', adapterVersion=version,
                     sourceEnvelopeDigest=source['digest'], source=source['source'],
                     units='VIEW_MM', coordinateSpace='AUDITED_MAIN_VIEW',

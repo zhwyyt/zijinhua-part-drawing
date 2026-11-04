@@ -20,6 +20,7 @@ public class PageTemplate : BundleTemplate {
     public BundleFile[] boundDependencies;
     public PageViewControl viewControl;
     public PagePrimitive[] primitives;
+    public PageCurve[] curves;
 }
 public class PageJob {
     public string runId,modelPath,ownership,ownershipSha256,guid,position,modified,sourceEnvelopeDigest,assetResumeDirectory;
@@ -125,10 +126,12 @@ public static class NativePageProbe {
                 Need(t.sheet>0&&t.samples!=null&&(job.completeLayout?t.samples.Length==0:t.samples.Length>0)&&t.samples.Select(s=>s.key).Distinct().Count()==t.samples.Length,"Invalid samples/sheet");
                 if(job.completeLayout)Need(t.viewControl!=null&&t.viewControl.scale.HasValue&&t.primitives!=null&&
                     t.primitives.Count(p=>p.kind=="label")==1&&t.primitives.Any(p=>p.kind=="dimensionGroup")&&
-                    t.primitives.All(p=>p.kind=="label"||p.kind=="dimensionGroup"),"Incomplete trial plan");
+                    t.primitives.All(p=>p.kind=="label"||p.kind=="dimensionGroup"||t.curves!=null&&p.kind=="leader"),"Incomplete trial plan");
                 else Need(t.primitives==null||t.primitives.All(p=>p.kind=="dimension"||p.kind=="leader"),"Complete primitives require completeLayout mode");
                 foreach(var sample in t.samples)Need(sample.height>0&&!Double.IsNaN(sample.height)&&!Double.IsInfinity(sample.height)&&!Double.IsNaN(sample.angle)&&!Double.IsInfinity(sample.angle)&&sample.at.Length==2&&sample.at.All(v=>!Double.IsNaN(v)&&!Double.IsInfinity(v))&&!String.IsNullOrWhiteSpace(sample.font)&&!String.IsNullOrWhiteSpace(sample.text),"Invalid text sample");
                 NativePrimitiveProbe.Validate(t.primitives);
+                Need(t.curves==null||job.completeLayout,"Feature curves require complete mode");
+                NativeFeatureCurves.Validate(t.curves);
                 if(t.primitives!=null)foreach(var p in t.primitives)if(p.space=="MODEL_GLOBAL")
                     Need(p.sourceDigest==job.sourceEnvelopeDigest,"Model primitive source differs from job");
                 foreach(var f in t.files) {
@@ -276,7 +279,7 @@ public static class NativePageProbe {
                 Write(prefix+"-created.json",record);Register(job,output,record,ref registryHash);
                 Need(h.SetActiveDrawing(d,true),"Open new test page failed");opened=d;CheckActive(h,d);
                 Write(prefix+"-template.json",NativePageCapture.Capture(d));
-                if(job.completeLayout)Write(prefix+"-removed-auto-annotations.json",NativeCompletePage.ClearNewPage(d));
+                if(job.completeLayout)Write(prefix+"-removed-auto-annotations.json",NativeCompletePage.ClearNewPage(d,t.curves!=null));
                 if(t.viewControl!=null)Write(prefix+"-view-control.json",NativeViewControl.Apply(d,t.viewControl));
                 foreach(var sample in t.samples) {
                     var a=new D.Text.TextAttributes();a.Font.Name=sample.font;a.Font.Height=sample.height;a.Font.Color=D.DrawingColors.Black;
@@ -287,15 +290,16 @@ public static class NativePageProbe {
                     Need(text.SetUserProperty("COD_OWNER",Owner),"Owner tag failed");
                 }
                 NativePrimitiveProbe.Insert(d,t.primitives);
+                NativeFeatureCurves.Insert(d,t.curves);
                 if(job.completeLayout)Write(prefix+"-final-view-control.json",NativeViewControl.Apply(d,t.viewControl));
                 d.CommitChanges();CheckActive(h,d);
-                Write(prefix+"-before.json",new {page=NativePageCapture.Capture(d),samples=Samples(d,t),primitives=NativePrimitiveProbe.Capture(d,t.primitives)});
+                Write(prefix+"-before.json",new {page=NativePageCapture.Capture(d),samples=Samples(d,t),primitives=NativePrimitiveProbe.Capture(d,t.primitives),curves=NativeFeatureCurves.Capture(d,t.curves)});
                 Need(h.SaveActiveDrawing(),"Save test page failed");record["stage"]="SAVED";Register(job,output,record,ref registryHash);
                 Close(h,d,true);opened=null;
                 for(int pass=1;pass<=2;pass++) {
                     d=TargetDrawingLookup.Read(job.partId,Convert.ToInt32(record["sheet"]),Convert.ToInt32(record["objectId"]),Convert.ToInt32(record["drawingId"]));
                     Need(d.Name==Owner,"Registered page ownership changed");Need(h.SetActiveDrawing(d,true),"Reopen test page failed");opened=d;CheckActive(h,d);
-                    Write(prefix+"-reopen"+pass+".json",new {page=NativePageCapture.Capture(d),samples=Samples(d,t),primitives=NativePrimitiveProbe.Capture(d,t.primitives)});
+                    Write(prefix+"-reopen"+pass+".json",new {page=NativePageCapture.Capture(d),samples=Samples(d,t),primitives=NativePrimitiveProbe.Capture(d,t.primitives),curves=NativeFeatureCurves.Capture(d,t.curves)});
                     Close(h,d,false);opened=null;
                 }
                 var print=new D.PrintAttributes();print.PrinterInstance="DXF";print.Scale=1;

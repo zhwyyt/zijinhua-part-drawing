@@ -17,11 +17,13 @@ python -m zijinhua_tekla.cli draw-native-parts --ownership "I:\zijinhuatekla\out
 
 读取器和写图器在 `tools/tekla2017_native_reader/`、`tools/tekla2017_native_drawing/`。规则见 [平板技能](skills/tekla-flat-plate-drawing/SKILL.md)。
 
-独立布局新路线已有首张完整原生预览：584 第37页按新候选和 CP-SAT 联合选择六组尺寸及编号，采用零件图10、1:2，完成保存重开及实际图面核验。用户已认可这张布局。当前只跑通无孔直边单主视图切片，标题栏仍有字体缺字；尚未接生产入口，`draw-native-parts` 仍运行原实现。见[首张完整图记录](docs/verification/2026-11-03-first-complete-drawing.md)及[独立工具入口](src/zijinhua_tekla/part_drawing/independent_layout/README.md)。
+独立布局新路线已有首张完整原生预览：584 第37页按新候选和 CP-SAT 联合选择六组尺寸及编号，采用零件图10、1:2，完成保存重开及实际图面核验。用户已认可这张布局。已扩展到孔槽、圆弧及R说明的实际新页验证，标题栏仍有字体缺字；尚未接生产入口，`draw-native-parts` 仍运行原实现。见[首张完整图记录](docs/verification/2026-11-03-first-complete-drawing.md)及[独立工具入口](src/zijinhua_tekla/part_drawing/independent_layout/README.md)。
 
 独立内口扩展已支持经完整实体证明的轴向矩形/圆角矩形加工表达；54真实样例离线来源/262条语义责任通过。新增输入准备检查继续保留模板/原生能力门，尚未生成新图。见[实施验证](docs/verification/2026-10-31-independent-cutout-implementation.md)。
 
-旧样例逐张验证停留在T2-9P-15：第3页被用户指出分侧不合理、缺少局部直接尺寸，保留为失败案例。修正第4页为1:1、七组17段尺寸：502链在下侧，401链在上侧，420链补真实共同锚点形成420—50—93；保存重开及实际主图文字核验通过，待用户看图确认。584原位置保持。见[第二张验证](docs/verification/2026-11-03-sequential-9p15.md)。
+原有11件清单已完成本轮验证：584/9P-15沿用已有页，305因剖面排除，剩余8件均完成原生新页与PDF。225、618主图文字清晰；其余6件因表格/说明区避让或短尺寸穿字等问题未通过。用户指出102中间孔远置后，修正页已将三条竖向定位链放回各孔旁，端部短尺寸仍待修复。没有按零件号写特例，正式入口尚未切换。见[批次图面及验证记录](docs/verification/2026-11-03-existing-parts-batch.md)。
+
+内部独立特征孔旁标注已提升为共同规划优先规则，覆盖圆孔、长圆孔以及矩形/倒角等内闭合轮廓的归属，不再靠普通评分偏好。矩形等内口目前只完成共同策略/候选验证，原生整页路线仍待接通；放不下不自动拉到远端。见[规则边界](docs/design/2026-11-03-internal-feature-locality.md)。
 
 模板加载核验已加入独立入口。20/50原属性的SDK自动改写问题已用唯一名称的属性副本避开：10/20/50均完成两次正确加载及安装前/移除后负对照，现场358个原属性文件保持不变。见[隔离加载记录](docs/verification/2026-10-31-isolated-template-bundles.md)。
 
@@ -42,3 +44,9 @@ python -m zijinhua_tekla.cli draw-native-parts --ownership "I:\zijinhuatekla\out
 新增离线`page-obstacle-study`，核验全页文字、遮罩、线和箭头，生成保持真实锚点的有限引线候选及具体冲突。六页432个候选中33个避开已知障碍，但尚无完整组合，仍需尺寸组、编号共同参与布局及原生回读；全量619项测试通过。本轮未调用Tekla，见[障碍与候选验证](docs/verification/2026-11-03-page-obstacles-candidates.md)。
 
 后续新增`joint-candidate-study`，实测尺寸移层、编号平移和引线参与有限联合选择；尺寸锚点及界线近端保持。六页606个候选中97个避开已知障碍，仍需适配其余模板尺寸才能继续共同避让；未宣告整页合格。全量640项测试通过，本轮未操作Tekla，见[联合候选验证](docs/verification/2026-11-03-joint-measured-candidates.md)。
+
+
+2026-11-03六件修复：新增实际模板避让、拥挤链无损拆段/同侧约束和原生短线延长占用。六件主图已测文字清晰，111/101/102/451/73同时通过模板避让；450材料表自身仍超框，紧凑TPL试验不能按页持久化，原模板已恢复。全量678项测试通过，未接正式入口；实际图集及限制见[修复验证](docs/verification/2026-11-03-six-failure-repairs.md)。
+
+
+2026-11-04更正：用户否决101/102拆散尺寸链的方案，撤销这两件通过结论。自动拆链代码已删除，完整链成为规划/回读硬约束；678项回归通过。用户关闭活动图后，两件第5页已按完整链重新生成实际图片，原生回读及模板避让通过；仍有80/360文字碰线，未宣布全部修复通过。见[撤销与恢复记录](docs/verification/2026-11-04-dimension-chain-restoration.md)。

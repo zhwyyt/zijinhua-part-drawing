@@ -39,15 +39,17 @@ def _paths(facts, axis, tolerance):
     return paths
 
 
-def plan_boundary_paths(plan, scheme):
+def plan_boundary_paths(plan, scheme, allow_holes=False):
     """Extend the independent straight-only route; never alter upstream code."""
     facts = plan['facts']; tolerance = plan['modelToleranceMm']
-    require(len(facts['boundaryLoops']) == 1 and not facts['holes'] and
+    require(len(facts['boundaryLoops']) == 1 and (allow_holes or not facts['holes']) and
             all(s['kind'] == 'LINE' for s in facts['segments']),
             'BOUNDARY_SCOPE', 'Single straight hole-free contour required')
     result = copy.deepcopy(scheme)
     groups = {g['key']: g for g in result['groups']}
     features = build_feature_model(facts, tolerance)
+    area=sum(s['start'][0]*s['end'][1]-s['end'][0]*s['start'][1] for s in facts['segments'])
+    orientation=1 if area>0 else -1
     evidence = []
     for axis in (0, 1):
         paths = _paths(facts, axis, tolerance)
@@ -60,7 +62,8 @@ def plan_boundary_paths(plan, scheme):
             members = {k for station in run['stations'] for k in station}
             edges = [s for s in facts['segments'] if s['id'] in side_by_edge and
                      s['startPoint'] in members and s['endPoint'] in members and
-                     abs(s['end'][axis]-s['start'][axis]) > tolerance]
+                     abs(s['end'][axis]-s['start'][axis]) > tolerance and
+                     (-1 if axis==0 else 1)*orientation*(1 if s['end'][axis]>s['start'][axis] else -1)==run['side']]
             sides = {side_by_edge[s['id']] for s in edges}
             require(len(sides) == 1, 'BOUNDARY_PATHS', key+' crosses boundary paths')
             side = sides.pop()

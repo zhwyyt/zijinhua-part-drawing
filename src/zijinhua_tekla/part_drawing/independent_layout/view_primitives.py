@@ -33,8 +33,19 @@ def _basis(x,y):
 
 
 def model_point(source, point):
-    frame=source['requirements']['partType']['frame'];x,y,_=_basis(frame['axisX'],frame['axisY'])
+    frame=source['requirements']['partType']['frame'];x,y,_=source_basis(source)
     return [frame['origin'][i]+x[i]*point[0]+y[i]*point[1] for i in range(3)]
+
+
+def source_basis(source):
+    """Tekla model axes may encode edge lengths; view-mm coordinates use unit axes."""
+    frame=source['requirements']['partType']['frame']
+    axes=[]
+    for key in ('axisX','axisY'):
+        axis=_vector(frame[key]);length=math.sqrt(_dot(axis,axis))
+        require(length>1e-12,'VIEW_BASIS','Zero source direction')
+        axes.append([v/length for v in axis])
+    return _basis(*axes)
 
 
 def bind_model_anchors(source, sample, refs):
