@@ -52,6 +52,15 @@ class GeometricPartTypeTests(unittest.TestCase):
         raw['parts'][0].update(rawSolid=read(solid),finalSolid=read(copy.deepcopy(solid)))
         self.assertEqual('FLAT_PLATE',audit(raw)['partType']['type'])
 
+    def test_declared_plate_thickness_resolves_narrow_fold_read_as_thick_plate(self):
+        # T2-10B-409/581: a fold narrower than its section spans is the same solid as a thick flat plate.
+        narrow_l=[[0,0],[300,0],[300,200],[290,200],[290,10],[0,10]]
+        result=audit(shaped(narrow_l))
+        self.assertEqual('BENT_PLATE',result['partType']['type'],result['partType'])
+        self.assertAlmostEqual(10,result['partType']['thickness'])
+        raw=shaped(narrow_l);raw['parts'][0]['profile']=read('PL60*300')
+        self.assertEqual('FLAT_PLATE',audit(raw)['partType']['type'])
+
     def test_nonflat_type_never_calls_flat_plate_specialized_proof(self):
         with patch('zijinhua_tekla.part_drawing.native_geometry._outline',side_effect=AssertionError('wrong route')):
             result=audit(shaped(L_SECTION))

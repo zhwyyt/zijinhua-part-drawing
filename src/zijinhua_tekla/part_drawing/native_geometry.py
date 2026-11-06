@@ -22,7 +22,7 @@ from .finished_holes import finished_hole_candidates
 from .planar_cut_region import canonical_ring, circle_shape, cut_region
 from .target_holes import nc_target_shapes, physical_penetration
 from .solid_prisms import value, _circle_loop, _shape_match, _point_set_equal, match_prisms
-from .geometric_types import collect_shape_facts, classify_shape
+from .geometric_types import collect_shape_facts, classify_shape, _profile_thickness
 
 
 # User-approved model comparison tolerance; raw coordinates remain unchanged.
@@ -54,11 +54,6 @@ def _outline(part, frame, path, tolerance):
         refs.append(path + f"/modelingContour/value/value/{i}")
     return {"kind": "OUTLINE", "segments": contour_segments([p[:2] for p in points], chamfers, refs),
             "sourceRefs": refs, "basis": "DERIVED"}
-
-
-def _profile_thickness(part):
-    profile = re.fullmatch(r'PL(\d+(?:\.\d+)?)(?:\*\d+(?:\.\d+)?)?', value(part['profile']))
-    return float(profile[1]) if profile else None
 
 
 def _stock_outline(part, frame, path, tolerance):

@@ -3,6 +3,7 @@
 Classification describes geometry, never a Tekla command or fabrication process.
 """
 import math
+import re
 
 from shapely.geometry import LineString, Polygon
 
@@ -19,6 +20,11 @@ def _frame(normal, preferred):
     x = unit([a-dot(direction, normal)*n for a, n in zip(direction, normal)])
     y = [normal[1]*x[2]-normal[2]*x[1], normal[2]*x[0]-normal[0]*x[2], normal[0]*x[1]-normal[1]*x[0]]
     return dict(origin=preferred['origin'], axisX=x, axisY=y)
+
+
+def _profile_thickness(part):
+    profile = re.fullmatch(r'PL(\d+(?:\.\d+)?)(?:\*\d+(?:\.\d+)?)?', value(part['profile']))
+    return float(profile[1]) if profile else None
 
 
 def _offset_strip(points, tolerance):
@@ -55,6 +61,10 @@ def collect_shape_facts(part, preferred, path, tolerance):
     """Facts precede classification; holes and machining effects are not proved here."""
     facts = dict(schemaVersion='commonShapeFacts.v1', scope='BASE_GEOMETRY_BEFORE_MACHINING',
                  prisms=[], contourPlane=None, issues=[], sourceRefs=[])
+    try:
+        facts['declaredThickness'] = _profile_thickness(part)
+    except (ValueError, KeyError, TypeError):
+        facts['declaredThickness'] = None
     raw_node = part.get('rawSolid')
     facts['rawStatus'] = raw_node.get('status','ABSENT') if isinstance(raw_node,dict) else 'ABSENT'
     solid = None
@@ -115,7 +125,12 @@ def classify_shape(facts, tolerance):
     result = dict(schemaVersion='geometricPartType.v1',type='UNKNOWN',status='UNRESOLVED',
                   scope=facts['scope'],route=None,sourceRefs=facts['sourceRefs'],
                   basis='INSUFFICIENT_GEOMETRIC_EVIDENCE',missingProofs=[])
-    flat = [p for p in facts['prisms'] if p['depth'] < min(p['spans'])-tolerance]
+    declared = facts.get('declaredThickness')
+    # A strip folded across a narrow width is also a thick flat solid; the declared plate thickness decides.
+    declared_fold = lambda p: (declared is not None and p['offsetStrip'] is not None
+                               and abs(p['offsetStrip']['thickness']-declared) <= tolerance
+                               and abs(p['depth']-declared) > tolerance)
+    flat = [p for p in facts['prisms'] if p['depth'] < min(p['spans'])-tolerance and not declared_fold(p)]
     if len(flat) == 1:
         return dict(result,type='FLAT_PLATE',status='CLASSIFIED',route='FLAT_PLATE',
                     basis='UNIQUE_THIN_COMPLETE_PRISM',frame=flat[0]['frame'],thickness=flat[0]['depth'])
