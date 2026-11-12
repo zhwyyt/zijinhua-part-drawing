@@ -9,9 +9,16 @@ from ..native_expressions import _facts
 from ..section_plan import section_requirements
 from .shell import read_shell, plane_regions, EvidenceError, require
 from .features import interpret
-from .supplements import supplement_curves, supplement_holes, supplement_folded_holes
+from .supplements import (
+    supplement_curves,
+    supplement_holes,
+    supplement_folded_holes,
+    supplement_stepped_holes,
+    shape_polygon,
+)
+from .steps import step_sections
 
-VERSION = "final-solid-trial.r2"
+VERSION = "final-solid-trial.r3"
 
 
 def _part(part):
@@ -52,6 +59,8 @@ def _part(part):
         if feature["partType"] == "FLAT_PLATE":
             supplement_curves(part, result, shell, 0.1)
             supplement_holes(part, result)
+        elif feature["partType"] == "STEPPED_PLATE":
+            supplement_stepped_holes(part, result)
         else:
             supplement_folded_holes(part, result)
         result.update(status="READY", featureStatus="MATCHED")
@@ -87,7 +96,7 @@ def _expressions(fact):
     if fact["status"] != "READY":
         return result
     try:
-        if fact["partType"] == "FLAT_PLATE":
+        if fact["partType"] in ("FLAT_PLATE", "STEPPED_PLATE"):
             # Preserve the established callout convention for the complete
             # cutter-proof path. The measured material still records Bolt=False;
             # this adapter changes only the legacy expression origin label.
@@ -111,7 +120,69 @@ def _expressions(fact):
                 pitchCandidates=_pitch_candidates(facts, groups),
                 materialEvidence=dict(status="MATCHED", basis=fact["material"]["basis"]),
             )
-            if fact["sectionGeometry"]["bevels"]:
+            if fact["partType"] == "STEPPED_PLATE":
+                for requirement in requirements:
+                    if requirement["feature"] == "plate" and requirement["aspect"] == "thickness":
+                        requirement.update(aspect="maximum_thickness", rule="FINAL-STEP-01")
+                for zone in fact["thicknessRegions"]:
+                    for aspect, expected in (
+                        (
+                            "shape_and_location",
+                            dict(
+                                polygon=zone["polygon"], interiors=zone["interiors"], frame=fact["frame"]
+                            ),
+                        ),
+                        ("remaining_thickness", zone["thickness"]),
+                        ("cut_depth", zone["depth"]),
+                        ("cut_side", zone["side"]),
+                    ):
+                        requirements.append(
+                            dict(
+                                id=zone["id"] + "/" + aspect,
+                                feature=zone["id"],
+                                aspect=aspect,
+                                expected=expected,
+                                rule="FINAL-STEP-01",
+                                alternatives=["dimension", "section"],
+                                sourceRefs=zone["sourceRefs"],
+                            )
+                        )
+                for step in fact["steps"]:
+                    requirements.append(
+                        dict(
+                            id=step["id"] + "/boundary_height",
+                            feature=step["id"],
+                            aspect="boundary_height",
+                            expected=step,
+                            rule="FINAL-STEP-01",
+                            alternatives=["section"],
+                            sourceRefs=step["sourceRefs"],
+                        )
+                    )
+                for hole in fact["material"]["holes"]:
+                    requirements.append(
+                        dict(
+                            id=hole["id"] + "/local_thickness",
+                            feature=hole["id"],
+                            aspect="local_thickness",
+                            expected=dict(
+                                region=hole["thicknessRegion"], thickness=hole["localThickness"]
+                            ),
+                            rule="FINAL-STEP-01",
+                            alternatives=["section", "note"],
+                        )
+                    )
+                sections = step_sections(
+                    fact, [shape_polygon(h["segments"]) for h in fact["material"]["holes"]]
+                )
+                result.update(
+                    schemaVersion="steppedExpressionRequirements.v1",
+                    thicknessRegions=fact["thicknessRegions"],
+                    steps=fact["steps"],
+                    sectionRequirements=sections,
+                    requiredViews=["main"] + [s["id"] for s in sections],
+                )
+            elif fact["sectionGeometry"]["bevels"]:
                 sections = section_requirements(
                     fact["sectionGeometry"], fact["frame"], fact["material"]["holes"]
                 )

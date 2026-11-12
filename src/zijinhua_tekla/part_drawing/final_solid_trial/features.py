@@ -9,6 +9,7 @@ from shapely.geometry import Polygon, Point
 
 from ..analytic_geometry import frame_axes, project, line
 from .shell import make_frame, polygon, require, read
+from .steps import stepped_features
 
 
 def face_pairs(regions, tolerance):
@@ -110,6 +111,12 @@ def flat_features(part, shell, regions, pair, tolerance):
         min(p[2] for points in projected for p in points),
         max(p[2] for points in projected for p in points),
     ]
+    if any(
+        max(p[2] for p in points) - min(p[2] for p in points) <= tolerance
+        and min(abs(points[0][2] - z) for z in levels) > tolerance
+        for points in projected
+    ):
+        return stepped_features(shell, regions, frame, tolerance)
     cap_holes = [
         Polygon([project(p, frame)[:2] for p in loop]).boundary
         for r, points in zip(regions, projected)

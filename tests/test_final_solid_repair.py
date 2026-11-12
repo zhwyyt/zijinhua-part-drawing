@@ -420,7 +420,7 @@ class FinalSolidRepairTests(unittest.TestCase):
             self.assertEqual(0, report["summary"]["expressionReady"])
 
     def test_uninterpreted_geometry_remains_in_report(self):
-        fact = self.facts["T2-9P-49"]
+        fact = self.facts["T2-10B-23"]
         self.assertEqual("BLOCKED", fact["status"])
         self.assertTrue(fact["rawFinalSolid"]["value"]["faces"]["value"])
 

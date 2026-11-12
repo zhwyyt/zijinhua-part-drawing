@@ -16,11 +16,74 @@ from ..analytic_geometry import (
     hole_segments,
     simple_ring,
 )
-from ..native_geometry import _hole_candidates, _hole_effect, _boolean_cut_loops, fit_cut_produced_contours
+from ..native_geometry import (
+    _hole_candidates,
+    _hole_effect,
+    _boolean_cut_loops,
+    fit_cut_produced_contours,
+)
 from ..planar_cut_region import cut_region, circle_shape
 from ..target_holes import physical_penetration
 from ..solid_prisms import _shape_match
 from .shell import read, require, EvidenceError
+from .steps import region_shape
+
+
+def supplement_stepped_holes(part, feature, tolerance=0.1):
+    groups = read(part.get("boltGroups"), f"parts/{part['id']}/boltGroups")
+    require(len({g["id"] for g in groups}) == len(groups), "DUPLICATE_HOLE_GROUP", "Repeated bolt group")
+    material = feature["material"]
+    for index, group in enumerate(groups):
+        path = f"parts/{part['id']}/boltGroups/{index}"
+        if read(group["properties"].get("BoltStandard"), path) == "STUD":
+            _target(group, part["id"], path)
+            material["holeEvidence"].append(
+                dict(groupId=group["id"], status="ATTACHMENT_STUD", sourceRef=path)
+            )
+            continue
+        candidates = _group_candidates(group, feature["frame"], path)
+        shapes = [shape_polygon(h["segments"], tolerance) for h in candidates]
+        zones = [
+            z
+            for z in feature["thicknessRegions"]
+            if shapes and all(region_shape(z).buffer(tolerance).covers(h) for h in shapes)
+        ]
+        require(
+            len(zones) == 1,
+            "STEP_HOLE_REGION_UNRESOLVED",
+            "Complete hole group must lie in one measured local thickness region",
+            path,
+        )
+        zone = zones[0]
+        local_material = dict(material, holes=[], holeEvidence=[])
+        local_feature = dict(
+            feature, material=local_material, levels=zone["levels"], thickness=zone["thickness"]
+        )
+        supplement_holes(
+            dict(part, boltGroups=dict(status="READ", value=[group])),
+            local_feature,
+            tolerance,
+            source_index_offset=index,
+        )
+        for hole in local_material["holes"]:
+            hp = shape_polygon(hole["segments"], tolerance)
+            require(
+                all(
+                    not hp.intersects(shape_polygon(other["segments"], tolerance))
+                    for other in material["holes"]
+                ),
+                "STEP_HOLE_INTERACTION_UNSUPPORTED",
+                "Interacting holes on stepped material need dedicated boundary matching",
+                path,
+            )
+            hole.update(
+                thicknessRegion=zone["id"], localThickness=zone["thickness"], localLevels=zone["levels"]
+            )
+            material["holes"].append(hole)
+        material["holeEvidence"].extend(
+            dict(e, sourceRef=path, thicknessRegion=zone["id"], localLevels=zone["levels"])
+            for e in local_material["holeEvidence"]
+        )
 
 
 def shape_polygon(segments, tolerance=0.1):
@@ -174,7 +237,7 @@ def _group_candidates(group, frame, path):
         raise EvidenceError("HOLE_PARAMETERS_UNRESOLVED", str(error), path) from error
 
 
-def supplement_holes(part, feature, tolerance=0.1):
+def supplement_holes(part, feature, tolerance=0.1, source_index_offset=0):
     frame, material = feature["frame"], feature["material"]
     groups = read(part.get("boltGroups"), f"parts/{part['id']}/boltGroups")
     require(len({g["id"] for g in groups}) == len(groups), "DUPLICATE_HOLE_GROUP", "Repeated bolt group")
@@ -183,7 +246,7 @@ def supplement_holes(part, feature, tolerance=0.1):
     additions = []
     evidence = []
     outer = shape_polygon(material["outline"]["segments"], tolerance)
-    for index, group in enumerate(groups):
+    for index, group in enumerate(groups, start=source_index_offset):
         path = f"parts/{part['id']}/boltGroups/{index}"
         _target(group, part["id"], path)
         props = group["properties"]

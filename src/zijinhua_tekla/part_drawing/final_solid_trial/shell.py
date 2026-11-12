@@ -113,8 +113,9 @@ def read_shell(part, tolerance=0.1):
         measured = vectors[-1]
         if np.dot(measured, n) < 0:
             measured = -measured
+        fitted_residual = float(max(abs(cloud @ measured)))
         require(
-            max(abs(cloud @ measured)) <= stitch,
+            fitted_residual <= tolerance,
             "NONPLANAR_FACE_UNSUPPORTED",
             "A nonplanar surface needs analytic surface parameters",
             ref,
@@ -153,6 +154,8 @@ def read_shell(part, tolerance=0.1):
                 frame=frame,
                 sourceRef=ref,
                 maxPlaneResidualMm=residual,
+                fittedPlaneResidualMm=fitted_residual,
+                planeToleranceMm=tolerance,
                 reportedNormal=reported_normal,
                 originPartId=raw.get("originPartId", {}).get("value"),
             )
