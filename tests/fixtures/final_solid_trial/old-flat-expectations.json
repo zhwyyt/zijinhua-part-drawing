@@ -1,0 +1,2330 @@
+{
+  "T2-10B-182": {
+    "facts": {
+      "points": {
+        "vertex:0": [
+          62.39698410036325,
+          4.316547119742609e-12
+        ],
+        "vertex:1": [
+          428.45460128542595,
+          2.4215296434704214e-11
+        ],
+        "vertex:2": [
+          366.0575981120127,
+          203.6653900132846
+        ],
+        "vertex:3": [
+          4.4302339574642247e-10,
+          203.6653900132951
+        ]
+      },
+      "segments": [
+        {
+          "id": "edge:0",
+          "kind": "LINE",
+          "start": [
+            62.39698410036325,
+            4.316547119742609e-12
+          ],
+          "end": [
+            428.45460128542595,
+            2.4215296434704214e-11
+          ],
+          "startPoint": "vertex:0",
+          "endPoint": "vertex:1"
+        },
+        {
+          "id": "edge:1",
+          "kind": "LINE",
+          "start": [
+            428.45460128542595,
+            2.4215296434704214e-11
+          ],
+          "end": [
+            366.0575981120127,
+            203.6653900132846
+          ],
+          "startPoint": "vertex:1",
+          "endPoint": "vertex:2"
+        },
+        {
+          "id": "edge:2",
+          "kind": "LINE",
+          "start": [
+            366.0575981120127,
+            203.6653900132846
+          ],
+          "end": [
+            4.4303760660113767e-10,
+            203.6653900132951
+          ],
+          "startPoint": "vertex:2",
+          "endPoint": "vertex:3"
+        },
+        {
+          "id": "edge:3",
+          "kind": "LINE",
+          "start": [
+            4.4302339574642247e-10,
+            203.6653900132951
+          ],
+          "end": [
+            62.39698410036325,
+            4.320099833421409e-12
+          ],
+          "startPoint": "vertex:3",
+          "endPoint": "vertex:0"
+        }
+      ],
+      "holes": [],
+      "datum": "vertex:3",
+      "bounds": [
+        4.4302339574642247e-10,
+        4.316547119742609e-12,
+        428.45460128542595,
+        203.6653900132951
+      ],
+      "boundaryLoops": [
+        {
+          "id": "outer",
+          "segments": [
+            "edge:0",
+            "edge:1",
+            "edge:2",
+            "edge:3"
+          ]
+        }
+      ],
+      "sourceFeatureRefs": {
+        "edge:0": [
+          "#/parts/0/modelingContour/value/value/0",
+          "#/parts/0/modelingContour/value/value/1"
+        ],
+        "edge:1": [
+          "#/parts/0/modelingContour/value/value/1",
+          "#/parts/0/modelingContour/value/value/2"
+        ],
+        "edge:2": [
+          "#/parts/0/modelingContour/value/value/2",
+          "#/parts/0/modelingContour/value/value/3"
+        ],
+        "edge:3": [
+          "#/parts/0/modelingContour/value/value/3",
+          "#/parts/0/modelingContour/value/value/0"
+        ]
+      }
+    },
+    "bevels": [
+      {
+        "id": "bevel:604978996",
+        "operationId": 604978996,
+        "alongAxis": 0,
+        "normal": [
+          1.0043632592271479e-12,
+          -0.7071067811865777,
+          0.7071067811865174
+        ],
+        "offset": 1.4142135625357617,
+        "sourceRef": "#/parts/0/operations/value/0",
+        "sideOriginIds": [
+          604978996,
+          604978996
+        ],
+        "profile": [
+          [
+            5.723279628000455e-10,
+            2.0000000001938885
+          ],
+          [
+            38.00000000035865,
+            40.0
+          ]
+        ],
+        "depth": 37.999999999806114,
+        "land": 2.0000000001938885,
+        "thickness": 40.0,
+        "side": "HIGH",
+        "angle": 44.999999999985086,
+        "extent": [
+          50.75492063712832,
+          428.4546012878637
+        ]
+      }
+    ]
+  },
+  "T2-10B-175": {
+    "facts": {
+      "points": {
+        "vertex:0": [
+          1224.000000000191,
+          1.8372929844190367e-09
+        ],
+        "vertex:1": [
+          1224.0000000001905,
+          125.00000000100692
+        ],
+        "vertex:2": [
+          8.358682634934667e-09,
+          125.00000000102455
+        ],
+        "vertex:3": [
+          8.358323491127346e-09,
+          1.86521871464931e-09
+        ]
+      },
+      "segments": [
+        {
+          "id": "edge:0",
+          "kind": "LINE",
+          "start": [
+            1224.000000000191,
+            1.8372929844190367e-09
+          ],
+          "end": [
+            1224.0000000001905,
+            125.00000000100692
+          ],
+          "startPoint": "vertex:0",
+          "endPoint": "vertex:1"
+        },
+        {
+          "id": "edge:1",
+          "kind": "LINE",
+          "start": [
+            1224.0000000001905,
+            125.00000000100692
+          ],
+          "end": [
+            8.358711056644097e-09,
+            125.00000000102455
+          ],
+          "startPoint": "vertex:1",
+          "endPoint": "vertex:2"
+        },
+        {
+          "id": "edge:2",
+          "kind": "LINE",
+          "start": [
+            8.358682634934667e-09,
+            125.00000000102455
+          ],
+          "end": [
+            8.358323491127346e-09,
+            1.8652173139344086e-09
+          ],
+          "startPoint": "vertex:2",
+          "endPoint": "vertex:3"
+        },
+        {
+          "id": "edge:3",
+          "kind": "LINE",
+          "start": [
+            8.358323491127346e-09,
+            1.86521871464931e-09
+          ],
+          "end": [
+            1224.000000000191,
+            1.8372929844190367e-09
+          ],
+          "startPoint": "vertex:3",
+          "endPoint": "vertex:0"
+        }
+      ],
+      "holes": [],
+      "datum": "vertex:3",
+      "bounds": [
+        8.358323491127346e-09,
+        1.8372929844190367e-09,
+        1224.000000000191,
+        125.00000000102455
+      ],
+      "boundaryLoops": [
+        {
+          "id": "outer",
+          "segments": [
+            "edge:0",
+            "edge:1",
+            "edge:2",
+            "edge:3"
+          ]
+        }
+      ],
+      "sourceFeatureRefs": {
+        "edge:0": [
+          "#/parts/1/modelingContour/value/value/0",
+          "#/parts/1/modelingContour/value/value/1"
+        ],
+        "edge:1": [
+          "#/parts/1/modelingContour/value/value/1",
+          "#/parts/1/modelingContour/value/value/2"
+        ],
+        "edge:2": [
+          "#/parts/1/modelingContour/value/value/2",
+          "#/parts/1/modelingContour/value/value/3"
+        ],
+        "edge:3": [
+          "#/parts/1/modelingContour/value/value/3",
+          "#/parts/1/modelingContour/value/value/0"
+        ]
+      }
+    },
+    "bevels": []
+  },
+  "T2-10B-174": {
+    "facts": {
+      "points": {
+        "vertex:0": [
+          304.0,
+          1.1962875134940987e-11
+        ],
+        "vertex:1": [
+          324.0,
+          20.000000000011962
+        ],
+        "vertex:2": [
+          324.0,
+          124.99999999918155
+        ],
+        "vertex:3": [
+          0.0,
+          124.99999999918155
+        ],
+        "vertex:4": [
+          0.0,
+          20.000000000011962
+        ],
+        "vertex:5": [
+          20.0,
+          1.1962875134940987e-11
+        ]
+      },
+      "segments": [
+        {
+          "id": "edge:0",
+          "kind": "LINE",
+          "start": [
+            304.0,
+            1.1962875134940987e-11
+          ],
+          "end": [
+            324.0,
+            20.000000000011962
+          ],
+          "startPoint": "vertex:0",
+          "endPoint": "vertex:1"
+        },
+        {
+          "id": "edge:1",
+          "kind": "LINE",
+          "start": [
+            324.0,
+            20.000000000011962
+          ],
+          "end": [
+            324.0,
+            124.99999999918155
+          ],
+          "startPoint": "vertex:1",
+          "endPoint": "vertex:2"
+        },
+        {
+          "id": "edge:2",
+          "kind": "LINE",
+          "start": [
+            324.0,
+            124.99999999918155
+          ],
+          "end": [
+            0.0,
+            124.99999999918155
+          ],
+          "startPoint": "vertex:2",
+          "endPoint": "vertex:3"
+        },
+        {
+          "id": "edge:3",
+          "kind": "LINE",
+          "start": [
+            0.0,
+            124.99999999918155
+          ],
+          "end": [
+            0.0,
+            20.000000000011966
+          ],
+          "startPoint": "vertex:3",
+          "endPoint": "vertex:4"
+        },
+        {
+          "id": "edge:4",
+          "kind": "LINE",
+          "start": [
+            0.0,
+            20.000000000011962
+          ],
+          "end": [
+            20.0,
+            1.1961986956521287e-11
+          ],
+          "startPoint": "vertex:4",
+          "endPoint": "vertex:5"
+        },
+        {
+          "id": "edge:5",
+          "kind": "LINE",
+          "start": [
+            20.0,
+            1.1962875134940987e-11
+          ],
+          "end": [
+            304.0,
+            1.1962875134940987e-11
+          ],
+          "startPoint": "vertex:5",
+          "endPoint": "vertex:0"
+        }
+      ],
+      "holes": [],
+      "datum": "vertex:4",
+      "bounds": [
+        0.0,
+        1.1962875134940987e-11,
+        324.0,
+        124.99999999918155
+      ],
+      "boundaryLoops": [
+        {
+          "id": "outer",
+          "segments": [
+            "edge:0",
+            "edge:1",
+            "edge:2",
+            "edge:3",
+            "edge:4",
+            "edge:5"
+          ]
+        }
+      ],
+      "sourceFeatureRefs": {
+        "edge:0": [
+          "#/parts/2/modelingContour/value/value/0"
+        ],
+        "edge:1": [
+          "#/parts/2/modelingContour/value/value/0",
+          "#/parts/2/modelingContour/value/value/1"
+        ],
+        "edge:2": [
+          "#/parts/2/modelingContour/value/value/1",
+          "#/parts/2/modelingContour/value/value/2"
+        ],
+        "edge:3": [
+          "#/parts/2/modelingContour/value/value/2",
+          "#/parts/2/modelingContour/value/value/3"
+        ],
+        "edge:4": [
+          "#/parts/2/modelingContour/value/value/3"
+        ],
+        "edge:5": [
+          "#/parts/2/modelingContour/value/value/3",
+          "#/parts/2/modelingContour/value/value/0"
+        ]
+      }
+    },
+    "bevels": []
+  },
+  "T2-10MQ-20": {
+    "facts": {
+      "points": {
+        "vertex:0": [
+          250.0448455810551,
+          4.937862344492972e-10
+        ],
+        "vertex:1": [
+          250.04484558261916,
+          70.00000000049378
+        ],
+        "vertex:2": [
+          102.05940246800289,
+          100.000000003724
+        ],
+        "vertex:3": [
+          2.1823957884908895e-09,
+          100.00000000595173
+        ],
+        "vertex:4": [
+          -1.264953658384541e-17,
+          -1.4551915228366852e-11
+        ]
+      },
+      "segments": [
+        {
+          "id": "edge:0",
+          "kind": "LINE",
+          "start": [
+            250.0448455810551,
+            4.937862344492972e-10
+          ],
+          "end": [
+            250.04484558261916,
+            70.00000000049378
+          ],
+          "startPoint": "vertex:0",
+          "endPoint": "vertex:1"
+        },
+        {
+          "id": "edge:1",
+          "kind": "LINE",
+          "start": [
+            250.04484558261916,
+            70.00000000049378
+          ],
+          "end": [
+            102.0594024680029,
+            100.000000003724
+          ],
+          "startPoint": "vertex:1",
+          "endPoint": "vertex:2"
+        },
+        {
+          "id": "edge:2",
+          "kind": "LINE",
+          "start": [
+            102.05940246800289,
+            100.000000003724
+          ],
+          "end": [
+            2.182389380323002e-09,
+            100.00000000595173
+          ],
+          "startPoint": "vertex:2",
+          "endPoint": "vertex:3"
+        },
+        {
+          "id": "edge:3",
+          "kind": "LINE",
+          "start": [
+            2.1823957884908895e-09,
+            100.00000000595173
+          ],
+          "end": [
+            -1.2649536681146212e-17,
+            -1.4551915228366852e-11
+          ],
+          "startPoint": "vertex:3",
+          "endPoint": "vertex:4"
+        },
+        {
+          "id": "edge:4",
+          "kind": "LINE",
+          "start": [
+            -1.264953658384541e-17,
+            -1.4551915228366852e-11
+          ],
+          "end": [
+            250.0448455810551,
+            4.937862344492972e-10
+          ],
+          "startPoint": "vertex:4",
+          "endPoint": "vertex:0"
+        }
+      ],
+      "holes": [],
+      "datum": "vertex:4",
+      "bounds": [
+        -1.264953658384541e-17,
+        -1.4551915228366852e-11,
+        250.04484558261916,
+        100.00000000595173
+      ],
+      "boundaryLoops": [
+        {
+          "id": "outer",
+          "segments": [
+            "edge:0",
+            "edge:1",
+            "edge:2",
+            "edge:3",
+            "edge:4"
+          ]
+        }
+      ],
+      "sourceFeatureRefs": {
+        "edge:0": [
+          "#/parts/5/modelingContour/value/value/0",
+          "#/parts/5/modelingContour/value/value/1"
+        ],
+        "edge:1": [
+          "#/parts/5/modelingContour/value/value/1",
+          "#/parts/5/modelingContour/value/value/2"
+        ],
+        "edge:2": [
+          "#/parts/5/modelingContour/value/value/2",
+          "#/parts/5/modelingContour/value/value/3"
+        ],
+        "edge:3": [
+          "#/parts/5/modelingContour/value/value/3",
+          "#/parts/5/modelingContour/value/value/4"
+        ],
+        "edge:4": [
+          "#/parts/5/modelingContour/value/value/4",
+          "#/parts/5/modelingContour/value/value/0"
+        ]
+      }
+    },
+    "bevels": []
+  },
+  "T2-10MQ-3": {
+    "facts": {
+      "points": {
+        "vertex:0": [
+          250.04484810439362,
+          1.8553691916167736e-10
+        ],
+        "vertex:1": [
+          250.0448481040433,
+          474.0000000001864
+        ],
+        "vertex:2": [
+          -1.0581994671797143e-12,
+          474.00000000000085
+        ],
+        "vertex:3": [
+          3.492459654808039e-10,
+          2.060577128754287e-17
+        ],
+        "hole:material-result:0": [
+          50.00970407846685,
+          396.9999996213849
+        ],
+        "hole:material-result:1": [
+          50.0097031180408,
+          236.99999962138463
+        ],
+        "hole:material-result:2": [
+          50.00970215761475,
+          76.99999962138426
+        ],
+        "hole:material-result:3": [
+          150.00970407846705,
+          396.99999902148244
+        ],
+        "hole:material-result:4": [
+          150.00970311804102,
+          236.99999902148215
+        ],
+        "hole:material-result:5": [
+          150.00970215761495,
+          76.99999902148178
+        ],
+        "hole:material-result:6": [
+          100.00970331374548,
+          317.0003130062508
+        ],
+        "hole:material-result:7": [
+          100.00970219383044,
+          157.00031300625045
+        ]
+      },
+      "segments": [
+        {
+          "id": "edge:0",
+          "kind": "LINE",
+          "start": [
+            250.04484810439362,
+            1.8553691916167736e-10
+          ],
+          "end": [
+            250.0448481040433,
+            474.0000000001864
+          ],
+          "startPoint": "vertex:0",
+          "endPoint": "vertex:1"
+        },
+        {
+          "id": "edge:1",
+          "kind": "LINE",
+          "start": [
+            250.0448481040433,
+            474.0000000001864
+          ],
+          "end": [
+            -1.0516032489249483e-12,
+            474.00000000000085
+          ],
+          "startPoint": "vertex:1",
+          "endPoint": "vertex:2"
+        },
+        {
+          "id": "edge:2",
+          "kind": "LINE",
+          "start": [
+            -1.0581994671797143e-12,
+            474.00000000000085
+          ],
+          "end": [
+            3.492459654808039e-10,
+            0.0
+          ],
+          "startPoint": "vertex:2",
+          "endPoint": "vertex:3"
+        },
+        {
+          "id": "edge:3",
+          "kind": "LINE",
+          "start": [
+            3.492459654808039e-10,
+            2.060577128754287e-17
+          ],
+          "end": [
+            250.04484810439362,
+            1.8553691916167736e-10
+          ],
+          "startPoint": "vertex:3",
+          "endPoint": "vertex:0"
+        }
+      ],
+      "holes": [
+        {
+          "id": "material-result:0",
+          "pointId": "hole:material-result:0",
+          "kind": "SLOT",
+          "width": 22.0,
+          "length": 81.0,
+          "angle": 89.99999965626806,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:1",
+          "pointId": "hole:material-result:1",
+          "kind": "SLOT",
+          "width": 22.0,
+          "length": 81.00000000000003,
+          "angle": 89.99999965626806,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:2",
+          "pointId": "hole:material-result:2",
+          "kind": "SLOT",
+          "width": 22.0,
+          "length": 81.0,
+          "angle": 89.99999965626806,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:3",
+          "pointId": "hole:material-result:3",
+          "kind": "SLOT",
+          "width": 22.0,
+          "length": 81.0,
+          "angle": 89.9999996562681,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:4",
+          "pointId": "hole:material-result:4",
+          "kind": "SLOT",
+          "width": 22.0,
+          "length": 81.00000000000003,
+          "angle": 89.9999996562681,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:5",
+          "pointId": "hole:material-result:5",
+          "kind": "SLOT",
+          "width": 22.0,
+          "length": 81.0,
+          "angle": 89.9999996562681,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:6",
+          "pointId": "hole:material-result:6",
+          "kind": "ROUND",
+          "diameter": 30.0,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:7",
+          "pointId": "hole:material-result:7",
+          "kind": "ROUND",
+          "diameter": 30.0,
+          "origin": "BOLT"
+        }
+      ],
+      "datum": "vertex:2",
+      "bounds": [
+        -1.0581994671797143e-12,
+        2.060577128754287e-17,
+        250.04484810439362,
+        474.0000000001864
+      ],
+      "boundaryLoops": [
+        {
+          "id": "outer",
+          "segments": [
+            "edge:0",
+            "edge:1",
+            "edge:2",
+            "edge:3"
+          ]
+        }
+      ],
+      "sourceFeatureRefs": {
+        "edge:0": [
+          "#/parts/6/rawSolid"
+        ],
+        "edge:1": [
+          "#/parts/6/rawSolid"
+        ],
+        "edge:2": [
+          "#/parts/6/rawSolid"
+        ],
+        "edge:3": [
+          "#/parts/6/rawSolid"
+        ],
+        "hole:material-result:0": [
+          "#/parts/6/boltGroups/value/0/positions/value/0",
+          "#/parts/6/boltGroups/value/0/properties",
+          "#/parts/6/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:1": [
+          "#/parts/6/boltGroups/value/0/positions/value/1",
+          "#/parts/6/boltGroups/value/0/properties",
+          "#/parts/6/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:2": [
+          "#/parts/6/boltGroups/value/0/positions/value/2",
+          "#/parts/6/boltGroups/value/0/properties",
+          "#/parts/6/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:3": [
+          "#/parts/6/boltGroups/value/0/positions/value/3",
+          "#/parts/6/boltGroups/value/0/properties",
+          "#/parts/6/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:4": [
+          "#/parts/6/boltGroups/value/0/positions/value/4",
+          "#/parts/6/boltGroups/value/0/properties",
+          "#/parts/6/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:5": [
+          "#/parts/6/boltGroups/value/0/positions/value/5",
+          "#/parts/6/boltGroups/value/0/properties",
+          "#/parts/6/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:6": [
+          "#/parts/6/boltGroups/value/1/positions/value/0",
+          "#/parts/6/boltGroups/value/1/properties",
+          "#/parts/6/boltGroups/value/1/targets"
+        ],
+        "hole:material-result:7": [
+          "#/parts/6/boltGroups/value/1/positions/value/1",
+          "#/parts/6/boltGroups/value/1/properties",
+          "#/parts/6/boltGroups/value/1/targets"
+        ]
+      }
+    },
+    "bevels": []
+  },
+  "T2-10B-592": {
+    "facts": {
+      "points": {
+        "vertex:0": [
+          7331.3290648099,
+          -2716.638931127668
+        ],
+        "vertex:1": [
+          7407.966709910464,
+          -2587.6944804776062
+        ],
+        "vertex:2": [
+          4769.053308270128,
+          -1019.266310778092
+        ],
+        "vertex:3": [
+          3071.872280526128,
+          -242.95308850820425
+        ],
+        "vertex:4": [
+          1268.122159364405,
+          150.00000006395885
+        ],
+        "vertex:5": [
+          34.28665163910637,
+          150.00000003943637
+        ],
+        "vertex:6": [
+          2.7246755962551106e-09,
+          3.8762371867579706e-08
+        ],
+        "vertex:7": [
+          1251.9725491173554,
+          6.363381999108242e-08
+        ],
+        "vertex:8": [
+          3024.1638166863568,
+          -386.0778850944996
+        ],
+        "vertex:9": [
+          4699.336958241029,
+          -1152.3244068983654
+        ]
+      },
+      "segments": [
+        {
+          "id": "edge:0",
+          "kind": "LINE",
+          "start": [
+            7331.3290648099,
+            -2716.638931127668
+          ],
+          "end": [
+            7407.966709910464,
+            -2587.6944804776062
+          ],
+          "startPoint": "vertex:0",
+          "endPoint": "vertex:1"
+        },
+        {
+          "id": "edge:1",
+          "kind": "LINE",
+          "start": [
+            7407.966709910464,
+            -2587.6944804776062
+          ],
+          "end": [
+            4769.053308270128,
+            -1019.266310778092
+          ],
+          "startPoint": "vertex:1",
+          "endPoint": "vertex:2"
+        },
+        {
+          "id": "edge:2",
+          "kind": "LINE",
+          "start": [
+            4769.053308270128,
+            -1019.266310778092
+          ],
+          "end": [
+            3071.872280526128,
+            -242.95308850820425
+          ],
+          "startPoint": "vertex:2",
+          "endPoint": "vertex:3"
+        },
+        {
+          "id": "edge:3",
+          "kind": "LINE",
+          "start": [
+            3071.872280526128,
+            -242.95308850820425
+          ],
+          "end": [
+            1268.122159364405,
+            150.00000006395885
+          ],
+          "startPoint": "vertex:3",
+          "endPoint": "vertex:4"
+        },
+        {
+          "id": "edge:4",
+          "kind": "LINE",
+          "start": [
+            1268.122159364405,
+            150.00000006395885
+          ],
+          "end": [
+            34.28665163910637,
+            150.00000003943637
+          ],
+          "startPoint": "vertex:4",
+          "endPoint": "vertex:5"
+        },
+        {
+          "id": "edge:5",
+          "kind": "LINE",
+          "start": [
+            34.28665163910637,
+            150.00000003943637
+          ],
+          "end": [
+            2.7246755962551106e-09,
+            3.87623799724679e-08
+          ],
+          "startPoint": "vertex:5",
+          "endPoint": "vertex:6"
+        },
+        {
+          "id": "edge:6",
+          "kind": "LINE",
+          "start": [
+            2.7246755962551106e-09,
+            3.8762371867579706e-08
+          ],
+          "end": [
+            1251.9725491173554,
+            6.363381999108242e-08
+          ],
+          "startPoint": "vertex:6",
+          "endPoint": "vertex:7"
+        },
+        {
+          "id": "edge:7",
+          "kind": "LINE",
+          "start": [
+            1251.9725491173554,
+            6.363381999108242e-08
+          ],
+          "end": [
+            3024.1638166863568,
+            -386.0778850944996
+          ],
+          "startPoint": "vertex:7",
+          "endPoint": "vertex:8"
+        },
+        {
+          "id": "edge:8",
+          "kind": "LINE",
+          "start": [
+            3024.1638166863568,
+            -386.0778850944996
+          ],
+          "end": [
+            4699.336958241029,
+            -1152.3244068983654
+          ],
+          "startPoint": "vertex:8",
+          "endPoint": "vertex:9"
+        },
+        {
+          "id": "edge:9",
+          "kind": "LINE",
+          "start": [
+            4699.336958241029,
+            -1152.3244068983654
+          ],
+          "end": [
+            7331.3290648099,
+            -2716.638931127668
+          ],
+          "startPoint": "vertex:9",
+          "endPoint": "vertex:0"
+        }
+      ],
+      "holes": [],
+      "datum": "vertex:6",
+      "bounds": [
+        2.7246755962551106e-09,
+        -2716.638931127668,
+        7407.966709910464,
+        150.00000006395885
+      ],
+      "boundaryLoops": [
+        {
+          "id": "outer",
+          "segments": [
+            "edge:0",
+            "edge:1",
+            "edge:2",
+            "edge:3",
+            "edge:4",
+            "edge:5",
+            "edge:6",
+            "edge:7",
+            "edge:8",
+            "edge:9"
+          ]
+        }
+      ],
+      "sourceFeatureRefs": {
+        "edge:0": [
+          "#/parts/9/operations/value/1/plane"
+        ],
+        "edge:1": [
+          "#/parts/9/rawSolid"
+        ],
+        "edge:2": [
+          "#/parts/9/rawSolid"
+        ],
+        "edge:3": [
+          "#/parts/9/rawSolid"
+        ],
+        "edge:4": [
+          "#/parts/9/rawSolid"
+        ],
+        "edge:5": [
+          "#/parts/9/operations/value/0/plane"
+        ],
+        "edge:6": [
+          "#/parts/9/rawSolid"
+        ],
+        "edge:7": [
+          "#/parts/9/rawSolid"
+        ],
+        "edge:8": [
+          "#/parts/9/rawSolid"
+        ],
+        "edge:9": [
+          "#/parts/9/rawSolid"
+        ]
+      }
+    },
+    "bevels": []
+  },
+  "T2-10MQ-2": {
+    "facts": {
+      "points": {
+        "vertex:0": [
+          325.9861040123403,
+          4.537810127658304e-10
+        ],
+        "vertex:1": [
+          325.98610401237516,
+          474.0000000004519
+        ],
+        "vertex:2": [
+          -3.4438585316820536e-10,
+          474.0000000004795
+        ],
+        "vertex:3": [
+          -3.791999416421812e-10,
+          4.813740048839773e-10
+        ],
+        "hole:material-result:0": [
+          50.00235017241317,
+          396.9992695230473
+        ],
+        "hole:material-result:1": [
+          50.00001242014538,
+          236.99926953998866
+        ],
+        "hole:material-result:2": [
+          49.99767466787764,
+          76.99926955693002
+        ],
+        "hole:material-result:3": [
+          150.00235016163893,
+          396.9978084281927
+        ],
+        "hole:material-result:4": [
+          150.00001240937115,
+          236.99780844513404
+        ],
+        "hole:material-result:5": [
+          149.99767465710343,
+          76.9978084620754
+        ],
+        "hole:material-result:6": [
+          100.00014041721334,
+          316.9990463206221
+        ],
+        "hole:material-result:7": [
+          99.9998840730535,
+          156.99904632082973
+        ]
+      },
+      "segments": [
+        {
+          "id": "edge:0",
+          "kind": "LINE",
+          "start": [
+            325.9861040123403,
+            4.537810127658304e-10
+          ],
+          "end": [
+            325.98610401237516,
+            474.0000000004519
+          ],
+          "startPoint": "vertex:0",
+          "endPoint": "vertex:1"
+        },
+        {
+          "id": "edge:1",
+          "kind": "LINE",
+          "start": [
+            325.98610401237516,
+            474.0000000004519
+          ],
+          "end": [
+            -3.4441427487763576e-10,
+            474.0000000004795
+          ],
+          "startPoint": "vertex:1",
+          "endPoint": "vertex:2"
+        },
+        {
+          "id": "edge:2",
+          "kind": "LINE",
+          "start": [
+            -3.4438585316820536e-10,
+            474.0000000004795
+          ],
+          "end": [
+            -3.791999416421812e-10,
+            4.813500709133223e-10
+          ],
+          "startPoint": "vertex:2",
+          "endPoint": "vertex:3"
+        },
+        {
+          "id": "edge:3",
+          "kind": "LINE",
+          "start": [
+            -3.791999416421812e-10,
+            4.813740048839773e-10
+          ],
+          "end": [
+            325.9861040123403,
+            4.537810127658304e-10
+          ],
+          "startPoint": "vertex:3",
+          "endPoint": "vertex:0"
+        }
+      ],
+      "holes": [
+        {
+          "id": "material-result:0",
+          "pointId": "hole:material-result:0",
+          "kind": "SLOT",
+          "width": 21.999999999999993,
+          "length": 80.99999999999997,
+          "angle": 89.99916285429403,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:1",
+          "pointId": "hole:material-result:1",
+          "kind": "SLOT",
+          "width": 21.999999999999993,
+          "length": 81.00000000000003,
+          "angle": 89.99916285429403,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:2",
+          "pointId": "hole:material-result:2",
+          "kind": "SLOT",
+          "width": 22.000000000000007,
+          "length": 81.0,
+          "angle": 89.99916285429403,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:3",
+          "pointId": "hole:material-result:3",
+          "kind": "SLOT",
+          "width": 22.00000000000002,
+          "length": 81.0,
+          "angle": 89.99916285429403,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:4",
+          "pointId": "hole:material-result:4",
+          "kind": "SLOT",
+          "width": 22.00000000000002,
+          "length": 81.00000000000006,
+          "angle": 89.99916285429403,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:5",
+          "pointId": "hole:material-result:5",
+          "kind": "SLOT",
+          "width": 22.00000000000002,
+          "length": 81.00000000000003,
+          "angle": 89.99916285429403,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:6",
+          "pointId": "hole:material-result:6",
+          "kind": "ROUND",
+          "diameter": 29.99999999999997,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:7",
+          "pointId": "hole:material-result:7",
+          "kind": "ROUND",
+          "diameter": 30.00000000000003,
+          "origin": "BOLT"
+        }
+      ],
+      "datum": "vertex:3",
+      "bounds": [
+        -3.791999416421812e-10,
+        4.537810127658304e-10,
+        325.98610401237516,
+        474.0000000004795
+      ],
+      "boundaryLoops": [
+        {
+          "id": "outer",
+          "segments": [
+            "edge:0",
+            "edge:1",
+            "edge:2",
+            "edge:3"
+          ]
+        }
+      ],
+      "sourceFeatureRefs": {
+        "edge:0": [
+          "#/parts/10/rawSolid"
+        ],
+        "edge:1": [
+          "#/parts/10/rawSolid"
+        ],
+        "edge:2": [
+          "#/parts/10/rawSolid"
+        ],
+        "edge:3": [
+          "#/parts/10/rawSolid"
+        ],
+        "hole:material-result:0": [
+          "#/parts/10/boltGroups/value/0/positions/value/0",
+          "#/parts/10/boltGroups/value/0/properties",
+          "#/parts/10/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:1": [
+          "#/parts/10/boltGroups/value/0/positions/value/1",
+          "#/parts/10/boltGroups/value/0/properties",
+          "#/parts/10/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:2": [
+          "#/parts/10/boltGroups/value/0/positions/value/2",
+          "#/parts/10/boltGroups/value/0/properties",
+          "#/parts/10/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:3": [
+          "#/parts/10/boltGroups/value/0/positions/value/3",
+          "#/parts/10/boltGroups/value/0/properties",
+          "#/parts/10/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:4": [
+          "#/parts/10/boltGroups/value/0/positions/value/4",
+          "#/parts/10/boltGroups/value/0/properties",
+          "#/parts/10/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:5": [
+          "#/parts/10/boltGroups/value/0/positions/value/5",
+          "#/parts/10/boltGroups/value/0/properties",
+          "#/parts/10/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:6": [
+          "#/parts/10/boltGroups/value/1/positions/value/0",
+          "#/parts/10/boltGroups/value/1/properties",
+          "#/parts/10/boltGroups/value/1/targets"
+        ],
+        "hole:material-result:7": [
+          "#/parts/10/boltGroups/value/1/positions/value/1",
+          "#/parts/10/boltGroups/value/1/properties",
+          "#/parts/10/boltGroups/value/1/targets"
+        ]
+      }
+    },
+    "bevels": []
+  },
+  "T2-10B-626": {
+    "facts": {
+      "points": {
+        "vertex:0": [
+          406.0,
+          2.226485662504274e-11
+        ],
+        "vertex:1": [
+          426.0,
+          20.000000000022265
+        ],
+        "vertex:2": [
+          426.0,
+          96.87592315627671
+        ],
+        "vertex:3": [
+          423.0,
+          96.87592315627671
+        ],
+        "edge:3:extreme:2": [
+          413.0,
+          106.87592315627671
+        ],
+        "edge:3:extreme:3": [
+          423.0,
+          96.87592315627671
+        ],
+        "vertex:4": [
+          413.0,
+          106.87592315627671
+        ],
+        "vertex:5": [
+          413.0,
+          218.73387145887926
+        ],
+        "vertex:6": [
+          63.0,
+          218.73387145887926
+        ],
+        "vertex:7": [
+          63.0,
+          106.87592315627671
+        ],
+        "edge:7:extreme:0": [
+          63.0,
+          106.87592315627671
+        ],
+        "edge:7:extreme:3": [
+          53.0,
+          96.87592315627671
+        ],
+        "vertex:8": [
+          53.0,
+          96.87592315627671
+        ],
+        "vertex:9": [
+          0.0,
+          96.87592315627671
+        ],
+        "vertex:10": [
+          0.0,
+          20.000000000022265
+        ],
+        "vertex:11": [
+          20.0,
+          2.226485662504274e-11
+        ],
+        "hole:material-result:0": [
+          118.0,
+          163.73387591624197
+        ],
+        "hole:material-result:1": [
+          198.0,
+          163.73387591624197
+        ],
+        "hole:material-result:2": [
+          278.0,
+          163.73387591624197
+        ],
+        "hole:material-result:3": [
+          358.0,
+          163.73387591624197
+        ]
+      },
+      "segments": [
+        {
+          "id": "edge:0",
+          "kind": "LINE",
+          "start": [
+            406.0,
+            2.226485662504274e-11
+          ],
+          "end": [
+            426.0,
+            20.000000000022265
+          ],
+          "startPoint": "vertex:0",
+          "endPoint": "vertex:1"
+        },
+        {
+          "id": "edge:1",
+          "kind": "LINE",
+          "start": [
+            426.0,
+            20.000000000022265
+          ],
+          "end": [
+            426.0,
+            96.87592315627671
+          ],
+          "startPoint": "vertex:1",
+          "endPoint": "vertex:2"
+        },
+        {
+          "id": "edge:2",
+          "kind": "LINE",
+          "start": [
+            426.0,
+            96.87592315627671
+          ],
+          "end": [
+            423.0,
+            96.87592315627671
+          ],
+          "startPoint": "vertex:2",
+          "endPoint": "vertex:3"
+        },
+        {
+          "id": "edge:3",
+          "kind": "ARC",
+          "start": [
+            423.0,
+            96.87592315627671
+          ],
+          "end": [
+            413.0,
+            106.87592315627671
+          ],
+          "startPoint": "vertex:3",
+          "endPoint": "vertex:4",
+          "center": [
+            423.0,
+            106.87592315627671
+          ],
+          "radius": 10.0,
+          "clockwise": true
+        },
+        {
+          "id": "edge:4",
+          "kind": "LINE",
+          "start": [
+            413.0,
+            106.87592315627671
+          ],
+          "end": [
+            413.0,
+            218.73387145887926
+          ],
+          "startPoint": "vertex:4",
+          "endPoint": "vertex:5"
+        },
+        {
+          "id": "edge:5",
+          "kind": "LINE",
+          "start": [
+            413.0,
+            218.73387145887926
+          ],
+          "end": [
+            63.0,
+            218.73387145887926
+          ],
+          "startPoint": "vertex:5",
+          "endPoint": "vertex:6"
+        },
+        {
+          "id": "edge:6",
+          "kind": "LINE",
+          "start": [
+            63.0,
+            218.73387145887926
+          ],
+          "end": [
+            63.0,
+            106.87592315627671
+          ],
+          "startPoint": "vertex:6",
+          "endPoint": "vertex:7"
+        },
+        {
+          "id": "edge:7",
+          "kind": "ARC",
+          "start": [
+            63.0,
+            106.87592315627671
+          ],
+          "end": [
+            53.0,
+            96.87592315627671
+          ],
+          "startPoint": "vertex:7",
+          "endPoint": "vertex:8",
+          "center": [
+            53.0,
+            106.87592315627671
+          ],
+          "radius": 10.0,
+          "clockwise": true
+        },
+        {
+          "id": "edge:8",
+          "kind": "LINE",
+          "start": [
+            53.0,
+            96.87592315627671
+          ],
+          "end": [
+            0.0,
+            96.87592315627671
+          ],
+          "startPoint": "vertex:8",
+          "endPoint": "vertex:9"
+        },
+        {
+          "id": "edge:9",
+          "kind": "LINE",
+          "start": [
+            0.0,
+            96.87592315627671
+          ],
+          "end": [
+            0.0,
+            20.00000000002227
+          ],
+          "startPoint": "vertex:9",
+          "endPoint": "vertex:10"
+        },
+        {
+          "id": "edge:10",
+          "kind": "LINE",
+          "start": [
+            0.0,
+            20.000000000022265
+          ],
+          "end": [
+            20.0,
+            2.226485662504274e-11
+          ],
+          "startPoint": "vertex:10",
+          "endPoint": "vertex:11"
+        },
+        {
+          "id": "edge:11",
+          "kind": "LINE",
+          "start": [
+            20.0,
+            2.226485662504274e-11
+          ],
+          "end": [
+            406.0,
+            2.226485662504274e-11
+          ],
+          "startPoint": "vertex:11",
+          "endPoint": "vertex:0"
+        }
+      ],
+      "holes": [
+        {
+          "id": "material-result:0",
+          "pointId": "hole:material-result:0",
+          "kind": "ROUND",
+          "diameter": 26.0,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:1",
+          "pointId": "hole:material-result:1",
+          "kind": "ROUND",
+          "diameter": 26.0,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:2",
+          "pointId": "hole:material-result:2",
+          "kind": "ROUND",
+          "diameter": 26.0,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:3",
+          "pointId": "hole:material-result:3",
+          "kind": "ROUND",
+          "diameter": 26.0,
+          "origin": "BOLT"
+        }
+      ],
+      "datum": "vertex:10",
+      "bounds": [
+        0.0,
+        2.226485662504274e-11,
+        426.0,
+        218.73387145887926
+      ],
+      "boundaryLoops": [
+        {
+          "id": "outer",
+          "segments": [
+            "edge:0",
+            "edge:1",
+            "edge:2",
+            "edge:3",
+            "edge:4",
+            "edge:5",
+            "edge:6",
+            "edge:7",
+            "edge:8",
+            "edge:9",
+            "edge:10",
+            "edge:11"
+          ]
+        }
+      ],
+      "sourceFeatureRefs": {
+        "edge:0": [
+          "#/parts/11/modelingContour/value/value/0"
+        ],
+        "edge:1": [
+          "#/parts/11/modelingContour/value/value/0",
+          "#/parts/11/modelingContour/value/value/1"
+        ],
+        "edge:2": [
+          "#/parts/11/modelingContour/value/value/1",
+          "#/parts/11/modelingContour/value/value/2"
+        ],
+        "edge:3": [
+          "#/parts/11/modelingContour/value/value/2"
+        ],
+        "edge:4": [
+          "#/parts/11/modelingContour/value/value/2",
+          "#/parts/11/modelingContour/value/value/3"
+        ],
+        "edge:5": [
+          "#/parts/11/modelingContour/value/value/3",
+          "#/parts/11/modelingContour/value/value/4"
+        ],
+        "edge:6": [
+          "#/parts/11/modelingContour/value/value/4",
+          "#/parts/11/modelingContour/value/value/5"
+        ],
+        "edge:7": [
+          "#/parts/11/modelingContour/value/value/5"
+        ],
+        "edge:8": [
+          "#/parts/11/modelingContour/value/value/5",
+          "#/parts/11/modelingContour/value/value/6"
+        ],
+        "edge:9": [
+          "#/parts/11/modelingContour/value/value/6",
+          "#/parts/11/modelingContour/value/value/7"
+        ],
+        "edge:10": [
+          "#/parts/11/modelingContour/value/value/7"
+        ],
+        "edge:11": [
+          "#/parts/11/modelingContour/value/value/7",
+          "#/parts/11/modelingContour/value/value/0"
+        ],
+        "hole:material-result:0": [
+          "#/parts/11/boltGroups/value/0/positions/value/0",
+          "#/parts/11/boltGroups/value/0/properties",
+          "#/parts/11/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:1": [
+          "#/parts/11/boltGroups/value/0/positions/value/1",
+          "#/parts/11/boltGroups/value/0/properties",
+          "#/parts/11/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:2": [
+          "#/parts/11/boltGroups/value/0/positions/value/2",
+          "#/parts/11/boltGroups/value/0/properties",
+          "#/parts/11/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:3": [
+          "#/parts/11/boltGroups/value/0/positions/value/3",
+          "#/parts/11/boltGroups/value/0/properties",
+          "#/parts/11/boltGroups/value/0/targets"
+        ]
+      }
+    },
+    "bevels": []
+  },
+  "T2-10B-305": {
+    "facts": {
+      "points": {
+        "vertex:0": [
+          0.0,
+          -1.1702194768759e-11
+        ],
+        "vertex:1": [
+          270.0,
+          -1.1702194768759e-11
+        ],
+        "vertex:2": [
+          270.0,
+          217.3912811275939
+        ],
+        "vertex:3": [
+          0.0,
+          217.3912811275939
+        ],
+        "hole:material-result:0": [
+          215.0,
+          82.3912810719937
+        ],
+        "hole:material-result:1": [
+          215.0,
+          162.39128107195472
+        ],
+        "hole:material-result:2": [
+          135.0,
+          82.3912810719937
+        ],
+        "hole:material-result:3": [
+          135.0,
+          162.39128107195472
+        ],
+        "hole:material-result:4": [
+          55.0,
+          82.3912810719937
+        ],
+        "hole:material-result:5": [
+          55.0,
+          162.39128107195472
+        ]
+      },
+      "segments": [
+        {
+          "id": "edge:0",
+          "kind": "LINE",
+          "start": [
+            0.0,
+            -1.1702194768759e-11
+          ],
+          "end": [
+            270.0,
+            -1.1702194768759e-11
+          ],
+          "startPoint": "vertex:0",
+          "endPoint": "vertex:1"
+        },
+        {
+          "id": "edge:1",
+          "kind": "LINE",
+          "start": [
+            270.0,
+            -1.1702194768759e-11
+          ],
+          "end": [
+            270.0,
+            217.3912811275939
+          ],
+          "startPoint": "vertex:1",
+          "endPoint": "vertex:2"
+        },
+        {
+          "id": "edge:2",
+          "kind": "LINE",
+          "start": [
+            270.0,
+            217.3912811275939
+          ],
+          "end": [
+            0.0,
+            217.3912811275939
+          ],
+          "startPoint": "vertex:2",
+          "endPoint": "vertex:3"
+        },
+        {
+          "id": "edge:3",
+          "kind": "LINE",
+          "start": [
+            0.0,
+            217.3912811275939
+          ],
+          "end": [
+            0.0,
+            -1.1709744285326451e-11
+          ],
+          "startPoint": "vertex:3",
+          "endPoint": "vertex:0"
+        }
+      ],
+      "holes": [
+        {
+          "id": "material-result:0",
+          "pointId": "hole:material-result:0",
+          "kind": "SLOT",
+          "width": 26.0,
+          "length": 56.0,
+          "angle": 90.0,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:1",
+          "pointId": "hole:material-result:1",
+          "kind": "SLOT",
+          "width": 26.0,
+          "length": 56.0,
+          "angle": 90.0,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:2",
+          "pointId": "hole:material-result:2",
+          "kind": "SLOT",
+          "width": 26.0,
+          "length": 56.0,
+          "angle": 90.0,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:3",
+          "pointId": "hole:material-result:3",
+          "kind": "SLOT",
+          "width": 26.0,
+          "length": 56.0,
+          "angle": 90.0,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:4",
+          "pointId": "hole:material-result:4",
+          "kind": "SLOT",
+          "width": 26.0,
+          "length": 56.0,
+          "angle": 90.0,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:5",
+          "pointId": "hole:material-result:5",
+          "kind": "SLOT",
+          "width": 26.0,
+          "length": 56.0,
+          "angle": 90.0,
+          "origin": "BOLT"
+        }
+      ],
+      "datum": "vertex:0",
+      "bounds": [
+        0.0,
+        -1.1702194768759e-11,
+        270.0,
+        217.3912811275939
+      ],
+      "boundaryLoops": [
+        {
+          "id": "outer",
+          "segments": [
+            "edge:0",
+            "edge:1",
+            "edge:2",
+            "edge:3"
+          ]
+        }
+      ],
+      "sourceFeatureRefs": {
+        "edge:0": [
+          "#/parts/13/modelingContour/value/value/0",
+          "#/parts/13/modelingContour/value/value/1"
+        ],
+        "edge:1": [
+          "#/parts/13/modelingContour/value/value/1",
+          "#/parts/13/modelingContour/value/value/2"
+        ],
+        "edge:2": [
+          "#/parts/13/modelingContour/value/value/2",
+          "#/parts/13/modelingContour/value/value/3"
+        ],
+        "edge:3": [
+          "#/parts/13/modelingContour/value/value/3",
+          "#/parts/13/modelingContour/value/value/0"
+        ],
+        "hole:material-result:0": [
+          "#/parts/13/boltGroups/value/0/positions/value/0",
+          "#/parts/13/boltGroups/value/0/properties",
+          "#/parts/13/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:1": [
+          "#/parts/13/boltGroups/value/0/positions/value/1",
+          "#/parts/13/boltGroups/value/0/properties",
+          "#/parts/13/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:2": [
+          "#/parts/13/boltGroups/value/0/positions/value/2",
+          "#/parts/13/boltGroups/value/0/properties",
+          "#/parts/13/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:3": [
+          "#/parts/13/boltGroups/value/0/positions/value/3",
+          "#/parts/13/boltGroups/value/0/properties",
+          "#/parts/13/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:4": [
+          "#/parts/13/boltGroups/value/0/positions/value/4",
+          "#/parts/13/boltGroups/value/0/properties",
+          "#/parts/13/boltGroups/value/0/targets"
+        ],
+        "hole:material-result:5": [
+          "#/parts/13/boltGroups/value/0/positions/value/5",
+          "#/parts/13/boltGroups/value/0/properties",
+          "#/parts/13/boltGroups/value/0/targets"
+        ]
+      }
+    },
+    "bevels": [
+      {
+        "id": "bevel:605061726",
+        "operationId": 605061726,
+        "alongAxis": 0,
+        "normal": [
+          -0.0,
+          -0.7071067811889655,
+          0.7071067811841296
+        ],
+        "offset": 1.4142135626090906,
+        "sourceRef": "#/parts/13/operations/value/0",
+        "sideOriginIds": [
+          605061726,
+          605061726
+        ],
+        "profile": [
+          [
+            -1.2143377597902874e-11,
+            2.000000000328445
+          ],
+          [
+            11.999999999948841,
+            14.000000000371495
+          ]
+        ],
+        "depth": 12.00000000004305,
+        "land": 1.999999999963439,
+        "thickness": 14.000000000006798,
+        "side": "HIGH",
+        "angle": 44.99999999980408,
+        "extent": [
+          0.0,
+          270.0
+        ]
+      }
+    ]
+  },
+  "T2-10B-105": {
+    "facts": {
+      "points": {
+        "vertex:0": [
+          2.2541135808663872,
+          2.8176219429689584e-08
+        ],
+        "vertex:1": [
+          2.254111187440483,
+          429.99993906408423
+        ],
+        "vertex:2": [
+          2092.24662232155,
+          429.99995069471515
+        ],
+        "vertex:3": [
+          2452.2466218205973,
+          519.9999526980846
+        ],
+        "vertex:4": [
+          8573.986856195597,
+          519.9999867650494
+        ],
+        "vertex:5": [
+          8933.986978766863,
+          429.9999887684195
+        ],
+        "vertex:6": [
+          8933.986928827635,
+          1.6671300129201172e-11
+        ],
+        "hole:material-result:0": [
+          56.12353374650263,
+          294.9999393639049
+        ],
+        "hole:material-result:1": [
+          136.12353374642373,
+          294.9999398090981
+        ],
+        "hole:material-result:2": [
+          56.12353419179123,
+          214.9999393639049
+        ],
+        "hole:material-result:3": [
+          136.12353419171234,
+          214.99993980909812
+        ],
+        "hole:material-result:4": [
+          56.123534637079835,
+          134.9999393639049
+        ],
+        "hole:material-result:5": [
+          136.12353463700092,
+          134.99993980909812
+        ],
+        "hole:material-result:6": [
+          985.0235484335533,
+          214.9999445331564
+        ],
+        "hole:material-result:7": [
+          5185.0228013313645,
+          259.99996790579576
+        ],
+        "hole:material-result:8": [
+          8185.023418083926,
+          259.9999846005445
+        ]
+      },
+      "segments": [
+        {
+          "id": "edge:0",
+          "kind": "LINE",
+          "start": [
+            2.2541135808663872,
+            2.8176219429689584e-08
+          ],
+          "end": [
+            2.254111187440483,
+            429.99993906408423
+          ],
+          "startPoint": "vertex:0",
+          "endPoint": "vertex:1"
+        },
+        {
+          "id": "edge:1",
+          "kind": "LINE",
+          "start": [
+            2.254111187440483,
+            429.99993906408423
+          ],
+          "end": [
+            2092.24662232155,
+            429.99995069471515
+          ],
+          "startPoint": "vertex:1",
+          "endPoint": "vertex:2"
+        },
+        {
+          "id": "edge:2",
+          "kind": "LINE",
+          "start": [
+            2092.24662232155,
+            429.99995069471515
+          ],
+          "end": [
+            2452.2466218205973,
+            519.9999526980846
+          ],
+          "startPoint": "vertex:2",
+          "endPoint": "vertex:3"
+        },
+        {
+          "id": "edge:3",
+          "kind": "LINE",
+          "start": [
+            2452.2466218205973,
+            519.9999526980846
+          ],
+          "end": [
+            8573.986856195597,
+            519.9999867650494
+          ],
+          "startPoint": "vertex:3",
+          "endPoint": "vertex:4"
+        },
+        {
+          "id": "edge:4",
+          "kind": "LINE",
+          "start": [
+            8573.986856195597,
+            519.9999867650494
+          ],
+          "end": [
+            8933.986978766863,
+            429.9999887684195
+          ],
+          "startPoint": "vertex:4",
+          "endPoint": "vertex:5"
+        },
+        {
+          "id": "edge:5",
+          "kind": "LINE",
+          "start": [
+            8933.986978766863,
+            429.9999887684195
+          ],
+          "end": [
+            8933.986928827635,
+            1.6671300129201172e-11
+          ],
+          "startPoint": "vertex:5",
+          "endPoint": "vertex:6"
+        },
+        {
+          "id": "edge:6",
+          "kind": "LINE",
+          "start": [
+            8933.986928827635,
+            1.6671300129201172e-11
+          ],
+          "end": [
+            2.2541135808663872,
+            2.8176219429689584e-08
+          ],
+          "startPoint": "vertex:6",
+          "endPoint": "vertex:0"
+        }
+      ],
+      "holes": [
+        {
+          "id": "material-result:0",
+          "pointId": "hole:material-result:0",
+          "kind": "SLOT",
+          "width": 26,
+          "length": 56,
+          "angle": 3.188461496104143e-07,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:1",
+          "pointId": "hole:material-result:1",
+          "kind": "SLOT",
+          "width": 26,
+          "length": 56,
+          "angle": 3.188461496104143e-07,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:2",
+          "pointId": "hole:material-result:2",
+          "kind": "SLOT",
+          "width": 26,
+          "length": 56,
+          "angle": 3.188461496104143e-07,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:3",
+          "pointId": "hole:material-result:3",
+          "kind": "SLOT",
+          "width": 26,
+          "length": 56,
+          "angle": 3.188461496104143e-07,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:4",
+          "pointId": "hole:material-result:4",
+          "kind": "SLOT",
+          "width": 26,
+          "length": 56,
+          "angle": 3.188461496104143e-07,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:5",
+          "pointId": "hole:material-result:5",
+          "kind": "SLOT",
+          "width": 26,
+          "length": 56,
+          "angle": 3.188461496104143e-07,
+          "origin": "BOLT"
+        },
+        {
+          "id": "material-result:6",
+          "pointId": "hole:material-result:6",
+          "kind": "ROUND",
+          "diameter": 150
+        },
+        {
+          "id": "material-result:7",
+          "pointId": "hole:material-result:7",
+          "kind": "ROUND",
+          "diameter": 150
+        },
+        {
+          "id": "material-result:8",
+          "pointId": "hole:material-result:8",
+          "kind": "ROUND",
+          "diameter": 150
+        }
+      ],
+      "datum": "vertex:1",
+      "bounds": [
+        2.254111187440483,
+        1.6671300129201172e-11,
+        8933.986978766863,
+        519.9999867650494
+      ],
+      "boundaryLoops": [
+        {
+          "id": "outer",
+          "segments": [
+            "edge:0",
+            "edge:1",
+            "edge:2",
+            "edge:3",
+            "edge:4",
+            "edge:5",
+            "edge:6"
+          ]
+        }
+      ],
+      "sourceFeatureRefs": {
+        "edge:0": [
+          "#/parts/14/finalSolid/value/faces/value/224"
+        ],
+        "edge:1": [
+          "#/parts/14/finalSolid/value/faces/value/224"
+        ],
+        "edge:2": [
+          "#/parts/14/finalSolid/value/faces/value/224"
+        ],
+        "edge:3": [
+          "#/parts/14/finalSolid/value/faces/value/224"
+        ],
+        "edge:4": [
+          "#/parts/14/finalSolid/value/faces/value/224"
+        ],
+        "edge:5": [
+          "#/parts/14/finalSolid/value/faces/value/224"
+        ],
+        "edge:6": [
+          "#/parts/14/finalSolid/value/faces/value/224"
+        ],
+        "hole:material-result:0": [
+          "#/parts/14/boltGroups/value/0/positions/value/0",
+          "#/parts/14/boltGroups/value/0/properties",
+          "#/parts/14/boltGroups/value/0/targets",
+          "#/parts/14/finalSolid"
+        ],
+        "hole:material-result:1": [
+          "#/parts/14/boltGroups/value/0/positions/value/1",
+          "#/parts/14/boltGroups/value/0/properties",
+          "#/parts/14/boltGroups/value/0/targets",
+          "#/parts/14/finalSolid"
+        ],
+        "hole:material-result:2": [
+          "#/parts/14/boltGroups/value/0/positions/value/2",
+          "#/parts/14/boltGroups/value/0/properties",
+          "#/parts/14/boltGroups/value/0/targets",
+          "#/parts/14/finalSolid"
+        ],
+        "hole:material-result:3": [
+          "#/parts/14/boltGroups/value/0/positions/value/3",
+          "#/parts/14/boltGroups/value/0/properties",
+          "#/parts/14/boltGroups/value/0/targets",
+          "#/parts/14/finalSolid"
+        ],
+        "hole:material-result:4": [
+          "#/parts/14/boltGroups/value/0/positions/value/4",
+          "#/parts/14/boltGroups/value/0/properties",
+          "#/parts/14/boltGroups/value/0/targets",
+          "#/parts/14/finalSolid"
+        ],
+        "hole:material-result:5": [
+          "#/parts/14/boltGroups/value/0/positions/value/5",
+          "#/parts/14/boltGroups/value/0/properties",
+          "#/parts/14/boltGroups/value/0/targets",
+          "#/parts/14/finalSolid"
+        ],
+        "hole:material-result:6": [
+          "#/parts/14/boltGroups/value/1/positions/value/0",
+          "#/parts/14/boltGroups/value/1/properties",
+          "#/parts/14/boltGroups/value/1/targets",
+          "#/parts/14/finalSolid"
+        ],
+        "hole:material-result:7": [
+          "#/parts/14/boltGroups/value/2/positions/value/0",
+          "#/parts/14/boltGroups/value/2/properties",
+          "#/parts/14/boltGroups/value/2/targets",
+          "#/parts/14/finalSolid"
+        ],
+        "hole:material-result:8": [
+          "#/parts/14/boltGroups/value/3/positions/value/0",
+          "#/parts/14/boltGroups/value/3/properties",
+          "#/parts/14/boltGroups/value/3/targets",
+          "#/parts/14/finalSolid"
+        ]
+      }
+    },
+    "bevels": []
+  }
+}
