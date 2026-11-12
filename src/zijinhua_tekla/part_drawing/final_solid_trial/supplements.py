@@ -344,7 +344,19 @@ def supplement_holes(part, feature, tolerance=0.1, source_index_offset=0):
                     points = existing[matches[0]]["observedPoints"]
                     center = np.mean(points, axis=0).tolist()
                     measured = dict(hole, center=center)
-                    _shape_match(points, measured, tolerance)
+                    try:
+                        _shape_match(points, measured, tolerance)
+                    except ValueError:
+                        # Nonuniform tessellation is not a centroid sample.
+                        # Fit relative coordinates to avoid large-origin loss.
+                        cloud = np.array(points) - np.array(points[0])
+                        coefficients, _, _, _ = np.linalg.lstsq(
+                            np.column_stack([2 * cloud, np.ones(len(cloud))]),
+                            np.sum(cloud * cloud, axis=1), rcond=None,
+                        )
+                        center = (coefficients[:2] + points[0]).tolist()
+                        measured = dict(hole, center=center)
+                        _shape_match(points, measured, tolerance)
                     hole.update(
                         center=center,
                         segments=hole_segments(

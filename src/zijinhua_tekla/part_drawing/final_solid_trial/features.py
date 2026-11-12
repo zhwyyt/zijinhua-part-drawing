@@ -221,6 +221,10 @@ def flat_features(part, shell, regions, pair, tolerance):
 
 
 def interpret(part, shell, regions, tolerance=0.1):
+    profile = part.get("profile", {}).get("value")
+    if isinstance(profile, str) and not profile.upper().startswith("PL") and part.get("coordinateSystem", {}).get("status") == "READ":
+        from .profiles import interpret_profile
+        return interpret_profile(part, shell, tolerance)
     pairs = face_pairs(regions, tolerance)
     vertices = np.array([p for r in regions for loop in r["loops"] for p in loop])
     flat = []

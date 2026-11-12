@@ -266,12 +266,13 @@ class FinalSolidRepairTests(unittest.TestCase):
             for item in reversed(patches):
                 item.stop()
 
-    def test_unimplemented_sections_do_not_claim_geometry_ready(self):
+    def test_profile_sections_preserve_checked_shell_and_complete_face_roles(self):
         for pos in ("T2-10B-23", "T2-10B-190"):
             f = self.facts[pos]
             self.assertEqual("MATCHED", f["shellStatus"])
-            self.assertEqual("BLOCKED", f["status"])
+            self.assertEqual("READY", f["status"], f["issues"])
             self.assertTrue(f["finalSolid"]["faces"])
+            self.assertEqual(len(f["finalSolid"]["faces"]), len(f["faceRoles"]))
 
     def test_coplanar_face_split_preserves_shape_and_source_coverage(self):
         p = _plate()
@@ -420,7 +421,9 @@ class FinalSolidRepairTests(unittest.TestCase):
             self.assertEqual(0, report["summary"]["expressionReady"])
 
     def test_uninterpreted_geometry_remains_in_report(self):
-        fact = self.facts["T2-10B-23"]
+        part = copy.deepcopy(self.parts["T2-10B-190"])
+        part.pop("operations")  # Necessary skew relief evidence is missing.
+        fact, _ = evaluate(part)
         self.assertEqual("BLOCKED", fact["status"])
         self.assertTrue(fact["rawFinalSolid"]["value"]["faces"]["value"])
 

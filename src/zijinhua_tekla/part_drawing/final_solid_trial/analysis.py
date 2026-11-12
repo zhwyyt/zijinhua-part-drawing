@@ -17,8 +17,9 @@ from .supplements import (
     shape_polygon,
 )
 from .steps import step_sections
+from .profiles import supplement_profile, profile_expressions
 
-VERSION = "final-solid-trial.r3"
+VERSION = "final-solid-trial.r4"
 
 
 def _part(part):
@@ -61,6 +62,8 @@ def _part(part):
             supplement_holes(part, result)
         elif feature["partType"] == "STEPPED_PLATE":
             supplement_stepped_holes(part, result)
+        elif feature["partType"] == "STRAIGHT_PROFILE":
+            supplement_profile(part, result, shell)
         else:
             supplement_folded_holes(part, result)
         result.update(status="READY", featureStatus="MATCHED")
@@ -192,6 +195,8 @@ def _expressions(fact):
                     sectionRequirements=sections,
                     requiredViews=["main"] + [s["id"] for s in sections],
                 )
+        elif fact["partType"] == "STRAIGHT_PROFILE":
+            result.update(profile_expressions(fact))
         else:
             requirements = []
 
