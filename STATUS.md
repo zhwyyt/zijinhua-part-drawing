@@ -18,7 +18,7 @@
   - 尖角折板（PolyBeam）：6件中面展开与既有探查在 0.1 mm 内一致。制造补偿未定，中面展开不能直接下料。BentPlate 和带半径折弯还缺样本。
   - 直型材：BH23、BH190、角钢189、BOX 9P-1 事实/表达 READY，焊钉与孔分开计；189 改为角钢解释，不再输出折板展开。I/H、L、C/U、T、Z、BOX、矩形实心7类直壁截面有合成正反例。圆管/圆棒、带圆角或斜壁截面、组合截面、弯曲型材尚未支持。
 - 独立布局新路线 `independent_layout/`（候选 + CP-SAT + 原生回读）已出真实新页，未接正式入口：584 第37页（1:2）用户认可；225、618 主图文字清晰；101/102 第5页完整尺寸链仍有 80/360 文字碰线；450 材料表自身超框；原模板标题栏仍有92—107个缺字。用户已接受短尺寸箭头约8%的轻微削边。
-- 测试：当前 src 全量 `python -m unittest discover -s tests` 720 项通过；193 个旧源码/原有测试摘要不变。
+- 测试：当前 src 全量 `python -m unittest discover -s tests` 720 项通过；193 个旧源码/原有测试摘要不变。默认 Python 没有 pdfminer，字形/页面障碍/可见笔画三个模块会报 45 个导入错误；运行时把 `outputs/final-solid-trial/20261112-repair/test-deps` 接在 `src` 后面加进 PYTHONPATH（Git Bash 里用 `pwd -W` 取 Windows 路径）。
 
 ## 下一步
 
